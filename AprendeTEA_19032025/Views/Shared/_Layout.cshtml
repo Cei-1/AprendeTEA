@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AprendeTEA</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    @* <link href="~/css/GeneralClaro.css" rel="stylesheet" /> *@
+    <link href="~/css/GeneralObscuro.css" rel="stylesheet" />
+    <link href="~/css/footer.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="glowing">
+
+            <span style="--i:1;"></span>
+
+            <span style="--i:2;"></span>
+
+            <span style="--i:3;"></span>
+
+        </div>
+
+        <div class="glowing">
+
+            <span style="--i:1;"></span>
+
+            <span style="--i:2;"></span>
+
+            <span style="--i:3;"></span>
+
+        </div>
+
+        <div class="glowing">
+
+            <span style="--i:1;"></span>
+
+            <span style="--i:2;"></span>
+
+            <span style="--i:3;"></span>
+
+        </div>
+
+        <div class="glowing">
+
+            <span style="--i:1;"></span>
+
+            <span style="--i:2;"></span>
+
+            <span style="--i:3;"></span>
+
+        </div>
+        <div class="navigation">
+            <div class="menuToggle"></div>
+            <ul>
+                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")" style="--clr: #f44336">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="text">Inicio</span>
+                    </a>
+                </li>
+                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "Privacy" ? "active" : "")" style="--clr: #ffa117">
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy">
+                        <span class="icon"><ion-icon name="book-outline"></ion-icon></span>
+                        <span class="text">Lecciones</span>
+                    </a>
+                </li>
+                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "Progreso" ? "active" : "")" style="--clr: #0fc70f">
+                    <a href="#">
+                        <span class="icon"><ion-icon name="trophy-outline"></ion-icon></span>
+                        <span class="text">Progreso</span>
+                    </a>
+                </li>
+                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "MiPerfil" ? "active" : "")" style="--clr: #2196f3">
+                    <a asp-area="" asp-controller="Perfil" asp-action="MiPerfil">
+                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span class="text">Perfil</span>
+                    </a>
+                </li>
+                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "Configuracion" ? "active" : "")" style="--clr: #b145e9">
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </span>
+                        <span class="text">Configuración</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </header>
+    <div class="container" style="margin-left: 12%">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            @* <div>&copy; 2024 - AprendeTEA_V1._0 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></div> *@
+            <div id="social-footer">
+                <ul>
+                    <li>
+                        <a href="#"> <i class="fab fa-facebook-f icon"></i> </a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-twitter icon"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-linkedin-in icon"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-google-plus-g icon"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-whatsapp icon"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-github icon"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-youtube icon"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module"
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="~/js/Navbar.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
