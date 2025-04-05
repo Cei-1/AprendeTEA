@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-AprendeTEA_19032025-87979dd2-4e50-4011-96bf-b1f48d29cf27</UserSecretsId>
   </PropertyGroup>
