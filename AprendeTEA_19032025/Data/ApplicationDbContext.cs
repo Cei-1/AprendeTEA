@@ -14,5 +14,4 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Admin> Admin { get; set; }
 
-    public DbSet<Prueba> Prueba { get; set; }
 }
