@@ -38,27 +38,6 @@ namespace AprendeTEA_19032025.Data.Migrations
                     b.ToTable("Admin");
                 });
 
-            modelBuilder.Entity("AprendeTEA_19032025.Models.Prueba", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Apellido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Prueba");
-                });
-
             modelBuilder.Entity("AprendeTEA_19032025.Models.User", b =>
                 {
                     b.Property<int>("IdUser")
