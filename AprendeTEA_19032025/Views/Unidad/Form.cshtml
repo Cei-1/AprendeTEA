@@ -1,0 +1,107 @@
+﻿@model Unidad
+
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2 class="text-center mb-4">Unidades del Plan de Trabajo #@Model.IdPlanTrabajo</h2>
+
+    <a asp-action="Index" asp-controller="PlanTrabajo" class="btn btn-secondary mb-3">← Volver a Planes</a>
+
+    <div class="card mb-5">
+        <div class="card-header bg-primary text-white">
+            @(Model.UnidadEdicion.IdUnidad == 0 ? "Agregar Unidad" : "Editar Unidad")
+        </div>
+        <div class="card-body">
+            <form asp-action="GuardarUnidad" asp-controller="Unidad" method="post">
+                <input type="hidden" name="IdUnidad" value="@Model.UnidadEdicion.IdUnidad" />
+                <input type="hidden" name="IdPlanTrabajo" value="@Model.IdPlanTrabajo" />
+
+                <div class="mb-3">
+                    <label for="Unidad" class="form-label">Nombre de la Unidad</label>
+                    <input type="text" class="form-control" name="Unidad" value="@Model.UnidadEdicion.NombreUnidad" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="Detalles" class="form-label">Detalles</label>
+                    <textarea class="form-control" name="Detalles">@Model.UnidadEdicion.Detalle</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Responsable" class="form-label">Responsable</label>
+                    <input type="text" class="form-control" name="Responsable" value="@Model.UnidadEdicion.Responsable" />
+                </div>
+
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-info">@TempData["Mensaje"]</div>
+    }
+
+    <div class="card">
+        <div class="card-header bg-dark text-white">Unidades Registradas</div>
+        <div class="card-body">
+            <table id="tablaUnidades" class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Unidad</th>
+                        <th>Detalle</th>
+                        <th>Responsable</th>
+                        <th>Fecha</th>
+                        <th>Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Unidad unidad in Model.Unidades)
+                    {
+                        <tr>
+                            <td>@unidad.IdUnidad</td>
+                            <td>@unidad.NombreUnidad</td>
+                            <td>@unidad.Detalle</td>
+                            <td>@unidad.Responsable</td>
+                            <td>@unidad.FechaRegistro?.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-warning"
+                                   asp-action="Form"
+                                   asp-controller="Unidad"
+                                   asp-route-IdUnidad="@unidad.IdUnidad"
+                                   asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo">
+                                    ✏️
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/DataTables/datatables.min.js"></script>
+    <link href="~/lib/DataTables/datatables.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            $('#tablaUnidades').DataTable({
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    paginate: {
+                        previous: "Anterior",
+                        next: "Siguiente"
+                    }
+                }
+            });
+        });
+    </script>
+}
