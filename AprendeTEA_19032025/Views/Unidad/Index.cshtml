@@ -1,0 +1,96 @@
+﻿@model Unidad
+
+@{
+    ViewData["Title"] = "Unidades del Plan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="text-center pb-4">
+            <h2>Unidades del Plan de Trabajo #@ViewBag.IdPlanTrabajo</h2>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a asp-action="Index" asp-controller="PlanTrabajo" class="btn btn-secondary">← Volver</a>
+        </div>
+        <div class="col-md-6 text-end">
+            <a class="btn btn-success me-2"
+               asp-action="Form"
+               asp-controller="Unidad"
+               asp-route-IdPlanTrabajo="@ViewBag.IdPlanTrabajo">
+                + Agregar Unidad
+            </a>
+
+            <form asp-action="CargarExcel" asp-controller="Unidad" method="post" enctype="multipart/form-data" class="d-inline">
+                <input type="hidden" name="IdPlanTrabajo" value="@ViewBag.IdPlanTrabajo" />
+                <label for="excelUpload" class="btn btn-primary">📂 Cargar Excel</label>
+                <input type="file" id="excelUpload" name="file" class="d-none" required onchange="this.form.submit();" />
+            </form>
+        </div>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-info">@TempData["Mensaje"]</div>
+    }
+
+    <table id="tablaUnidades" class="table table-striped" style="width:100%">
+        <thead class="table-info">
+            <tr>
+                <th>#</th>
+                <th>Unidad</th>
+                <th>Detalle</th>
+                <th>Responsable</th>
+                <th>Fecha</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Unidad unidad in Model.Unidades)
+                {
+                    <tr>
+                        <td class="text-white">@unidad.IdUnidad</td>
+                        <td class="text-white">@unidad.NombreUnidad</td>
+                        <td class="text-white">@unidad.Detalle</td>
+                        <td class="text-white">@unidad.Responsable</td>
+                        <td class="text-white">@unidad.FechaRegistro?.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center">
+                            <a asp-action="DetalleUnidad"
+                               asp-controller="Unidad"
+                               asp-route-IdUnidad="@unidad.IdUnidad"
+                               class="btn btn-outline-info btn-sm">
+                                👁️ Ver
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/DataTables/datatables.min.js"></script>
+    <link href="~/lib/DataTables/datatables.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            $('#tablaUnidades').DataTable({
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    paginate: {
+                        previous: "Anterior",
+                        next: "Siguiente"
+                    }
+                }
+            });
+        });
+    </script>
+}

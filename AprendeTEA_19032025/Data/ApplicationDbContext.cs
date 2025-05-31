@@ -13,5 +13,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> User { get; set; }
 
     public DbSet<Admin> Admin { get; set; }
+    public DbSet<PlanTrabajo> PlanTrabajo { get; set; }
+    public DbSet<Unidad> Unidad { get; set; }
 
 }

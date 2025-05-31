@@ -1,0 +1,272 @@
+﻿@model Unidad
+
+@{
+    ViewData["Title"] = "Detalle de Unidad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+    .bg-glass {
+        background-color: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h2 class="text-white"><i class="fas fa-info-circle"></i> Detalle de Unidad</h2>
+    </div>
+
+    <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo" class="btn btn-outline-light mb-4">
+        <i class="fas fa-arrow-left"></i> Volver al plan
+    </a>
+
+    <div class="card bg-dark text-white shadow-lg rounded-4">
+        <div class="card-header border-bottom border-light bg-transparent">
+            <h4 class="mb-0 text-white">
+                <i class="fas fa-book text-info me-2"></i> Información general
+            </h4>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="fas fa-book-open fa-lg text-warning mt-1"></i>
+                        <div>
+                            <small class="text-muted">Nombre de la Unidad</small>
+                            <div class="fw-bold text-white">@Model.NombreUnidad</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="fas fa-align-left fa-lg text-info mt-1"></i>
+                        <div>
+                            <small class="text-muted">Detalle</small>
+                            <div class="fw-bold text-white">@Model.Detalle</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="fas fa-user fa-lg text-success mt-1"></i>
+                        <div>
+                            <small class="text-muted">Responsable</small>
+                            <div class="fw-bold text-white">@Model.Responsable</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="fas fa-calendar-alt fa-lg text-danger mt-1"></i>
+                        <div>
+                            <small class="text-muted">Fecha de Registro</small>
+                            <div class="fw-bold text-white">@Model.FechaRegistro?.ToString("dd/MM/yyyy")</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="card-footer border-top border-light">
+            <h5 class="mt-3 text-white"><i class="fas fa-puzzle-piece"></i> Actividades seleccionadas</h5>
+
+            @if (Model.TieneSopaLetras)
+            {
+                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #0d6efd;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-grip-horizontal text-primary"></i>
+                            <span class="fw-bold">Sopa de Letras</span>
+                        </div>
+                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalSopa">
+                            <i class="fas fa-circle-plus"></i> Ver
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="modalSopa" tabindex="-1" aria-labelledby="modalSopaLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content text-dark">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Vista previa - Sopa de Letras</h5>
+                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                    @foreach (var palabra in Model.PalabrasSopa?.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? new string[0])
+                                    {
+                                        <li>@palabra.Trim()</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            @if (Model.TieneCrucigrama)
+            {
+                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #198754;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-question text-success"></i>
+                            <span class="fw-bold">Crucigrama</span>
+                        </div>
+                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalCrucigrama">
+                            <i class="fas fa-circle-plus"></i> Ver
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalCrucigrama" tabindex="-1" aria-labelledby="modalCrucigramaLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content text-dark">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Vista previa - Crucigrama</h5>
+                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                    @foreach (var pregunta in Model.PreguntasCrucigrama?.Split(";", StringSplitOptions.RemoveEmptyEntries) ?? new string[0])
+                                    {
+                                        <li>@pregunta.Trim()</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            @if (Model.TieneRelacionar)
+            {
+                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #ffc107;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-random text-warning"></i>
+                            <span class="fw-bold">Relacionar Columnas</span>
+                        </div>
+                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalRelacionar">
+                            <i class="fas fa-circle-plus"></i> Ver
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalRelacionar" tabindex="-1" aria-labelledby="modalRelacionarLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content text-dark">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Vista previa - Relacionar Columnas</h5>
+                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                    @foreach (var par in Model.RelacionarColumnas?.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? new string[0])
+                                    {
+                                        <li>@par.Trim()</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            @if (Model.TieneMemorama)
+            {
+                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #0dcaf0;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-clone text-info"></i>
+                            <span class="fw-bold">Memorama</span>
+                        </div>
+                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalMemorama">
+                            <i class="fas fa-circle-plus"></i> Ver
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalMemorama" tabindex="-1" aria-labelledby="modalMemoramaLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content text-dark">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Vista previa - Memorama</h5>
+                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Esta actividad consiste en emparejar conceptos clave.</p>
+                                <p><em>Preparación visual pendiente.</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            @if (Model.TieneJuegoRol)
+            {
+                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #adb5bd;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-theater-masks text-light"></i>
+                            <span class="fw-bold">Juego de Rol</span>
+                        </div>
+                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalRol">
+                            <i class="fas fa-circle-plus"></i> Ver
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalRol" tabindex="-1" aria-labelledby="modalRolLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content text-dark">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Vista previa - Juego de Rol</h5>
+                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Esta actividad implica representar una situación real.</p>
+                                <p><em>El contenido específico se definirá por el facilitador.</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+           @*  @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneMemorama && !Model.TieneJuegoRol)
+            {
+                <div class="alert alert-dark mt-3">
+                    <i class="fas fa-ban"></i> Esta unidad no tiene actividades asociadas.
+                </div>
+            } *@
+            @* @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneMemorama && !Model.TieneJuegoRol)
+            {
+                <div class="alert alert-dark mt-3">
+                    <i class="fas fa-ban"></i> Esta unidad no tiene actividades asociadas.
+                </div>
+            } *@
+            @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneMemorama && !Model.TieneJuegoRol)
+            {
+                <div class="alert alert-dark mt-3">
+                    <i class="fas fa-ban"></i> Esta unidad no tiene actividades asociadas.
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
