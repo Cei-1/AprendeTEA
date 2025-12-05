@@ -13,6 +13,8 @@ namespace AprendeTEA_19032025.Models
 
         // Relación con unidades
         public List<Unidad> Unidades { get; set; }
+        
+        [NotMapped]
         public List<object>? PlanesTrabajo { get; set; }
 
     }

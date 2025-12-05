@@ -353,6 +353,34 @@ namespace AprendeTEA_19032025.BL
 
             return result;
         }
+        public Models.Result DeleteEF(int idUnidad)
+        {
+            Models.Result result = new Models.Result();
+
+            try
+            {
+                var entidad = _context.Unidad.FirstOrDefault(u => u.IdUnidad == idUnidad);
+
+                if (entidad == null)
+                {
+                    result.Correct = false;
+                    result.ErrorMessage = "Unidad no encontrada.";
+                    return result;
+                }
+
+                _context.Unidad.Remove(entidad);
+                _context.SaveChanges();
+
+                result.Correct = true;
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
 
     }
 }

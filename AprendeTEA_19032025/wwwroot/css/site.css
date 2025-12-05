@@ -1,22 +1,397 @@
-html {
-  font-size: 14px;
+@import "https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.navigation {
+    position: fixed;
+    top: 20px;
+    bottom: 20px;
+    left: 20px;
+    width: 75px;
+    transition: 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    z-index: 1000;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    .navigation.open {
+        width: 250px;
+        left: 20px;
+    }
+
+    .navigation .menuToggle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-color: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 23px;
+        transition: border-color 0.5s;
+    }
+
+        .navigation .menuToggle::before,
+        .navigation .menuToggle::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 2px;
+            background: #333;
+            transition: 0.5s;
+        }
+
+        .navigation .menuToggle::before {
+            transform: translateY(-8px);
+        }
+
+        .navigation .menuToggle::after {
+            transform: translateY(8px);
+            box-shadow: 0 -8px 0 #333;
+        }
+
+/* Dark Mode overrides para las líneas del menú (Estado Cerrado) */
+body[data-mode="dark"] .navigation .menuToggle::before,
+body[data-mode="dark"] .navigation .menuToggle::after {
+    background: #f3f4f6; /* White-ish for dark mode */
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+body[data-mode="dark"] .navigation .menuToggle::after {
+    box-shadow: 0 -8px 0 #f3f4f6; /* White-ish for dark mode */
 }
 
-body {
-  margin-bottom: 60px;
+/* Regla para el modo abierto: rotación para formar la 'X' */
+.navigation.open .menuToggle::before {
+    transform: translateY(0px) rotate(45deg) !important;
+}
+
+/* FIX DE LA POSICIÓN EN DARK MODE */
+.navigation.open .menuToggle::after {
+    transform: translateY(0px) rotate(-45deg) !important;
+    box-shadow: none !important;
+}
+
+.navigation ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding: 60px 0 10px;
+}
+
+    .navigation ul li {
+        list-style: none;
+        position: relative;
+        width: 100%;
+        height: 60px;
+        padding: 0 10px;
+        transition: 0.5s;
+    }
+
+        .navigation ul li.active {
+            transform: translateY(-10%);
+        }
+
+.navigation.open ul li.active {
+    transform: translateX(10px);
+}
+
+/* Estilos de ícono y texto */
+.navigation ul li.active a .icon {
+    color: #fff;
+    background: var(--clr);
+}
+
+.navigation ul li.active a .text {
+    color: var(--clr);
+}
+
+.navigation ul li a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    text-decoration: none;
+}
+
+    .navigation ul li a .icon {
+        position: relative;
+        display: block;
+        min-width: 55px;
+        height: 55px;
+        line-height: 60px;
+        transition: 0.5s;
+        border-radius: 10px;
+        font-size: 1.75em;
+    }
+
+.dark .navigation ul li a .icon {
+    color: #f3f4f6; /* Dark mode icon color */
+}
+
+.navigation ul li a .text {
+    position: relative;
+    padding: 0 15px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+    white-space: nowrap;
+}
+
+.dark .navigation ul li a .text {
+    color: #e5e7eb; /* Dark mode text color */
+}
+
+.navigation.open ul li a .text {
+    opacity: 1;
+    visibility: visible;
+}
+/* --- FIN CSS DEL MENÚ --- */
+
+/* ------------------------------------- */
+/* ESTILOS DE CARDS (NUEVO ESTILO - Borde Suave) */
+/* ------------------------------------- */
+
+.soft-border-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid; /* Usaremos border-color para el color */
+}
+
+    .soft-border-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(114, 155, 255, 0.2);
+    }
+
+.dark .soft-border-card:hover {
+    box-shadow: 0 5px 15px rgba(227, 136, 136, 0.2);
+}
+
+/* Definición de colores de borde para el soft-border */
+.b-red {
+    border-color: #e38888;
+}
+
+.b-orange {
+    border-color: #ffa500;
+}
+
+.b-yellow {
+    border-color: #faeb36;
+}
+
+.b-green {
+    border-color: #88d48e;
+}
+
+.b-blue {
+    border-color: #729bff;
+}
+
+.b-indigo {
+    border-color: #b2a1ff;
+}
+
+.b-teal {
+    border-color: #09cbb4;
+}
+
+/* ------------------------------------- */
+/* ESTILOS PRINCIPALES DE CONTENIDO (Desktop/Tablet) (MANTENIDO) */
+/* ------------------------------------- */
+.main-content {
+    /* FIX: Aumentado para asegurar que el contenido no quede debajo del menú */
+    margin-left: 120px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    transition: margin-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* MEDIA QUERIES (Ajuste del menú en móvil) (MANTENIDO) */
+@media (max-width: 768px) {
+    .navigation {
+        width: 250px;
+        left: -250px;
+        border-radius: 0 15px 15px 0;
+    }
+
+        .navigation.open {
+            width: 270px;
+            left: 0px;
+        }
+
+    .main-content {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+        .main-content.menu-shifted {
+            transform: translateX(270px);
+        }
+}
+
+/* ========================================================= */
+/* CUSTOM STYLES PARA REDES SOCIALES (MANTENIDO) */
+/* ========================================================= */
+.social-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.social-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    text-decoration: none;
+    border-radius: 50%;
+    background: #fff;
+    text-align: center;
+    transition: transform 0.3s ease-out;
+}
+
+.dark .social-button {
+    background: #1f2937;
+}
+
+.social-button::after {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    display: block;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.social-button:focus,
+.social-button:hover {
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+    .social-button:focus::after,
+    .social-button:hover::after {
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        margin-left: calc(-50% - 2px);
+    }
+
+.social-button ion-icon {
+    position: relative;
+    z-index: 1;
+    transition: 0.3s;
+    font-size: 1.5rem;
+}
+
+/* Estilos específicos de color para redes populares */
+.social-button--facebook {
+    color: #3b5999;
+}
+
+    .social-button--facebook::after {
+        background: #3b5999;
+    }
+
+.social-button--tiktok {
+    color: #000000;
+}
+
+.social-button--tiktok::after {
+    background: #000000;
+}
+
+.social-button--instagram {
+    color: #e4405f;
+}
+
+    .social-button--instagram::after {
+        background: #e4405f;
+    }
+
+.social-button--linkedin {
+    color: #0077b5;
+}
+
+    .social-button--linkedin::after {
+        background: #0077b5;
+    }
+
+.social-button--mail {
+    color: #e38888;
+}
+
+    .social-button--mail::after {
+        background: #e38888;
+    }
+
+/* ========================================================= */
+/* CUSTOM STYLES PARA REQUERIMIENTOS NEURO PRO */
+/* ========================================================= */
+
+/* 1. Título - SIN DEGRADADO, MANTENIDO EL COLOR PRINCIPAL */
+.main-title {
+    color: #729bff; /* Usamos el nuevo color primario */
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.dark .main-title {
+    color: #e38888; /* Usamos el nuevo color secundario en dark mode */
+    filter: drop-shadow( 0 2px 4px rgba(227, 136, 136, 0.4) ); /* Sombra en dark mode */
+}
+
+/* 2. ESTILO PARA EL LOGO AL LADO DEL TÍTULO EN EL HÉROE */
+.hero-title-container {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre el logo y el título */
+}
+
+.hero-logo {
+    height: 48px; /* Tamaño del logo ajustado al tamaño del texto h2 */
+    width: auto;
+}
+
+/* 3. Estilo para la imagen de Latimente */
+.magical-pet {
+    /* ELIMINADO: cursor: pointer; */
+    transition: filter 0.3s ease;
+}
+
+/* 4. Globo de Diálogo (ELIMINADO EL CSS RELACIONADO) */
+#dialog-bubble {
+    display: none !important; /* Aseguramos que el globo esté oculto */
+}
+
+/* SVG personalizado de Varita Mágica (MANTENIDO) */
+.wand-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    color: currentColor;
+    fill: currentColor;
 }
