@@ -9,6 +9,7 @@ namespace AprendeTEA_19032025.Models
         public int IdUnidad { get; set; }
         public int? IdPlanTrabajo { get; set; }
 
+        public string Objetivo { get; set; }
         public string NombreUnidad { get; set; }
         public string Detalle { get; set; }
         public string Responsable { get; set; }
@@ -31,8 +32,12 @@ namespace AprendeTEA_19032025.Models
         public bool TieneRelacionar { get; set; }
         public string RelacionarColumnas { get; set; }
 
-        public bool TieneMemorama { get; set; }
-        public bool TieneJuegoRol { get; set; }
+        public bool TieneAgrupacion { get; set; }
+        public string Agrupacion { get; set; }
+
+        public bool TieneOrdenar { get; set; }
+        public string OrdenarPasos { get; set; }
+
 
 
     }

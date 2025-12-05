@@ -21,10 +21,12 @@ namespace AprendeTEA_19032025.BL
             {
                 using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
                 {
-                    string query = "GetAllPlanTrabajo";
+                    string query = "SP_CRUD_PlanTrabajo";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Opcion", 1);
+
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                         {
                             DataTable table = new DataTable();
@@ -63,11 +65,13 @@ namespace AprendeTEA_19032025.BL
             {
                 using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
                 {
-                    string query = "GetByIdPlanTrabajo";
+                    string query = "SP_CRUD_PlanTrabajo";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@IdPlanTrabajo", id);
+                        cmd.Parameters.AddWithValue("@Opcion", 2);
+
 
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                         {
@@ -81,6 +85,7 @@ namespace AprendeTEA_19032025.BL
                                 {
                                     IdPlanTrabajo = Convert.ToInt32(row["IdPlanTrabajo"]),
                                     NombrePlan = row["NombrePlan"].ToString(),
+                                    Objetivo = row["Objetivo"].ToString() ?? "",
                                     FechaRegistro = Convert.ToDateTime(row["FechaRegistro"]),
                                     Estatus = Convert.ToBoolean(row["Estatus"])
                                 };
@@ -112,11 +117,12 @@ namespace AprendeTEA_19032025.BL
             {
                 using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
                 {
-                    string query = "AddPlanTrabajo";
+                    string query = "SP_CRUD_PlanTrabajo";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@NombrePlan", plan.NombrePlan);
+                        cmd.Parameters.AddWithValue("@Opcion", 3);
 
                         connection.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -139,12 +145,14 @@ namespace AprendeTEA_19032025.BL
             {
                 using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
                 {
-                    string query = "UpdatePlanTrabajo";
+                    string query = "SP_CRUD_PlanTrabajo";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@IdPlanTrabajo", plan.IdPlanTrabajo);
                         cmd.Parameters.AddWithValue("@NombrePlan", plan.NombrePlan);
+                        cmd.Parameters.AddWithValue("@Opcion", 4);
+
 
                         connection.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -169,11 +177,13 @@ namespace AprendeTEA_19032025.BL
                 {
                     // Asume que tienes un procedimiento almacenado llamado "DeletePlanTrabajo"
                     // que toma @IdPlanTrabajo como parámetro.
-                    string query = "DeletePlanTrabajo";
+                    string query = "SP_CRUD_PlanTrabajo";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@IdPlanTrabajo", idPlanTrabajo);
+                        cmd.Parameters.AddWithValue("@Opcion", 5);
+
 
                         connection.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();

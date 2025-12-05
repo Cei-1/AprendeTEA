@@ -1,281 +1,310 @@
 ﻿@{
     ViewData["Title"] = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@{
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="mb-4 h-28 flex items-center justify-center mx-auto mt-0 sm:mt-0 max-w-md hidden"></div>
+<div class="d-none mb-4" style="height: 7rem;"></div>
 
-<section id="que-es" class="mb-12 md:mb-24 pt-4 sm:pt-8 md:pt-16">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-6 md:gap-12 items-center">
-        <div class="md:col-span-7 flex flex-col justify-center">
-            <div class="hero-title-container mb-6">
-                <img src="~/img/logo.png"
-                     alt="Logo Neuro Pro"
-                     class="hero-logo object-contain w-16 h-16"
-                     onerror="this.onerror=null; this.src='https://placehold.co/48x48/729BFF/ffffff?text=NP';" />
-                <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight main-title">
-                    NEURO PRO
-                </h2>
+<section id="que-es" class="mb-5 pt-4 pt-md-5">
+    <div class="container-fluid" style="max-width: 80rem;">
+        <div class="row align-items-center g-5">
+
+            <div class="col-md-7 d-flex flex-column justify-content-center">
+                <div class="hero-title-container mb-4 d-flex align-items-center gap-3">
+                    <img src="~/img/logo.png"
+                         alt="Logo Neuro Pro"
+                         class="hero-logo"
+                         onerror="this.onerror=null; this.src='https://placehold.co/48x48/729BFF/ffffff?text=NP';" />
+                    <h2 class="display-4-custom m-0 lh-1 main-title">
+                        NEURO PRO
+                    </h2>
+                </div>
+
+                <h3 class="h2 fw-semibold mb-4 text-alef-secondary">
+                    Diversidad Neurológica. Comprensión Total.
+                </h3>
+
+                <div class="d-flex flex-column gap-3 fs-5 fw-light text-body-custom">
+                    <p>
+                        Somos una red nacida de la regulación emocional y la consciencia
+                        mental neurodivergente.
+                    </p>
+
+                    <div class="border-start border-4 border-alef-secondary ps-3 py-2 bg-alef-secondary-subtle rounded-end">
+                        <strong class="text-alef-secondary fw-medium">
+                            Neuro Pro traza la ruta hacia la diversidad, abriendo mentes
+                            para aprender de maneras muy distintas.
+                        </strong>
+                    </div>
+
+                    <p>
+                        Aquí, las neurodivergencias son una travesía que combina ciencia,
+                        sociedad, cultura y derechos humanos. Es la historia a través de
+                        la experiencia de cómo la humanidad ha aprendido a comprender que
+                        <strong>no todos los cerebros funcionan igual</strong>, y que esa
+                        diversidad es parte natural de la condición humana.
+                    </p>
+                </div>
             </div>
 
-            <h3 class="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 md:mb-6 text-alef-secondary">
-                Diversidad Neurológica. Comprensión Total.
-            </h3>
-
-            <div class="space-y-3 md:space-y-4 text-base md:text-lg lg:text-xl font-light text-gray-700 dark:text-gray-300 leading-relaxed">
-                <p>
-                    Somos una red nacida de la regulación emocional y la consciencia
-                    mental neurodivergente.
-                </p>
-                <p class="border-l-4 border-alef-secondary pl-4 py-1 bg-alef-secondary/5 dark:bg-alef-secondary/10 rounded-r-lg">
-                    <strong class="text-alef-secondary dark:text-alef-secondary font-medium">
-                        Neuro Pro traza la ruta hacia la diversidad, abriendo mentes
-                        para aprender de maneras muy distintas.
-                    </strong>
-                </p>
-                <p>
-                    Aquí, las neurodivergencias son una travesía que combina ciencia,
-                    sociedad, cultura y derechos humanos. Es la historia a través de
-                    la experiencia de cómo la humanidad ha aprendido a comprender que
-                    <strong class="font-semibold text-gray-900 dark:text-white">no todos los cerebros funcionan igual</strong>, y que esa
-                    diversidad es parte natural de la condición humana.
-                </p>
-            </div>
-        </div>
-
-        <div class="hidden md:block md:col-span-5 relative flex justify-center">
-            <div id="magical-pet-container" class="relative w-full max-w-sm">
-                <div id="dialog-bubble" class="hidden absolute"></div>
-                <img src="~/img/latimente.png"
-                     alt="Latimente (Corazón y Cerebro)"
-                     class="w-full h-auto object-contain magical-pet drop-shadow-2xl"
-                     onerror="this.onerror=null; this.src='https://placehold.co/350x450/729BFF/ffffff?text=LATIMENTE+PNG';" />
+            <div class="col-md-5 d-none d-md-block position-relative text-center">
+                <div id="magical-pet-container" class="position-relative w-100 mx-auto" style="max-width: 350px;">
+                    <div id="dialog-bubble" class="d-none position-absolute"></div>
+                    <img src="~/img/latimente.png"
+                         alt="Latimente (Corazón y Cerebro)"
+                         class="img-fluid magical-pet"
+                         style="filter: drop-shadow(0 10px 8px rgba(0,0,0,0.2));"
+                         onerror="this.onerror=null; this.src='https://placehold.co/350x450/729BFF/ffffff?text=LATIMENTE+PNG';" />
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<hr class="border-gray-200 dark:border-gray-800 mb-10 md:mb-20 max-w-7xl mx-auto" />
+<hr class="my-5 border-secondary opacity-25 container-fluid" style="max-width: 1320px;" />
 
-<section id="quienes-somos" class="mb-12 md:mb-24 max-w-7xl mx-auto">
-    <div class="text-center mb-8 md:mb-12">
-        <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold inline-block border-b-4 border-alef-secondary/50 pb-2 main-title">
+<section id="quienes-somos" class="mb-5 py-4 container-fluid" style="max-width: 1320px;">
+    <div class="text-center mb-5">
+        <h3 class="d-inline-block display-6 fw-bold border-bottom border-4 border-alef-secondary pb-2 main-title">
             Quiénes Somos
         </h3>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
-        <div class="h-full p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-3xl shadow-xl dark:shadow-2xl soft-border-card b-red flex flex-col justify-center">
-            <div class="flex items-center mb-6">
-                <div class="p-3 bg-red-100 dark:bg-red-900/30 rounded-full mr-4">
-                    <i data-lucide="home" class="w-8 h-8 text-alef-red"></i>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="h-100 p-4 p-md-5 rounded-3 shadow card-bg soft-border-card b-red d-flex flex-column justify-content-center">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="p-3 rounded-circle me-3" style="background-color: rgba(227, 136, 136, 0.2);">
+                        <i data-lucide="home" style="width:32px; height:32px;" class="text-alef-red"></i>
+                    </div>
+                    <h4 class="h3 fw-bold text-alef-primary m-0">
+                        Neuro Pro: Una Casa para todas las Mentes
+                    </h4>
                 </div>
-                <h4 class="text-xl sm:text-2xl font-bold text-alef-primary">
-                    Neuro Pro: Una Casa para todas las Mentes
-                </h4>
-            </div>
-            <div class="space-y-3 md:space-y-4 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                <p>
-                    Neuro Pro es un espacio y una casa donde las neurodivergencias
-                    se entienden como una travesía que combina ciencia, sociedad,
-                    cultura y derechos humanos.
-                </p>
-                <p>
-                    En
-                    <span class="text-alef-secondary font-bold dark:text-alef-secondary bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded">#casaNeuro-Pro</span>
-                    resaltamos la voz de las personas neurodivergentes a través de
-                    anécdotas, reflexiones, tips, datos curiosos, juegos y muchas
-                    más aventuras; ofreciendo información de valor de la vida
-                    diaria.
-                </p>
-                <p class="font-medium">
-                    Aquí entendemos que hay tantas neurodivergencias como
-                    neuronas haciendo sinapsis.
-                </p>
+                <div class="d-flex flex-column gap-3 fs-5 text-body-custom">
+                    <p>
+                        Neuro Pro es un espacio y una casa donde las neurodivergencias
+                        se entienden como una travesía que combina ciencia, sociedad,
+                        cultura y derechos humanos.
+                    </p>
+                    <p>
+                        En
+                        <span class="text-alef-secondary fw-bold px-2 py-1 rounded bg-alef-secondary-subtle">#casaNeuro-Pro</span>
+                        resaltamos la voz de las personas neurodivergentes a través de
+                        anécdotas, reflexiones, tips, datos curiosos, juegos y muchas
+                        más aventuras; ofreciendo información de valor de la vida
+                        diaria.
+                    </p>
+                    <p class="fw-medium">
+                        Aquí entendemos que hay tantas neurodivergencias como
+                        neuronas haciendo sinapsis.
+                    </p>
+                </div>
             </div>
         </div>
 
-        <div class="h-full p-6 sm:p-8 bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-3xl shadow-xl dark:shadow-2xl soft-border-card b-blue border-l-8">
-            <div class="flex items-center mb-6">
-                <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full mr-4">
-                    <i data-lucide="sparkles" class="w-8 h-8 text-alef-blue"></i>
+        <div class="col-md-6">
+            <div class="h-100 p-4 p-md-5 rounded-3 shadow card-bg soft-border-card b-blue border-start border-5 border-alef-primary">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="p-3 rounded-circle me-3 bg-alef-primary-subtle">
+                        <i data-lucide="sparkles" style="width:32px; height:32px;" class="text-alef-blue"></i>
+                    </div>
+                    <h4 class="h3 fw-bold text-alef-primary m-0">
+                        Nuestro Guía: Latimente
+                    </h4>
                 </div>
-                <h4 class="text-xl sm:text-2xl font-bold text-alef-primary">
-                    Nuestro Guía: Latimente
-                </h4>
-            </div>
 
-            <p class="text-base md:text-lg text-gray-700 dark:text-gray-300 mb-4 md:mb-6 italic">
-                "Soy Latimente, mitad corazón y mitad cerebro. Nací de la
-                regulación emocional y la consciencia mental neurodivergente.
-                Habito en el cuerpo de diferentes niños para enseñarte cómo
-                funciona el cerebro y las emociones de los neurodivergentes."
-            </p>
-
-            <div class="bg-white dark:bg-gray-700 p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-600">
-                <p class="text-center text-alef-red font-bold text-base md:text-lg dark:text-alef-secondary">
-                    *No estamos rotos, somos diferentes. No necesitamos ser curados,
-                    sino comprendidos.
+                <p class="fs-5 text-body-custom mb-4 fst-italic">
+                    "Soy Latimente, mitad corazón y mitad cerebro. Nací de la
+                    regulación emocional y la consciencia mental neurodivergente.
+                    Habito en el cuerpo de diferentes niños para enseñarte cómo
+                    funciona el cerebro y las emociones de los neurodivergentes."
                 </p>
+
+                <div class="p-4 rounded-3 border bg-opacity-10 bg-secondary border-secondary">
+                    <p class="text-center text-alef-red fw-bold fs-5 m-0">
+                        *No estamos rotos, somos diferentes. No necesitamos ser curados,
+                        sino comprendidos.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section id="mision-vision" class="mb-12 md:mb-24 max-w-7xl mx-auto">
-    <div class="text-center mb-8 md:mb-12">
-        <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold inline-block border-b-4 border-alef-primary/50 pb-2 main-title">
+<section id="mision-vision" class="mb-5 container-fluid" style="max-width: 1320px;">
+    <div class="text-center mb-5">
+        <h3 class="d-inline-block display-6 fw-bold border-bottom border-4 border-alef-primary pb-2 main-title">
             Misión y Visión
         </h3>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-6 md:gap-8 items-stretch">
-        <div class="flex flex-col h-full p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow soft-border-card b-red">
-            <h4 class="text-2xl font-bold text-alef-primary mb-6 flex items-center justify-center md:justify-start">
-                <i data-lucide="target" class="w-8 h-8 mr-3 text-alef-red"></i>
-                Nuestra Misión
-            </h4>
-            <div class="flex-grow">
-                <p class="text-lg md:text-xl text-gray-800 dark:text-gray-200 leading-relaxed font-medium mb-4">
-                    Brindar una ruta clara que conduzca a la
-                    <strong class="text-alef-secondary">consciencia sobre la diversidad</strong> y a la apertura
-                    mental, recordándonos que siempre podemos aprender de maneras muy
-                    distintas.
-                </p>
-            </div>
-            <div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700">
-                <p class="text-sm text-gray-600 dark:text-gray-400 italic">
-                    Proporcionamos contenido seguro y confiable para que personas
-                    neurodivergentes y neurotípicas puedan comprender, expresar y
-                    apoyar la experiencia única de cada cerebro, impulsando una vida
-                    digna.
-                </p>
+    <div class="row g-4 align-items-stretch">
+        <div class="col-md-6">
+            <div class="d-flex flex-column h-100 p-4 p-md-5 rounded-3 shadow card-bg soft-border-card b-red">
+                <h4 class="h2 fw-bold text-alef-primary mb-4 d-flex align-items-center justify-content-center justify-content-md-start">
+                    <i data-lucide="target" style="width:32px; height:32px;" class="me-3 text-alef-red"></i>
+                    Nuestra Misión
+                </h4>
+                <div class="flex-grow-1">
+                    <p class="fs-5 text-body-custom lh-base fw-medium mb-3">
+                        Brindar una ruta clara que conduzca a la
+                        <strong class="text-alef-secondary">consciencia sobre la diversidad</strong> y a la apertura
+                        mental, recordándonos que siempre podemos aprender de maneras muy
+                        distintas.
+                    </p>
+                </div>
+                <div class="mt-4 pt-4 border-top border-secondary border-opacity-25">
+                    <p class="small text-muted-custom fst-italic m-0">
+                        Proporcionamos contenido seguro y confiable para que personas
+                        neurodivergentes y neurotípicas puedan comprender, expresar y
+                        apoyar la experiencia única de cada cerebro, impulsando una vida
+                        digna.
+                    </p>
+                </div>
             </div>
         </div>
 
-        <div class="flex flex-col h-full p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow soft-border-card b-blue">
-            <h4 class="text-2xl font-bold text-alef-primary mb-6 flex items-center justify-center md:justify-start">
-                <i data-lucide="eye" class="w-8 h-8 mr-3 text-alef-blue"></i>
-                Nuestra Visión
-            </h4>
-            <div class="flex-grow">
-                <p class="text-lg md:text-xl text-gray-800 dark:text-gray-200 leading-relaxed font-medium mb-4">
-                    Lograr una sociedad donde la
-                    <strong class="text-alef-blue">diversidad neurológica</strong> sea reconocida como parte
-                    natural de la condición humana y no como un defecto.
-                </p>
-            </div>
-            <div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700">
-                <p class="text-sm text-gray-600 dark:text-gray-400 italic">
-                    Aspiramos a un mundo donde todas las mentes —autistas, TDAH,
-                    disléxicas, creativas o sensibles— puedan brillar sin miedo, y
-                    donde la diferencia sea comprendida y celebrada.
-                </p>
+        <div class="col-md-6">
+            <div class="d-flex flex-column h-100 p-4 p-md-5 rounded-3 shadow card-bg soft-border-card b-blue">
+                <h4 class="h2 fw-bold text-alef-primary mb-4 d-flex align-items-center justify-content-center justify-content-md-start">
+                    <i data-lucide="eye" style="width:32px; height:32px;" class="me-3 text-alef-blue"></i>
+                    Nuestra Visión
+                </h4>
+                <div class="flex-grow-1">
+                    <p class="fs-5 text-body-custom lh-base fw-medium mb-3">
+                        Lograr una sociedad donde la
+                        <strong class="text-alef-blue">diversidad neurológica</strong> sea reconocida como parte
+                        natural de la condición humana y no como un defecto.
+                    </p>
+                </div>
+                <div class="mt-4 pt-4 border-top border-secondary border-opacity-25">
+                    <p class="small text-muted-custom fst-italic m-0">
+                        Aspiramos a un mundo donde todas las mentes —autistas, TDAH,
+                        disléxicas, creativas o sensibles— puedan brillar sin miedo, y
+                        donde la diferencia sea comprendida y celebrada.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section id="valores"
-         class="mb-12 md:mb-24 py-8 md:py-12 px-4 sm:px-6 md:px-12 bg-white dark:bg-gray-800 rounded-3xl shadow-2xl dark:shadow-alef-primary/10 max-w-7xl mx-auto">
-    <div class="text-center mb-8 md:mb-12">
-        <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold inline-block border-b-4 border-alef-teal-base/50 pb-2 main-title">
+<section id="valores" class="mb-5 py-5 px-3 px-md-5 rounded-3 shadow-lg container-fluid card-bg" style="max-width: 1320px;">
+    <div class="text-center mb-5">
+        <h3 class="d-inline-block display-6 fw-bold border-bottom border-4 border-alef-teal pb-2 main-title">
             Nuestra Filosofía y Valores
         </h3>
     </div>
 
-    <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+    <div class="row g-4 justify-content-center">
 
-        <div class="w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.33%-1rem)] p-5 md:p-6 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md soft-border-card b-teal hover:-translate-y-1 transition-transform">
-            <div class="flex items-center mb-4">
-                <i data-lucide="heart-handshake" class="w-8 h-8 text-alef-teal-base mr-3"></i>
-                <h4 class="text-lg md:text-xl font-bold text-alef-primary">1. Comprensión</h4>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="p-4 rounded-3 shadow-sm soft-border-card b-teal value-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i data-lucide="heart-handshake" style="width:32px; height:32px;" class="text-alef-teal me-3"></i>
+                    <h4 class="h5 fw-bold text-alef-primary m-0">1. Comprensión</h4>
+                </div>
+                <p class="text-body-custom small lh-base m-0">
+                    El autismo y las neurodivergencias no son una enfermedad, son
+                    una condición. <strong>No se curan, se comprenden.</strong> Nuestro foco es el
+                    acompañamiento, el respeto y el desarrollo de habilidades al
+                    propio ritmo.
+                </p>
             </div>
-            <p class="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                El autismo y las neurodivergencias no son una enfermedad, son
-                una condición. <strong>No se curan, se comprenden.</strong> Nuestro foco es el
-                acompañamiento, el respeto y el desarrollo de habilidades al
-                propio ritmo.
-            </p>
         </div>
 
-        <div class="w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.33%-1rem)] p-5 md:p-6 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md soft-border-card b-green hover:-translate-y-1 transition-transform">
-            <div class="flex items-center mb-4">
-                <i data-lucide="compass" class="w-8 h-8 text-alef-green-base mr-3"></i>
-                <h4 class="text-lg md:text-xl font-bold text-alef-primary">2. Empatía y Respeto</h4>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="p-4 rounded-3 shadow-sm soft-border-card b-green value-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i data-lucide="compass" style="width:32px; height:32px;" class="text-alef-green me-3"></i>
+                    <h4 class="h5 fw-bold text-alef-primary m-0">2. Empatía y Respeto</h4>
+                </div>
+                <p class="text-body-custom small lh-base m-0">
+                    Cada mente tiene su propia melodía. Promovemos activamente que
+                    se aprenda a mirar con empatía, a abrazar la mente de cada
+                    individuo y a valorar su forma única de sentir el mundo.
+                </p>
             </div>
-            <p class="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                Cada mente tiene su propia melodía. Promovemos activamente que
-                se aprenda a mirar con empatía, a abrazar la mente de cada
-                individuo y a valorar su forma única de sentir el mundo.
-            </p>
         </div>
 
-        <div class="w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.33%-1rem)] p-5 md:p-6 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md soft-border-card b-indigo hover:-translate-y-1 transition-transform">
-            <div class="flex items-center mb-4">
-                <ion-icon name="flash-outline" class="w-8 h-8 text-alef-violet-base mr-3"></ion-icon>
-                <h4 class="text-lg md:text-xl font-bold text-alef-primary">3. Superpoder</h4>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="p-4 rounded-3 shadow-sm soft-border-card b-indigo value-card">
+                <div class="d-flex align-items-center mb-3">
+                    <ion-icon name="flash-outline" class="text-alef-violet me-3" style="font-size: 32px;"></ion-icon>
+                    <h4 class="h5 fw-bold text-alef-primary m-0">3. Superpoder</h4>
+                </div>
+                <p class="text-body-custom small lh-base m-0">
+                    Pensar y sentir diferente no está mal:
+                    <strong>¡es un superpoder!</strong> El cerebro neurodivergente
+                    es un "sistema operativo" distinto que aporta originalidad,
+                    lógica profunda y talentos únicos.
+                </p>
             </div>
-            <p class="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                Pensar y sentir diferente no está mal:
-                <strong>¡es un superpoder!</strong> El cerebro neurodivergente
-                es un "sistema operativo" distinto que aporta originalidad,
-                lógica profunda y talentos únicos.
-            </p>
         </div>
 
-        <div class="w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.33%-1rem)] p-5 md:p-6 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md soft-border-card b-blue hover:-translate-y-1 transition-transform">
-            <div class="flex items-center mb-4">
-                <i data-lucide="graduation-cap" class="w-8 h-8 text-alef-primary mr-3"></i>
-                <h4 class="text-lg md:text-xl font-bold text-alef-primary">4. Conocimiento</h4>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="p-4 rounded-3 shadow-sm soft-border-card b-blue value-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i data-lucide="graduation-cap" style="width:32px; height:32px;" class="text-alef-primary me-3"></i>
+                    <h4 class="h5 fw-bold text-alef-primary m-0">4. Conocimiento</h4>
+                </div>
+                <p class="text-body-custom small lh-base m-0">
+                    Nuestro mantra es:
+                    <em>
+                        "En la vida, no hay nada que temer, solo hay que
+                        comprender"
+                    </em>. Creemos que el conocimiento no etiqueta ni limita, sino que
+                    ilumina el camino para todos.
+                </p>
             </div>
-            <p class="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                Nuestro mantra es:
-                <em>
-                    "En la vida, no hay nada que temer, solo hay que
-                    comprender"
-                </em>. Creemos que el conocimiento no etiqueta ni limita, sino que
-                ilumina el camino para todos.
-            </p>
         </div>
 
-        <div class="w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.33%-1rem)] p-5 md:p-6 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md soft-border-card b-red hover:-translate-y-1 transition-transform">
-            <div class="flex items-center mb-4">
-                <i data-lucide="gem" class="w-8 h-8 text-alef-secondary mr-3"></i>
-                <h4 class="text-lg md:text-xl font-bold text-alef-primary">5. Diversidad Funcional</h4>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="p-4 rounded-3 shadow-sm soft-border-card b-red value-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i data-lucide="gem" style="width:32px; height:32px;" class="text-alef-secondary me-3"></i>
+                    <h4 class="h5 fw-bold text-alef-primary m-0">5. Diversidad Funcional</h4>
+                </div>
+                <p class="text-body-custom small lh-base m-0">
+                    La diversidad neurológica es tan natural como la diversidad
+                    humana. Cada mente es un universo valioso que merece ser
+                    celebrado.
+                </p>
             </div>
-            <p class="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                La diversidad neurológica es tan natural como la diversidad
-                humana. Cada mente es un universo valioso que merece ser
-                celebrado.
-            </p>
         </div>
+
     </div>
 </section>
 
-<section id="historia" class="mb-12 md:mb-24">
-    <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-8 md:mb-10">
-            <h3 class="text-2xl sm:text-3xl font-bold border-b-4 border-alef-teal-base/50 pb-2 inline-block main-title">
+<section id="historia" class="mb-5 pb-5">
+    <div class="container" style="max-width: 900px;">
+        <div class="text-center mb-5">
+            <h3 class="d-inline-block display-6 fw-bold border-bottom border-4 border-alef-teal pb-2 main-title">
                 Nuestra Historia
             </h3>
-            <p class="mt-4 md:mt-6 text-base md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p class="mt-3 fs-5 text-muted-custom mx-auto" style="max-width: 600px;">
                 Neuro Pro no es solo una organización; es la manifestación de una
                 visión profunda sobre la mente humana.
             </p>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 p-6 sm:p-8 md:p-12 rounded-3xl shadow-lg relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-alef-primary/5 rounded-full -mr-10 -mt-10"></div>
-            <div class="absolute bottom-0 left-0 w-32 h-32 bg-alef-secondary/5 rounded-full -ml-10 -mb-10"></div>
+        <div class="p-4 p-md-5 rounded-3 shadow-lg position-relative overflow-hidden card-bg">
+            <div class="position-absolute top-0 end-0 rounded-circle" style="width: 8rem; height: 8rem; background-color: rgba(114, 155, 255, 0.05); margin-top: -2.5rem; margin-right: -2.5rem;"></div>
+            <div class="position-absolute bottom-0 start-0 rounded-circle" style="width: 8rem; height: 8rem; background-color: rgba(227, 136, 136, 0.05); margin-bottom: -2.5rem; margin-left: -2.5rem;"></div>
 
-            <div class="space-y-6 md:space-y-10 relative z-10">
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="md:w-1/4">
-                        <span class="text-sm font-bold tracking-wider text-alef-teal-base uppercase block mb-1">El Inicio</span>
-                        <h4 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white">Nacimiento de Latimente</h4>
+            <div class="d-flex flex-column gap-5 position-relative" style="z-index: 10;">
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <span class="small fw-bold text-uppercase text-alef-teal d-block mb-1">El Inicio</span>
+                        <h4 class="h5 fw-bold" style="color: inherit;">Nacimiento de Latimente</h4>
                     </div>
-                    <div class="md:w-3/4">
-                        <p class="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <div class="col-md-9">
+                        <p class="fs-6 text-body-custom lh-base m-0">
                             Nuestra historia comienza con <strong>Latimente</strong>, una
                             figura nacida de la necesidad de fusionar la
                             <strong>regulación emocional</strong> (el corazón) y la
@@ -286,15 +315,15 @@
                     </div>
                 </div>
 
-                <div class="w-full h-px bg-gray-100 dark:bg-gray-700"></div>
+                <div class="border-top border-secondary border-opacity-10"></div>
 
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="md:w-1/4">
-                        <span class="text-sm font-bold tracking-wider text-alef-teal-base uppercase block mb-1">Evolución</span>
-                        <h4 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white">La Primera Etapa</h4>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <span class="small fw-bold text-uppercase text-alef-teal d-block mb-1">Evolución</span>
+                        <h4 class="h5 fw-bold" style="color: inherit;">La Primera Etapa</h4>
                     </div>
-                    <div class="md:w-3/4">
-                        <p class="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <div class="col-md-9">
+                        <p class="fs-6 text-body-custom lh-base m-0">
                             La primera etapa de Neuro Pro se centró en cinco "Neuroaventuras"
                             iniciales. El objetivo era claro: desmitificar el diagnóstico y
                             transformarlo de una "sentencia" a una "brújula", como se refleja
@@ -304,15 +333,15 @@
                     </div>
                 </div>
 
-                <div class="w-full h-px bg-gray-100 dark:bg-gray-700"></div>
+                <div class="border-top border-secondary border-opacity-10"></div>
 
-                <div class="flex flex-col md:flex-row gap-6">
-                    <div class="md:w-1/4">
-                        <span class="text-sm font-bold tracking-wider text-alef-teal-base uppercase block mb-1">Hoy</span>
-                        <h4 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white">Visión de Futuro</h4>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <span class="small fw-bold text-uppercase text-alef-teal d-block mb-1">Hoy</span>
+                        <h4 class="h5 fw-bold" style="color: inherit;">Visión de Futuro</h4>
                     </div>
-                    <div class="md:w-3/4">
-                        <p class="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <div class="col-md-9">
+                        <p class="fs-6 text-body-custom lh-base m-0">
                             A lo largo de los años, hemos crecido de ser un concepto a una red
                             que aboga por una sociedad donde la neurodiversidad sea reconocida
                             como una parte natural de la condición humana, y no como un
@@ -321,6 +350,7 @@
                         </p>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

@@ -5,50 +5,52 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="container my-5" style="max-width: 700px;">
+    <div class="form-container p-4 p-md-5">
 
+        <div class="mb-4">
+            <a asp-action="Index" asp-controller="PlanTrabajo" class="link-back">
+                <i data-lucide="arrow-left" style="width: 20px; height: 20px;" class="me-2"></i>
+                Volver al Directorio
+            </a>
+        </div>
 
-<div class="max-w-2xl mx-auto mt-6 md:mt-10 mb-12 md:mb-16">
-    <div class="form-container p-6 sm:p-8 md:p-10">
-        <!-- Back Button -->
-        <a asp-action="Index" asp-controller="PlanTrabajo"
-           class="mb-6 flex items-center text-alef-primary hover:text-alef-secondary transition duration-200 font-semibold inline-block">
-            <i data-lucide="arrow-left" class="w-5 h-5 mr-2 inline"></i>
-            Volver al Directorio
-        </a>
-
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-6 neuropro-title text-center">
+        <h2 class="h2 fw-bold mb-4 neuropro-title text-center">
             @ViewData["Title"]
         </h2>
 
-        <form asp-action="Form" asp-controller="PlanTrabajo" method="post" class="space-y-6">
+        <form asp-action="Form" asp-controller="PlanTrabajo" method="post" class="d-flex flex-column gap-4">
             <input type="hidden" asp-for="IdPlanTrabajo" />
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center">
-                    <i data-lucide="book-open" class="w-4 h-4 mr-2 text-alef-primary"></i>
+                <label class="form-label fw-bold d-flex align-items-center text-body-custom mb-2">
+                    <i data-lucide="book-open" class="text-alef-primary me-2" style="width: 16px; height: 16px;"></i>
                     Nombre del Plan
                 </label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <i data-lucide="edit-3" class="h-5 w-5 text-gray-400"></i>
+
+                <div class="position-relative">
+                    <div class="position-absolute top-50 start-0 translate-middle-y ps-3 pe-2" style="pointer-events: none;">
+                        <i data-lucide="edit-3" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
                     </div>
-                    <input asp-for="NombrePlan" 
-                           class="pl-12 w-full p-3 sm:p-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-alef-primary focus:ring-2 focus:ring-alef-primary/30 transition duration-150 dark:bg-gray-700 dark:text-gray-200 font-medium" 
+
+                    <input asp-for="NombrePlan"
+                           class="form-control form-control-lg ps-5 custom-input py-3"
                            placeholder="Ej. Plan de Desarrollo Cognitivo para TEA" />
                 </div>
-                <span asp-validation-for="NombrePlan" class="text-red-500 text-sm mt-1 block font-medium"></span>
+                <span asp-validation-for="NombrePlan" class="text-danger small mt-1 fw-bold d-block"></span>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <a asp-action="Index" 
-                   class="py-3 px-6 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300 flex items-center justify-center w-full sm:w-auto">
-                    <i data-lucide="x" class="w-4 h-4 mr-2"></i>
+            <div class="d-flex flex-column flex-sm-row justify-content-end gap-3 pt-4 border-top border-secondary border-opacity-25 mt-2">
+
+                <a asp-action="Index"
+                   class="btn btn-cancel-custom py-3 px-4 d-flex align-items-center justify-content-center fw-bold">
+                    <i data-lucide="x" style="width: 16px; height: 16px;" class="me-2"></i>
                     Cancelar
                 </a>
-                <button type="submit" 
-                        class="py-3 px-8 bg-alef-secondary text-white font-bold rounded-xl hover:bg-alef-primary transition duration-300 shadow-lg shadow-alef-secondary/30 flex items-center justify-center w-full sm:w-auto">
-                    <i data-lucide="save" class="w-4 h-4 mr-2"></i>
+
+                <button type="submit"
+                        class="btn btn-alef-submit py-3 px-5 d-flex align-items-center justify-content-center fw-bold shadow">
+                    <i data-lucide="save" style="width: 16px; height: 16px;" class="me-2"></i>
                     Guardar Plan
                 </button>
             </div>
@@ -64,5 +66,7 @@
             }
         });
     </script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
