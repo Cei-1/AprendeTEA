@@ -8,6 +8,8 @@ namespace AprendeTEA_19032025.Models
         [Key]
         public int IdPlanTrabajo { get; set; }
         public string NombrePlan { get; set; }
+        public string Objetivo { get; set; }
+
         public DateTime? FechaRegistro { get; set; }
         public bool Estatus { get; set; }
 

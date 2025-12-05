@@ -1,178 +1,190 @@
-﻿@model AprendeTEA_19032025.Models.Unidad
+﻿@model Unidad
 
 @{
     ViewData["Title"] = "Detalle de Unidad";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="container my-5" style="max-width: 900px;">
+    <div class="form-container p-4 p-md-5">
 
+        <div class="mb-4">
+            <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
+               class="link-back">
+                <i data-lucide="arrow-left" style="width: 20px; height: 20px;" class="me-2"></i>
+                Volver a las Unidades
+            </a>
+        </div>
 
-<div class="max-w-4xl mx-auto mt-6 md:mt-10 mb-12 md:mb-16">
-    <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 md:p-10 rounded-xl shadow-2xl">
-        
-        <!-- Botón de regreso -->
-        <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
-           class="mb-6 flex items-center text-alef-primary hover:text-alef-secondary transition duration-200 font-semibold inline-block">
-            <i data-lucide="arrow-left" class="w-5 h-5 mr-2 inline"></i>
-            Volver a las Unidades
-        </a>
-
-        <header class="pb-4 border-b border-alef-primary/20 dark:border-alef-primary/50 mb-6">
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold neuropro-title">
+        <header class="pb-3 border-bottom border-secondary border-opacity-25 mb-5">
+            <h1 class="display-5 fw-bold neuropro-title mb-2">
                 @Model.NombreUnidad
             </h1>
-            <p class="text-lg sm:text-xl text-alef-secondary dark:text-alef-primary font-medium mt-2">
+            <p class="h5 text-adaptive-inverse fw-medium">
                 @Model.Detalle
             </p>
         </header>
 
-        <!-- Contenedor de Etapas -->
-        <div id="course-steps-container" class="space-y-6 md:space-y-8">
-            
-            <!-- 1. Etapa de Bienvenida/Contenido -->
-            <div id="step-content" class="step-view space-y-4 md:space-y-6">
-                <!-- Welcome Section with Mascot -->
-                <div class="welcome-section p-4 sm:p-6 rounded-xl">
-                    <div class="flex flex-col md:flex-row items-start md:space-x-6 gap-4 md:gap-0">
-                        <div class="mb-4 md:mb-0">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-gradient-to-br from-alef-primary to-alef-secondary rounded-full flex items-center justify-center">
-                                <i data-lucide="sparkles" class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-white"></i>
+        <div id="course-steps-container" class="d-flex flex-column gap-5">
+
+            <div id="step-content" class="d-flex flex-column gap-4">
+
+                <div class="welcome-section p-4 rounded-3 shadow-sm">
+                    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="welcome-badge-icon">
+                                <i data-lucide="sparkles" style="width: 40px; height: 40px;"></i>
                             </div>
                         </div>
-                        <div class="flex-grow">
-                            <h3 class="text-xl sm:text-2xl font-bold text-alef-primary dark:text-alef-secondary mb-2">
+                        <div class="flex-grow-1 text-center text-md-start">
+                            <h3 class="h3 fw-bold text-adaptive mb-2">
                                 ¡Bienvenido a esta Unidad!
                             </h3>
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg font-light">
-                                Explora el fascinante mundo de esta unidad está diseñada para potenciar tus habilidades y conocimientos de manera interactiva y divertida.
+                            <p class="text-body-custom fs-5 fw-light m-0">
+                                Explora el fascinante mundo de esta unidad diseñada para potenciar tus habilidades y conocimientos de manera interactiva y divertida.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Información General -->
-                <div class="glass-card p-4 sm:p-6 rounded-xl">
-                    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
-                        <i data-lucide="info" class="w-6 h-6 mr-2 text-alef-primary"></i>
+                <div class="glass-card p-4 rounded-3">
+                    <h3 class="h5 fw-bold text-body-custom mb-3 d-flex align-items-center">
+                        <i data-lucide="info" class="text-alef-primary me-2" style="width: 24px; height: 24px;"></i>
                         Información General
                     </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Fecha de Registro</p>
-                            <p class="font-semibold text-gray-800 dark:text-gray-200">@Model.FechaRegistro?.ToString("dd/MM/yyyy")</p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="small text-muted-custom mb-1">Fecha de Registro</p>
+                            <p class="fw-bold text-body-custom m-0">@Model.FechaRegistro?.ToString("dd/MM/yyyy")</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Concepto Central -->
-                <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl border-2 border-alef-primary/20 dark:border-alef-secondary/20 shadow-md">
-                    <h4 class="text-xl font-semibold text-alef-teal-base dark:text-alef-green-base mb-3 flex items-center">
-                        <i data-lucide="lightbulb" class="w-5 h-5 mr-2"></i>
+                <div class="card-bg p-4 rounded-3 border border-alef-primary border-opacity-25 shadow-sm">
+                    <h4 class="h5 fw-bold text-alef-teal mb-3 d-flex align-items-center">
+                        <i data-lucide="lightbulb" class="me-2" style="width: 20px; height: 20px;"></i>
                         Concepto Central
                     </h4>
-                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <p class="text-body-custom lh-base m-0">
                         @Model.Detalle
                     </p>
                 </div>
 
-                <!-- Actividades Interactivas -->
-                <div class="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 p-4 sm:p-6 rounded-xl border border-gray-200 dark:border-gray-600">
-                    <h3 class="text-xl sm:text-2xl font-bold text-alef-primary dark:text-alef-secondary mb-4 flex items-center">
-                        <i data-lucide="gamepad-2" class="w-6 h-6 mr-2"></i>
+                <div class="p-4 rounded-3 border border-secondary border-opacity-10"
+                     style="background: linear-gradient(to bottom right, rgba(114, 155, 255, 0.05), rgba(227, 136, 136, 0.05));">
+
+                    <h3 class="h4 fw-bold text-adaptive mb-3 d-flex align-items-center">
+                        <i data-lucide="gamepad-2" class="me-2" style="width: 24px; height: 24px;"></i>
                         Neuro-Actividades
                     </h3>
-                    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 md:mb-6">Practica y afianza los conceptos de esta unidad de una forma divertida.</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                    <p class="text-muted-custom mb-4">Practica y afianza los conceptos de esta unidad de una forma divertida.</p>
+
+                    <div class="row g-3">
                         @if (Model.TieneSopaLetras)
                         {
-                            <div class="activity-card p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border-l-4 border-blue-500" data-bs-toggle="modal" data-bs-target="#modalSopa">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
-                                            <i data-lucide="grid-3x3" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
+                            <div class="col-md-6">
+                                <div class="activity-card p-3 rounded-3 shadow-sm border-l-blue card-bg"
+                                     data-bs-toggle="modal" data-bs-target="#modalSopa">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon-box blue me-3">
+                                                <i data-lucide="grid-3x3" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="fw-bold text-body-custom m-0">Sopa de Letras</p>
+                                                <p class="small text-muted-custom m-0">Encuentra las palabras</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p class="font-bold text-gray-800 dark:text-gray-200">Sopa de Letras</p>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Encuentra las palabras</p>
-                                        </div>
+                                        <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
                                     </div>
-                                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
                                 </div>
                             </div>
                         }
+
                         @if (Model.TieneCrucigrama)
                         {
-                            <div class="activity-card p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border-l-4 border-green-500" data-bs-toggle="modal" data-bs-target="#modalCrucigrama">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
-                                            <i data-lucide="puzzle" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
+                            <div class="col-md-6">
+                                <div class="activity-card p-3 rounded-3 shadow-sm border-l-green card-bg"
+                                     data-bs-toggle="modal" data-bs-target="#modalCrucigrama">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon-box green me-3">
+                                                <i data-lucide="puzzle" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div>
+                                                <p class="fw-bold text-body-custom m-0">Crucigrama</p>
+                                                <p class="small text-muted-custom m-0">Resuelve el desafío</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p class="font-bold text-gray-800 dark:text-gray-200">Crucigrama</p>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Resuelve el desafío</p>
-                                        </div>
+                                        <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
                                     </div>
-                                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
                                 </div>
                             </div>
                         }
-                        
-                        @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneMemorama && !Model.TieneJuegoRol)
+
+                        @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneAgrupacion && !Model.TieneOrdenar)
                         {
-                            <div class="col-span-2 text-center py-8">
-                                <i data-lucide="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3"></i>
-                                <p class="text-gray-500 dark:text-gray-400 italic">No hay actividades configuradas para esta unidad.</p>
+                            <div class="col-12 text-center py-4">
+                                <i data-lucide="inbox" class="text-muted-custom opacity-50 mb-2" style="width: 48px; height: 48px;"></i>
+                                <p class="text-muted-custom fst-italic">No hay actividades configuradas para esta unidad.</p>
                             </div>
                         }
                     </div>
                 </div>
             </div>
-
-            <!-- Botón de Navegación -->
-            <div id="course-navigation-bar" class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-700">
-
-            </div>
         </div>
     </div>
 </div>
 
-<!-- Modales -->
-<!-- Sopa de Letras -->
-<div class="modal fade" id="modalSopa" tabindex="-1" aria-hidden="true" style="z-index: 9999;">
-    <div class="modal-dialog modal-lg" style="z-index: 10000;">
-        <div class="modal-content dark:bg-gray-800 dark:text-white">
-            <div class="modal-header border-b dark:border-gray-700">
-                <h5 class="modal-title font-bold">Sopa de Letras</h5>
-                <button type="button" class="btn-close dark:filter dark:invert" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="modalSopa" tabindex="-1" aria-hidden="true" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content card-bg border-0 shadow-lg">
+            <div class="modal-header border-bottom border-secondary border-opacity-25">
+                <h5 class="modal-title fw-bold text-body-custom d-flex align-items-center">
+                    <i data-lucide="grid-3x3" class="text-alef-primary me-2"></i>
+                    Sopa de Letras
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="filter: var(--bs-btn-close-filter);"></button>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body p-4">
+                <p class="text-center text-muted-custom mb-4">
+                    Encuentra las siguientes palabras ocultas en el tablero:
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+                    @foreach (var palabra in Model.PalabrasSopa.Split(','))
+                    {
+                        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+                            @palabra.Trim().ToUpper()
+                        </span>
+                    }
+                </div>
 
-                <!-- Contenedor visual de la sopa -->
-                <div id="sopaContainer" class="grid gap-1 text-center font-bold text-sm sm:text-base md:text-lg mb-4" style="grid-template-columns: repeat(auto-fit, minmax(1.5rem, 1fr));">
-                    <!-- Aquí se genera automáticamente -->
+                <div id="sopaContainer" class="sopa-grid-container">
                 </div>
             </div>
+            <div class="modal-footer border-top-0 justify-content-center pb-4">
+                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Estilos para modales -->
-
-
-
-<!-- Crucigrama -->
-
-<!-- Relacionar -->
-
-
-<!-- Memorama -->
-
-
-<!-- Rol -->
-
+<div class="modal fade" id="modalCrucigrama" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content card-bg">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold text-body-custom">Crucigrama</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-5">
+                <i data-lucide="cone" class="text-warning mb-3" style="width: 48px; height: 48px;"></i>
+                <p class="text-muted-custom">Funcionalidad en construcción...</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
@@ -180,83 +192,101 @@
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
-        });
 
-        let currentStep = 1;
+            // Lógica para Generar la Sopa de Letras
+            const palabrasStr = "@Model.PalabrasSopa";
 
+            if(palabrasStr) {
+                const palabras = palabrasStr.split(",").map(p => p.trim().toUpperCase());
+                const gridSize = 12; // Grid de 12x12
+                let grid = [];
 
-        document.addEventListener("DOMContentLoaded", () => {
-
-            const palabras = "@Model.PalabrasSopa".split(",").map(p => p.trim().toUpperCase());
-            const gridSize = 12;
-            let grid = [];
-
-            // Genera una matriz vacía
-            for (let i = 0; i < gridSize; i++) {
-                grid[i] = [];
-                for (let j = 0; j < gridSize; j++) {
-                    grid[i][j] = "";
+                // 1. Inicializar Grid Vacío
+                for (let i = 0; i < gridSize; i++) {
+                    grid[i] = [];
+                    for (let j = 0; j < gridSize; j++) {
+                        grid[i][j] = "";
+                    }
                 }
-            }
 
-            // Intenta colocar cada palabra horizontalmente
-            palabras.forEach(palabra => {
-                let placed = false;
-                let attempts = 0;
+                // 2. Algoritmo simple de colocación (Horizontal)
+                palabras.forEach(palabra => {
+                    let placed = false;
+                    let attempts = 0;
 
-                while (!placed && attempts < 50) {
-                    attempts++;
-                    let row = Math.floor(Math.random() * gridSize);
-                    let col = Math.floor(Math.random() * (gridSize - palabra.length));
+                    // Intentar 50 veces colocar la palabra aleatoriamente
+                    while (!placed && attempts < 50) {
+                        attempts++;
+                        let row = Math.floor(Math.random() * gridSize);
+                        let col = Math.floor(Math.random() * (gridSize - palabra.length)); // Solo horizontal
 
-                    // Validar espacio
-                    let fits = true;
-                    for (let i = 0; i < palabra.length; i++) {
-                        if (grid[row][col + i] !== "" && grid[row][col + i] !== palabra[i]) {
-                            fits = false;
-                            break;
+                        // Verificar si cabe
+                        let fits = true;
+                        for (let i = 0; i < palabra.length; i++) {
+                            if (grid[row][col + i] !== "" && grid[row][col + i] !== palabra[i]) {
+                                fits = false;
+                                break;
+                            }
+                        }
+
+                        if (fits) {
+                            // Colocar palabra
+                            for (let i = 0; i < palabra.length; i++) {
+                                grid[row][col + i] = palabra[i];
+                            }
+                            placed = true;
                         }
                     }
+                });
 
-                    if (!fits) continue;
-
-                    // Colocar
-                    for (let i = 0; i < palabra.length; i++) {
-                        grid[row][col + i] = palabra[i];
+                // 3. Rellenar espacios vacíos
+                const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                for (let i = 0; i < gridSize; i++) {
+                    for (let j = 0; j < gridSize; j++) {
+                        if (grid[i][j] === "") {
+                            grid[i][j] = letters[Math.floor(Math.random() * letters.length)];
+                        }
                     }
-                    placed = true;
                 }
-            });
 
-            // Rellenar espacios vacíos
-            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            for (let i = 0; i < gridSize; i++) {
-                for (let j = 0; j < gridSize; j++) {
-                    if (grid[i][j] === "") {
-                        grid[i][j] = letters[Math.floor(Math.random() * letters.length)];
-                    }
+                // 4. Renderizar cuando el modal se abre
+                const modalSopa = document.getElementById("modalSopa");
+                if(modalSopa){
+                    modalSopa.addEventListener("shown.bs.modal", () => {
+                        const container = document.getElementById("sopaContainer");
+                        // Evitar regenerar si ya tiene contenido
+                        if(container.innerHTML.trim() !== "") return;
+
+                        container.innerHTML = "";
+
+                        // Asegurar que el CSS grid tenga el tamaño correcto
+                        container.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+
+                        grid.forEach(row => {
+                            row.forEach(letter => {
+                                const cell = document.createElement("div");
+                                // Usamos la clase CSS limpia 'sopa-cell'
+                                cell.className = "sopa-cell";
+                                cell.textContent = letter;
+
+                                // Opcional: Lógica básica de click
+                                cell.addEventListener('click', function() {
+                                    // Toggle visual selection
+                                    if(this.style.backgroundColor === 'var(--alef-secondary)') {
+                                         this.style.backgroundColor = '';
+                                         this.style.color = '';
+                                    } else {
+                                        this.style.backgroundColor = 'var(--alef-secondary)'; // Color de selección
+                                        this.style.color = 'white';
+                                    }
+                                });
+
+                                container.appendChild(cell);
+                            });
+                        });
+                    });
                 }
             }
-
-            // Renderizar al abrir el modal
-            document.getElementById("modalSopa").addEventListener("shown.bs.modal", () => {
-                const container = document.getElementById("sopaContainer");
-                container.innerHTML = "";
-
-                grid.forEach(row => {
-                    row.forEach(letter => {
-                        const cell = document.createElement("div");
-                        cell.classList =
-                            "w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded";
-                        cell.textContent = letter;
-                        container.appendChild(cell);
-                    });
-                });
-            });
-
         });
     </script>
-
-    <!-- Bootstrap JS for Modals (if not already included in Layout) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 }

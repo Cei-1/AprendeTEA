@@ -5,79 +5,78 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="container my-5" style="max-width: 900px;">
+    <div class="form-container p-4 p-md-5">
 
+        <div class="mb-4">
+            <a asp-action="Index" asp-controller="PlanTrabajo" class="link-back">
+                <i data-lucide="arrow-left" style="width: 20px; height: 20px;" class="me-2"></i>
+                Volver al Directorio de Planes
+            </a>
+        </div>
 
-<div class="max-w-4xl mx-auto mt-6 md:mt-10 mb-12 md:mb-16">
-    <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 md:p-10 rounded-xl shadow-2xl">
-        
-        <!-- Botón de regreso -->
-        <a asp-action="Index" asp-controller="PlanTrabajo"
-           class="mb-6 flex items-center text-alef-primary hover:text-alef-secondary transition duration-200 font-semibold inline-block">
-            <i data-lucide="arrow-left" class="w-5 h-5 mr-2 inline"></i>
-            Volver al Directorio de Planes
-        </a>
-
-        <header class="pb-4 border-b border-alef-primary/20 dark:border-alef-primary/50 mb-6">
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold neuropro-title">
+        <header class="pb-3 border-bottom border-secondary border-opacity-25 mb-4">
+            <h1 class="h2 fw-bold neuropro-title mb-2">
                 Plan de Trabajo #@ViewBag.IdPlanTrabajo
             </h1>
-            <p class="text-base md:text-lg text-gray-500 dark:text-gray-400 font-medium mt-2">
+            <p class="fs-5 text-muted-custom fw-medium m-0">
                 Gestión de Unidades de Aprendizaje
             </p>
         </header>
 
         @if (TempData["Mensaje"] != null)
         {
-            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6 rounded shadow-md" role="alert">
-                <p>@TempData["Mensaje"]</p>
+            <div class="alert alert-primary shadow-sm border-start border-4 border-primary" role="alert">
+                <p class="m-0">@TempData["Mensaje"]</p>
             </div>
         }
 
-        <!-- Acciones Principales -->
-        <div class="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 mb-6">
-@*             <a asp-action="Form" asp-controller="Unidad" asp-route-IdPlanTrabajo="@ViewBag.IdPlanTrabajo"
-               class="py-2 px-4 bg-green-500 text-white font-bold rounded-xl hover:bg-green-600 transition duration-300 shadow-md flex items-center justify-center w-full sm:w-auto">
-                <i data-lucide="plus" class="w-4 h-4 mr-1"></i> Nueva Unidad
-            </a>
-             *@
-            <form asp-action="CargarExcel" asp-controller="Unidad" method="post" enctype="multipart/form-data" class="w-full sm:w-auto">
+        <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
+            <form asp-action="CargarExcel" asp-controller="Unidad" method="post" enctype="multipart/form-data" class="w-100 w-sm-auto">
                 <input type="hidden" name="IdPlanTrabajo" value="@ViewBag.IdPlanTrabajo" />
-                <label for="excelUpload" class="cursor-pointer py-2 px-4 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-600 transition duration-300 shadow-md flex items-center justify-center w-full sm:w-auto">
-                    <i data-lucide="upload" class="w-4 h-4 mr-1"></i> Cargar Excel
+
+                <label for="excelUpload" class="btn-blue-action py-2 px-4 d-flex align-items-center justify-content-center w-100">
+                    <i data-lucide="upload" style="width: 18px; height: 18px;" class="me-2"></i>
+                    Cargar Excel
                 </label>
-                <input type="file" id="excelUpload" name="file" class="hidden" required onchange="this.form.submit();" />
+                <input type="file" id="excelUpload" name="file" class="d-none" required onchange="this.form.submit();" />
             </form>
+
         </div>
 
-        <!-- Lista de Módulos (Unidades) -->
         <div>
-            <h2 class="text-xl sm:text-2xl font-bold text-alef-primary dark:text-alef-secondary mb-4 flex items-center">
-                <i data-lucide="layers" class="w-6 h-6 mr-2"></i>
+            <h2 class="h4 fw-bold text-alef-primary mb-4 d-flex align-items-center">
+                <i data-lucide="layers" style="width: 24px; height: 24px;" class="me-2 text-alef-secondary"></i>
                 Unidades de Aprendizaje
             </h2>
 
-            <div id="modules-container" class="space-y-4">
+            <div id="modules-container" class="d-flex flex-column gap-3">
                 @if (Model.Unidades != null && Model.Unidades.Count > 0)
                 {
                     int index = 1;
                     foreach (Unidad unidad in Model.Unidades)
                     {
-                        <div class="module-card p-3 sm:p-4 rounded-xl shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white dark:bg-gray-700 gap-3">
-                            <div class="flex items-center space-x-3 sm:space-x-4 flex-grow w-full sm:w-auto">
-                                <span class="text-xl sm:text-2xl font-bold text-gray-400 min-w-[1.5rem] sm:min-w-[2rem]">@(index++).</span>
-                                <div class="flex-grow">
-                                    <div class="flex items-center gap-2 mb-1 flex-wrap">
-                                        <p class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200">@unidad.NombreUnidad</p>
+                        <div class="module-card p-3 p-md-4 rounded-3 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+
+                            <div class="d-flex align-items-center flex-grow-1 w-100">
+                                <span class="index-number me-3 text-nowrap">@(index++).</span>
+
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                        <p class="h5 fw-bold text-body-custom m-0">@unidad.NombreUnidad</p>
                                     </div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        <span class="font-medium">Fecha de Registro:</span> @unidad.FechaRegistro?.ToString("dd/MM/yyyy")
+                                    <p class="small text-muted-custom m-0">
+                                        <span class="fw-bold">Fecha de Registro:</span> @unidad.FechaRegistro?.ToString("dd/MM/yyyy")
                                     </p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+
+                            <div class="w-100 w-md-auto d-flex">
                                 <a asp-action="DetalleUnidad" asp-controller="Unidad" asp-route-IdUnidad="@unidad.IdUnidad"
-                                   class="py-2 px-3 sm:px-4 bg-alef-secondary text-white font-bold rounded-lg hover:bg-alef-primary transition duration-300 shadow-sm flex items-center justify-center w-full sm:w-auto text-sm sm:text-base">
-                                    <i data-lucide="eye" class="w-4 h-4 mr-1"></i> Ver Detalle
+                                   class="btn-alef-submit py-2 px-4 d-flex align-items-center justify-content-center w-100 text-decoration-none shadow-sm"
+                                   style="font-size: 0.9rem;">
+                                    <i data-lucide="eye" style="width: 16px; height: 16px;" class="me-2"></i>
+                                    Ver Detalle
                                 </a>
                             </div>
                         </div>
@@ -85,19 +84,16 @@
                 }
                 else
                 {
-                    <div class="text-center py-12 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                        <i data-lucide="inbox" class="w-16 h-16 mx-auto text-gray-400 mb-4"></i>
-                        <p class="text-gray-500 dark:text-gray-400 text-lg">No hay unidades registradas en este plan.</p>
-                        <p class="text-gray-400 dark:text-gray-500 text-sm mt-2">Crea la primera unidad para comenzar.</p>
+                    <div class="empty-state-box">
+                        <i data-lucide="inbox" style="width: 64px; height: 64px;" class="text-muted-custom opacity-50 mb-3"></i>
+                        <p class="fs-5 text-muted-custom fw-bold mb-1">No hay unidades registradas en este plan.</p>
+                        <p class="small text-muted-custom opacity-75">Carga un archivo Excel para comenzar.</p>
                     </div>
                 }
             </div>
         </div>
-
     </div>
 </div>
-
-
 
 @section Scripts {
     <script>
