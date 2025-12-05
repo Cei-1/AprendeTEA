@@ -159,5 +159,34 @@ namespace AprendeTEA_19032025.BL
             }
             return result;
         }
+
+        public static Models.Result Delete(int idPlanTrabajo)
+        {
+            Models.Result result = new Models.Result();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
+                {
+                    // Asume que tienes un procedimiento almacenado llamado "DeletePlanTrabajo"
+                    // que toma @IdPlanTrabajo como parámetro.
+                    string query = "DeletePlanTrabajo";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@IdPlanTrabajo", idPlanTrabajo);
+
+                        connection.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        result.Correct = rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+            }
+            return result;
+        }
     }
 }

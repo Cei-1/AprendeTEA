@@ -7,14 +7,18 @@ namespace AprendeTEA_19032025.Models
     {
         [Key]
         public int IdUnidad { get; set; }
-        public int IdPlanTrabajo { get; set; }
+        public int? IdPlanTrabajo { get; set; }
+
         public string NombreUnidad { get; set; }
         public string Detalle { get; set; }
         public string Responsable { get; set; }
         public DateTime? FechaRegistro { get; set; }
         public bool Estatus { get; set; }
 
+        [NotMapped]
         public List<object> Unidades { get; set; }
+        
+        [NotMapped]
         public Unidad UnidadEdicion { get; set; }
 
         // NUEVOS CAMPOS DE ACTIVIDADES

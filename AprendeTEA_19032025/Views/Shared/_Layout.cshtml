@@ -1,147 +1,270 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AprendeTEA</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    @* <link href="~/css/GeneralClaro.css" rel="stylesheet" /> *@
-    <link href="~/css/GeneralObscuro.css" rel="stylesheet" />
-    <link href="~/css/footer.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>@ViewData["Title"] - Neuro Pro</title>
+    <link rel="icon" type="image/jpeg" href="~/img/logo.png" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+          darkMode: "class", // Habilita el modo oscuro por clase
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ["Inter", "sans-serif"],
+              },
+              colors: {
+                // --- PALETA DE COLORES ACTUAL ---
+                "alef-primary": "#729BFF", // Azul Principal
+                "alef-secondary": "#E38888", // Rojo/Énfasis
+                "alef-green-base": "#88D48E", // Verde/Éxito
+                "alef-violet-base": "#B2A1FF", // Morado/Creatividad
+                "alef-teal-base": "#09cbb4", // Cian/Acento
+
+                // Colores para el menú y bordes (Ajustados a la nueva paleta)
+                "alef-red": "#E38888",
+                "alef-orange": "#ffa500",
+                "alef-yellow": "#faeb36",
+                "alef-green": "#88D48E",
+                "alef-blue": "#729BFF",
+                "alef-indigo": "#B2A1FF",
+                "alef-violet": "#09cbb4",
+              },
+            },
+          },
+        };
+    </script>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/neuropro-styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/NeuroPro.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <div class="glowing">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-500" data-mode="light">
 
-            <span style="--i:1;"></span>
+    <header class="md:hidden sticky top-0 z-10 w-full p-4 bg-white dark:bg-gray-800 shadow-md flex items-center justify-between">
+        <h1 class="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">
+            @ViewData["Title"]
+        </h1>
 
-            <span style="--i:2;"></span>
-
-            <span style="--i:3;"></span>
-
-        </div>
-
-        <div class="glowing">
-
-            <span style="--i:1;"></span>
-
-            <span style="--i:2;"></span>
-
-            <span style="--i:3;"></span>
-
-        </div>
-
-        <div class="glowing">
-
-            <span style="--i:1;"></span>
-
-            <span style="--i:2;"></span>
-
-            <span style="--i:3;"></span>
-
-        </div>
-
-        <div class="glowing">
-
-            <span style="--i:1;"></span>
-
-            <span style="--i:2;"></span>
-
-            <span style="--i:3;"></span>
-
-        </div>
-        <div class="navigation">
-            <div class="menuToggle"></div>
-            <ul>
-                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")" style="--clr: #f44336">
-                    <a asp-area="" asp-controller="Home" asp-action="Index">
-                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                        <span class="text">Inicio</span>
-                    </a>
-                </li>
-                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "Privacy" ? "active" : "")" style="--clr: #ffa117">
-                    <a asp-area="" asp-controller="Home" asp-action="Privacy">
-                        <span class="icon"><ion-icon name="book-outline"></ion-icon></span>
-                        <span class="text">Lecciones</span>
-                    </a>
-                </li><li class="list @(ViewContext.RouteData.Values["action"].ToString() == "PlanTrabajo" ? "active" : "")" style="--clr: #ffa117">
-                    <a asp-area="" asp-controller="PlanTrabajo" asp-action="Index">
-                        <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
-                        <span class="text">Plan de Trabajo</span>
-                    </a>
-                </li>
-                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "Progreso" ? "active" : "")" style="--clr: #0fc70f">
-                    <a href="#">
-                        <span class="icon"><ion-icon name="trophy-outline"></ion-icon></span>
-                        <span class="text">Progreso</span>
-                    </a>
-                </li>
-                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "MiPerfil" ? "active" : "")" style="--clr: #2196f3">
-                    <a asp-area="" asp-controller="Perfil" asp-action="MiPerfil">
-                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-                        <span class="text">Perfil</span>
-                    </a>
-                </li>
-                <li class="list @(ViewContext.RouteData.Values["action"].ToString() == "Configuracion" ? "active" : "")" style="--clr: #b145e9">
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="settings-outline"></ion-icon>
-                        </span>
-                        <span class="text">Configuración</span>
-                    </a>
-                </li>
-            </ul>
-
+        <div class="menuToggle-mobile block cursor-pointer" id="menuToggleMobile">
+            <ion-icon name="menu-outline" class="text-3xl text-gray-800 dark:text-gray-200"></ion-icon>
         </div>
     </header>
-    <div class="container" style="margin-left: 12%">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="navigation bg-white dark:bg-gray-800 shadow-lg dark:shadow-2xl dark:shadow-alef-primary/20">
+        <div class="menuToggle md:hidden"></div>
+        <ul>
+            <li class="list active" style="--clr: #e38888">
+                <a asp-controller="Home" asp-action="Index">
+                    <span class="icon text-gray-900 dark:text-gray-100"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="text text-gray-700 dark:text-gray-300">Inicio</span>
+                </a>
+            </li>
+            <li class="list" style="--clr: #ffa500">
+                <a asp-controller="PlanTrabajo" asp-action="Index">
+                    <span class="icon text-gray-900 dark:text-gray-100"><ion-icon name="calendar-outline"></ion-icon></span>
+                    <span class="text text-gray-700 dark:text-gray-300">Actividades</span>
+                </a>
+            </li>
+            <li class="list" style="--clr: #88d48e">
+                <a asp-controller="Home" asp-action="Privacy">
+                    <span class="icon text-gray-900 dark:text-gray-100"><ion-icon name="compass-outline"></ion-icon></span>
+                    <span class="text text-gray-700 dark:text-gray-300">Misión/Visión</span>
+                </a>
+            </li>
+            <li class="list" style="--clr: #b2a1ff">
+                <a asp-controller="Home" asp-action="Privacy">
+                    <span class="icon text-gray-900 dark:text-gray-100"><ion-icon name="sparkles-outline"></ion-icon></span>
+                    <span class="text text-gray-700 dark:text-gray-300">Valores</span>
+                </a>
+            </li>
+            <li class="list" style="--clr: #09cbb4">
+                <a asp-controller="Home" asp-action="Privacy">
+                    <span class="icon text-gray-900 dark:text-gray-100"><ion-icon name="time-outline"></ion-icon></span>
+                    <span class="text text-gray-700 dark:text-gray-300">Historia</span>
+                </a>
+            </li>
+            <li class="list" style="--clr: #729bff" id="dark-mode-toggle">
+                <a href="#">
+                    <span class="icon text-gray-900 dark:text-gray-100">
+                        <ion-icon name="moon-outline" id="dark-mode-icon"></ion-icon>
+                    </span>
+                    <span class="text text-gray-700 dark:text-gray-300">Modo Obscuro</span>
+                </a>
+            </li>
+        </ul>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            @* <div>&copy; 2024 - AprendeTEA_V1._0 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></div> *@
-            <div id="social-footer">
-                <ul>
-                    <li>
-                        <a href="#"> <i class="fab fa-facebook-f icon"></i> </a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-twitter icon"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-linkedin-in icon"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-google-plus-g icon"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-whatsapp icon"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-github icon"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-youtube icon"></i></a>
-                    </li>
-                </ul>
+    <main class="main-content p-4 sm:p-6 lg:p-12 min-h-screen">
+        @RenderBody()
+
+        <footer class="mt-20 pt-10 border-t border-gray-200 dark:border-gray-800 text-center text-gray-600 dark:text-gray-400">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="social-buttons mb-8 scale-110">
+                    <a class="social-button social-button--facebook" href="https://www.facebook.com/share/17kufCAKj8/" aria-label="Facebook" target="_blank">
+                        <ion-icon name="logo-facebook"></ion-icon>
+                    </a>
+                    <a class="social-button social-button--tiktok" href="https://www.tiktok.com/@@neuropro07" aria-label="TikTok" target="_blank">
+                        <ion-icon name="logo-tiktok"></ion-icon>
+                    </a>
+                    <a class="social-button social-button--instagram" href="https://www.instagram.com/neuro___pro/" aria-label="Instagram" target="_blank">
+                        <ion-icon name="logo-instagram"></ion-icon>
+                    </a>
+                </div>
+
+                <p class="text-sm font-medium opacity-80">&copy; 2025 Neuro Pro. Consciencia y Neurodiversidad.</p>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </main>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script type="module"
-            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule
-            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="~/js/Navbar.js"></script>
+    <script>
+        // -------------------------------------
+        // VARIABLES DE CONTROL Y DARK MODE
+        // -------------------------------------
 
+        // Variables de control
+        const menuToggle = document.querySelector(".menuToggle"); // Toggle original (ahora oculto en desktop)
+        const menuToggleMobile = document.getElementById("menuToggleMobile"); // 🌟 NUEVO TOGGLE MÓVIL 🌟
+        const navigation = document.querySelector(".navigation");
+        const lists = document.querySelectorAll(".list");
+        const mainContent = document.querySelector("main");
+
+        // VARIABLES PARA DARK MODE
+        const htmlElement = document.documentElement;
+        const darkModeIcon = document.getElementById("dark-mode-icon");
+        const darkModeToggle = document.getElementById("dark-mode-toggle");
+        const bodyElement = document.body;
+
+        // --- DARK MODE FUNCTIONS ---
+        function enableDarkMode() {
+          htmlElement.classList.add("dark");
+          bodyElement.setAttribute("data-mode", "dark");
+          darkModeIcon.name = "sunny-outline"; // Cambia a sol
+          localStorage.setItem("theme", "dark");
+        }
+
+        function disableDarkMode() {
+          htmlElement.classList.remove("dark");
+          bodyElement.setAttribute("data-mode", "light");
+          darkModeIcon.name = "moon-outline"; // Cambia a luna
+          localStorage.setItem("theme", "light");
+        }
+
+        // Inicializar el tema al cargar
+        const savedTheme = localStorage.getItem("theme");
+
+        if (savedTheme === "dark") {
+          enableDarkMode();
+        } else {
+          disableDarkMode();
+        }
+        // --- FIN DARK MODE FUNCTIONS ---
+
+        // Función auxiliar para saber si estamos en móvil (usando el breakpoint CSS)
+        function isMobile() {
+          // El breakpoint "sm" de Tailwind es 640px. El "md" es 768px.
+          // Tu CSS está basado en "md:hidden" para la navegación lateral,
+          // por lo que usaremos 768px como punto de corte.
+          return window.innerWidth < 768;
+        }
+
+        // Función unificada para manejar el toggle del menú
+        function handleMenuToggle() {
+            navigation.classList.toggle("open"); // Abre/cierra el menú
+
+            // Solo aplicamos el desplazamiento si estamos en móvil
+            if (isMobile()) {
+                mainContent.classList.toggle("menu-shifted");
+            }
+        }
+
+        // Toggle original (funciona en móvil si el nuevo no está definido o es un fallback)
+        if (menuToggle) {
+            menuToggle.onclick = handleMenuToggle;
+        }
+
+        // 🌟 Asignar el manejador de eventos al nuevo toggle móvil (botón en el nuevo navbar) 🌟
+        if (menuToggleMobile) {
+            menuToggleMobile.onclick = handleMenuToggle;
+        }
+
+
+        // FUNCIÓN PARA ACTIVAR EL ENLACE
+        function activarLink(event) {
+          // Obtenemos el target del click
+          const clickedItem = event.currentTarget;
+          const link = clickedItem.querySelector("a");
+
+          // Si es el toggle de Dark Mode, simplemente salimos después de la lógica del toggle
+          if (clickedItem.id === "dark-mode-toggle") {
+            return;
+          }
+
+          // Quita la clase 'active' de todos los elementos (excepto el toggle)
+          lists.forEach((item) => {
+            if (item.id !== "dark-mode-toggle") {
+              item.classList.remove("active");
+            }
+          });
+
+          // Asigna la clase 'active' al elemento que se ha clicado
+          clickedItem.classList.add("active");
+
+          // Cierra menú en móvil si está abierto
+          if (navigation.classList.contains("open") && isMobile()) {
+            setTimeout(() => {
+              navigation.classList.remove("open");
+              mainContent.classList.remove("menu-shifted");
+            }, 300);
+          }
+        }
+
+        // Event listener para el Dark Mode Toggle
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener("click", (e) => {
+              e.preventDefault();
+              if (htmlElement.classList.contains("dark")) {
+                disableDarkMode();
+              } else {
+                enableDarkMode();
+              }
+              // Si el menú está abierto en móvil, lo cerramos
+              if (navigation.classList.contains("open") && isMobile()) {
+                setTimeout(() => {
+                  navigation.classList.remove("open");
+                  mainContent.classList.remove("menu-shifted");
+                }, 300);
+              }
+            });
+        }
+
+        // Asignar el manejador de eventos a los links de navegación
+        lists.forEach((item) => {
+          if (item.id !== "dark-mode-toggle") {
+            item.addEventListener("click", activarLink);
+          }
+        });
+
+        // Manejar el cambio de tamaño de pantalla (ej. rotación de móvil)
+        window.addEventListener("resize", () => {
+          if (!isMobile()) {
+            mainContent.classList.remove("menu-shifted");
+            navigation.classList.remove("open");
+          }
+        });
+
+        // Inicialización de Lucide
+        window.onload = function () {
+          if (typeof lucide !== "undefined") {
+            lucide.createIcons();
+          }
+        };
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

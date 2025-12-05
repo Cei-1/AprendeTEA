@@ -1,85 +1,138 @@
 ﻿@model Unidad
 
 @{
-    ViewData["Title"] = "Form";
+    ViewData["Title"] = Model.UnidadEdicion.IdUnidad == 0 ? "Nueva Unidad" : "Editar Unidad";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <h2 class="text-center mb-4">Unidades del Plan de Trabajo #@Model.IdPlanTrabajo</h2>
+<div class="max-w-6xl mx-auto mt-6 md:mt-10 mb-12 md:mb-16">
+    <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 md:p-10 rounded-xl shadow-2xl">
+        
+        <!-- Back Button -->
+        <a asp-action="Index" asp-controller="PlanTrabajo"
+           class="mb-6 flex items-center text-alef-primary hover:text-alef-secondary transition duration-200 font-semibold inline-block">
+            <i data-lucide="arrow-left" class="w-5 h-5 mr-2 inline"></i>
+            Volver a Planes
+        </a>
 
-    <a asp-action="Index" asp-controller="PlanTrabajo" class="btn btn-secondary mb-3">← Volver a Planes</a>
+        <header class="pb-4 border-b border-alef-primary/20 dark:border-alef-primary/50 mb-6">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold neuropro-title">
+                Unidades del Plan de Trabajo #@Model.IdPlanTrabajo
+            </h1>
+        </header>
 
-    <div class="card mb-5">
-        <div class="card-header bg-primary text-white">
-            @(Model.UnidadEdicion.IdUnidad == 0 ? "Agregar Unidad" : "Editar Unidad")
-        </div>
-        <div class="card-body">
-            <form asp-action="GuardarUnidad" asp-controller="Unidad" method="post">
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6 rounded shadow-md" role="alert">
+                <p>@TempData["Mensaje"]</p>
+            </div>
+        }
+
+        <!-- Form Section -->
+        <div class="form-container p-4 sm:p-6 md:p-8 mb-8">
+            <h2 class="text-xl sm:text-2xl font-bold mb-6 text-alef-primary dark:text-alef-secondary flex items-center">
+                <i data-lucide="edit-3" class="w-6 h-6 mr-2"></i>
+                @(Model.UnidadEdicion.IdUnidad == 0 ? "Agregar Unidad" : "Editar Unidad")
+            </h2>
+
+            <form asp-action="GuardarUnidad" asp-controller="Unidad" method="post" class="space-y-6">
                 <input type="hidden" name="IdUnidad" value="@Model.UnidadEdicion.IdUnidad" />
                 <input type="hidden" name="IdPlanTrabajo" value="@Model.IdPlanTrabajo" />
 
-                <div class="mb-3">
-                    <label for="Unidad" class="form-label">Nombre de la Unidad</label>
-                    <input type="text" class="form-control" name="Unidad" value="@Model.UnidadEdicion.NombreUnidad" required />
+                <div>
+                    <label for="Unidad" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                        <i data-lucide="layers" class="w-4 h-4 mr-2 text-alef-primary"></i>
+                        Nombre de la Unidad
+                    </label>
+                    <input type="text" 
+                           class="w-full p-3 sm:p-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-alef-primary focus:ring-2 focus:ring-alef-primary/30 transition duration-150 dark:bg-gray-700 dark:text-gray-200 font-medium" 
+                           name="Unidad" 
+                           value="@Model.UnidadEdicion.NombreUnidad" 
+                           placeholder="Ej. Introducción al TEA"
+                           required />
                 </div>
 
-                <div class="mb-3">
-                    <label for="Detalles" class="form-label">Detalles</label>
-                    <textarea class="form-control" name="Detalles">@Model.UnidadEdicion.Detalle</textarea>
+                <div>
+                    <label for="Detalles" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                        <i data-lucide="file-text" class="w-4 h-4 mr-2 text-alef-primary"></i>
+                        Detalles
+                    </label>
+                    <textarea class="w-full p-3 sm:p-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-alef-primary focus:ring-2 focus:ring-alef-primary/30 transition duration-150 dark:bg-gray-700 dark:text-gray-200 font-medium min-h-[120px]" 
+                              name="Detalles"
+                              placeholder="Describe los objetivos y contenido de esta unidad...">@Model.UnidadEdicion.Detalle</textarea>
                 </div>
 
-                <div class="mb-3">
-                    <label for="Responsable" class="form-label">Responsable</label>
-                    <input type="text" class="form-control" name="Responsable" value="@Model.UnidadEdicion.Responsable" />
+                <div>
+                    <label for="Responsable" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                        <i data-lucide="user" class="w-4 h-4 mr-2 text-alef-primary"></i>
+                        Responsable
+                    </label>
+                    <input type="text" 
+                           class="w-full p-3 sm:p-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-alef-primary focus:ring-2 focus:ring-alef-primary/30 transition duration-150 dark:bg-gray-700 dark:text-gray-200 font-medium" 
+                           name="Responsable" 
+                           value="@Model.UnidadEdicion.Responsable"
+                           placeholder="Nombre del responsable" />
                 </div>
 
-                <button type="submit" class="btn btn-success">Guardar</button>
+                <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
+                       class="py-3 px-6 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300 flex items-center justify-center w-full sm:w-auto">
+                        <i data-lucide="x" class="w-4 h-4 mr-2"></i>
+                        Cancelar
+                    </a>
+                    <button type="submit" 
+                            class="py-3 px-8 bg-alef-secondary text-white font-bold rounded-xl hover:bg-alef-primary transition duration-300 shadow-lg shadow-alef-secondary/30 flex items-center justify-center w-full sm:w-auto">
+                        <i data-lucide="save" class="w-4 h-4 mr-2"></i>
+                        Guardar Unidad
+                    </button>
+                </div>
             </form>
         </div>
-    </div>
 
-    @if (TempData["Mensaje"] != null)
-    {
-        <div class="alert alert-info">@TempData["Mensaje"]</div>
-    }
-
-    <div class="card">
-        <div class="card-header bg-dark text-white">Unidades Registradas</div>
-        <div class="card-body">
-            <table id="tablaUnidades" class="table table-bordered table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Unidad</th>
-                        <th>Detalle</th>
-                        <th>Responsable</th>
-                        <th>Fecha</th>
-                        <th>Editar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (Unidad unidad in Model.Unidades)
-                    {
+        <!-- Table Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-alef-primary dark:bg-alef-secondary p-4 text-white">
+                <h2 class="text-lg sm:text-xl font-bold flex items-center">
+                    <i data-lucide="list" class="w-5 h-5 mr-2"></i>
+                    Unidades Registradas
+                </h2>
+            </div>
+            <div class="p-4 sm:p-6 overflow-x-auto">
+                <table id="tablaUnidades" class="w-full text-sm sm:text-base">
+                    <thead class="bg-gray-100 dark:bg-gray-700">
                         <tr>
-                            <td>@unidad.IdUnidad</td>
-                            <td>@unidad.NombreUnidad</td>
-                            <td>@unidad.Detalle</td>
-                            <td>@unidad.Responsable</td>
-                            <td>@unidad.FechaRegistro?.ToString("dd/MM/yyyy")</td>
-                            <td class="text-center">
-                                <a class="btn btn-sm btn-warning"
-                                   asp-action="Form"
-                                   asp-controller="Unidad"
-                                   asp-route-IdUnidad="@unidad.IdUnidad"
-                                   asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo">
-                                    ✏️
-                                </a>
-                            </td>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">ID</th>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">Unidad</th>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 hidden md:table-cell">Detalle</th>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 hidden sm:table-cell">Responsable</th>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 hidden lg:table-cell">Fecha</th>
+                            <th class="px-3 py-3 text-center font-semibold text-gray-700 dark:text-gray-300">Editar</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        @foreach (Unidad unidad in Model.Unidades)
+                        {
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <td class="px-3 py-3 text-gray-800 dark:text-gray-200">@unidad.IdUnidad</td>
+                                <td class="px-3 py-3 text-gray-800 dark:text-gray-200 font-medium">@unidad.NombreUnidad</td>
+                                <td class="px-3 py-3 text-gray-600 dark:text-gray-400 hidden md:table-cell max-w-xs truncate">@unidad.Detalle</td>
+                                <td class="px-3 py-3 text-gray-600 dark:text-gray-400 hidden sm:table-cell">@unidad.Responsable</td>
+                                <td class="px-3 py-3 text-gray-600 dark:text-gray-400 hidden lg:table-cell">@unidad.FechaRegistro?.ToString("dd/MM/yyyy")</td>
+                                <td class="px-3 py-3 text-center">
+                                    <a class="inline-flex items-center justify-center py-2 px-3 sm:px-4 bg-yellow-500 text-white font-bold rounded-lg hover:bg-yellow-600 transition duration-300 text-xs sm:text-sm"
+                                       asp-action="Form"
+                                       asp-controller="Unidad"
+                                       asp-route-IdUnidad="@unidad.IdUnidad"
+                                       asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo">
+                                        <i data-lucide="edit-2" class="w-3 h-3 sm:w-4 sm:h-4 sm:mr-1"></i>
+                                        <span class="hidden sm:inline">Editar</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -92,16 +145,26 @@
     <script>
         $(document).ready(function () {
             $('#tablaUnidades').DataTable({
+                responsive: true,
                 language: {
                     search: "Buscar:",
                     lengthMenu: "Mostrar _MENU_ registros",
                     info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    zeroRecords: "No se encontraron registros coincidentes",
+                    emptyTable: "No hay unidades registradas",
                     paginate: {
                         previous: "Anterior",
                         next: "Siguiente"
                     }
                 }
             });
+
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         });
     </script>
 }

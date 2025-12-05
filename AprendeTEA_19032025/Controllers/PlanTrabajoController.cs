@@ -11,6 +11,7 @@ namespace AprendeTEA_19032025.Controllers
         {
             _planTrabajoBL = planTrabajoBL;
         }
+
         public IActionResult Index()
         {
             Models.PlanTrabajo planTrabajo = new Models.PlanTrabajo();
@@ -78,6 +79,22 @@ namespace AprendeTEA_19032025.Controllers
             return View(unidades);
         }
 
-    }
+        // --- Nuevo método para eliminar ---
+        [HttpGet] // Se usa HttpGet para simplificar por ahora, pero lo ideal es un HttpPost con un formulario.
+        public IActionResult Delete(int IdPlanTrabajo)
+        {
+            Models.Result result = BL.PlanTrabajo.Delete(IdPlanTrabajo);
 
+            if (result.Correct)
+            {
+                TempData["Mensaje"] = "Plan eliminado correctamente.";
+            }
+            else
+            {
+                TempData["Mensaje"] = "Error al eliminar el plan.";
+            }
+
+            return RedirectToAction("Index");
+        }
+    }
 }

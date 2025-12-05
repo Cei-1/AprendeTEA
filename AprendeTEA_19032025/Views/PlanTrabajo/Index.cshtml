@@ -1,111 +1,151 @@
 ﻿@model PlanTrabajo
 
 @{
-    ViewData["Title"] = "Planes de Trabajo";
+    ViewData["Title"] = "Actividades";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="text-center pb-4">
-            <h2>Planes de Trabajo</h2>
-        </div>
+<!-- Estilos específicos para esta vista -->
+
+
+<!-- Sección de Título Hero -->
+<div class="mb-6 md:mb-8 flex flex-col items-center">
+    <div class="hero-title-container mb-4">
+        <img src="~/img/logo.png" alt="Logo Neuro Pro" class="hero-logo object-contain w-12 h-12 sm:w-16 sm:h-16"
+             onerror="this.style.display='none';" />
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-alef-primary dark:text-alef-secondary">
+            NEURO PRO
+        </h2>
     </div>
-
-    <div class="row align-items-center mb-3">
-        <div class="col-md-6">
-            <h5>Seleccione un plan para visualizar sus unidades o + para agregar...</h5>
-        </div>
-        <div class="col-md-6 text-end">
-            <a asp-action="Form" asp-controller="PlanTrabajo" class="btn btn-success me-2">+</a>
-        </div>
-    </div>
-
-    @if (TempData["Mensaje"] != null)
-    {
-        <div class="alert alert-info">@TempData["Mensaje"]</div>
-    }
-
-    <hr />
-
-    @if (Model.PlanesTrabajo != null && Model.PlanesTrabajo.Count > 0)
-    {
-        <div class="row">
-            <table id="example" class="table table-striped" style="width:100%">
-                <thead>
-                    <tr class="table-info">
-                        <th>ID</th>
-                        <th>Nombre del Plan</th>
-                        <th>Unidades</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @* @foreach (var plan in Model.PlanesTrabajo.Cast<AprendeTEA_19032025.Models.PlanTrabajo>()) *@
-                    @foreach (PlanTrabajo plan in Model.PlanesTrabajo)
-                    {
-                        <tr>
-                            <td class="text-white">@plan.IdPlanTrabajo</td>
-                            <td  class="text-white">@plan.NombrePlan</td>
-                            <td class="text-center">
-                                <a class="btn btn-outline-primary text-white bg-primary"
-                                   asp-action="Index"
-                                   asp-controller="Unidad"
-                                   asp-route-IdPlanTrabajo="@plan.IdPlanTrabajo">
-                                    Ver Unidades
-                                </a>
-                            </td>
-                            <td class="text-center">
-                                <a class="btn btn-outline-danger text-white bg-danger"
-                                   asp-action="Delete"
-                                   asp-controller="PlanTrabajo"
-                                   asp-route-IdPlanTrabajo="@plan.IdPlanTrabajo"
-                                   onclick="return confirm('¿Estás seguro de eliminar este plan?');">
-                                    Eliminar
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-    else
-    {
-        <div class="row m-5">
-            <div class="col">
-                <div class="alert alert-warning" role="alert">
-                    No existen registros. Da clic en + para agregar más información.
-                </div>
-            </div>
-        </div>
-    }
+    <h3 class="text-xl sm:text-2xl font-semibold text-alef-secondary dark:text-alef-primary text-center max-w-xl">
+        Rutas de Consciencia y Neurodiversidad
+    </h3>
 </div>
 
-@section Scripts {
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/DataTables/datatables.min.js"></script>
-    <link href="~/lib/DataTables/datatables.min.css" rel="stylesheet">
+<!-- Contenido Principal -->
+<section class="mb-12 md:mb-16">
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-6 md:mb-8 border-b-4 border-alef-primary/50 pb-4 text-center">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3 neuropro-title">
+                Planes de Trabajo para el Espectro Autista
+            </h1>
+            <p class="text-base md:text-lg text-gray-700 dark:text-gray-300 font-medium">
+                Explora nuestras unidades de aprendizaje interactivas.
+            </p>
+        </header>
 
-    <script>
-        $(document).ready(function () {
-            $('#example').DataTable({
-                "language": {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "Ningún dato disponible en esta tabla",
-                    "sInfo": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando 0 a 0 de 0 registros",
-                    "sInfoFiltered": "(filtrado de _MAX_ registros)",
-                    "sSearch": "Buscar:",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
+        <!-- Botón Agregar -->
+        <div class="flex justify-center md:justify-end mb-6">
+            <a asp-action="Form" asp-controller="PlanTrabajo" 
+               class="flex items-center py-2 px-4 sm:px-6 bg-green-500 text-white font-bold rounded-xl hover:bg-green-600 transition duration-300 shadow-lg w-full sm:w-auto justify-center">
+                <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>
+                Nuevo Plan
+            </a>
+        </div>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6 rounded shadow-md" role="alert">
+                <p>@TempData["Mensaje"]</p>
+            </div>
+        }
+
+        <!-- Listado de Planes (Acordeón) -->
+        <div class="mb-8 md:mb-12">
+            <h2 class="text-2xl sm:text-3xl font-bold text-alef-primary dark:text-alef-secondary mb-4 md:mb-6 border-b border-alef-secondary/20 dark:border-alef-primary/50 pb-2">
+                Planes de Estudio Disponibles
+            </h2>
+
+            <div id="course-list" class="space-y-4">
+                @if (Model.PlanesTrabajo != null && Model.PlanesTrabajo.Count > 0)
+                {
+                    foreach (PlanTrabajo plan in Model.PlanesTrabajo)
+                    {
+                        <div class="accordion-item">
+                            <div class="accordion-header flex items-center p-3 sm:p-4 md:p-6 text-base sm:text-lg md:text-xl font-semibold text-alef-primary dark:text-gray-200">
+                                <i data-lucide="brain-circuit" class="w-7 h-7 mr-4 text-alef-secondary"></i>
+                                <span class="flex-grow">@plan.NombrePlan</span>
+                                <span class="text-sm font-medium text-alef-primary dark:text-gray-400 mr-4 hidden sm:inline">
+                                    Plan #@plan.IdPlanTrabajo
+                                </span>
+                                <i data-lucide="chevron-down" class="w-6 h-6 transform transition-transform duration-300"></i>
+                            </div>
+                            <div class="accordion-content p-0">
+                                <div class="p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700 space-y-4">
+                                    <!-- Resumen -->
+                                    <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        Un plan esencial para padres, cuidadores y educadores. Entiende el Trastorno del Espectro Autista (TEA) desde una perspectiva de derechos y fortalezas, desmitificando el diagnóstico y abriendo la puerta a la comprensión empática.
+                                    </p>
+
+                                    <!-- Botones de Acción -->
+                                    <div class="pt-4 flex justify-end gap-3">
+                                        <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@plan.IdPlanTrabajo"
+                                           class="py-2 px-6 bg-alef-secondary text-white font-bold rounded-xl hover:bg-alef-primary transition duration-300 shadow-lg">
+                                            Ver Unidades
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 }
+                else
+                {
+                    <div class="text-center p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+                        <i data-lucide="book-open" class="w-16 h-16 mx-auto text-gray-400 mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-600 dark:text-gray-300">No hay planes de trabajo aún</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mt-2">¡Crea el primero para comenzar tu viaje de aprendizaje!</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar iconos
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // Lógica del Acordeón
+            document.querySelectorAll(".accordion-header").forEach((header) => {
+                header.addEventListener("click", () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('[data-lucide="chevron-down"]');
+
+                    if (!content || !icon) return;
+
+                    const isClosed = content.style.maxHeight === "0px" || !content.style.maxHeight;
+
+                    // Cerrar otros
+                    document.querySelectorAll(".accordion-item").forEach((item) => {
+                        const c = item.querySelector(".accordion-content");
+                        const h = item.querySelector(".accordion-header");
+                        const i = item.querySelector('[data-lucide="chevron-down"]');
+
+                        if (c !== content) {
+                            c.style.maxHeight = "0px";
+                            h.classList.remove("open");
+                            if (i) i.classList.remove("rotate-180");
+                        }
+                    });
+
+                    // Abrir/Cerrar actual
+                    if (isClosed) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.classList.add("rotate-180");
+                        header.classList.add("open");
+                    } else {
+                        content.style.maxHeight = "0px";
+                        icon.classList.remove("rotate-180");
+                        header.classList.remove("open");
+                    }
+                });
             });
         });
     </script>

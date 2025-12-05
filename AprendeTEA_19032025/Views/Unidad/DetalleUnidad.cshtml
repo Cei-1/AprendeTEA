@@ -1,272 +1,262 @@
-﻿@model Unidad
+﻿@model AprendeTEA_19032025.Models.Unidad
 
 @{
     ViewData["Title"] = "Detalle de Unidad";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<style>
-    .bg-glass {
-        background-color: rgba(255, 255, 255, 0.06);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-</style>
 
-<div class="container mt-4">
-    <div class="text-center mb-4">
-        <h2 class="text-white"><i class="fas fa-info-circle"></i> Detalle de Unidad</h2>
-    </div>
 
-    <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo" class="btn btn-outline-light mb-4">
-        <i class="fas fa-arrow-left"></i> Volver al plan
-    </a>
 
-    <div class="card bg-dark text-white shadow-lg rounded-4">
-        <div class="card-header border-bottom border-light bg-transparent">
-            <h4 class="mb-0 text-white">
-                <i class="fas fa-book text-info me-2"></i> Información general
-            </h4>
-        </div>
+<div class="max-w-4xl mx-auto mt-6 md:mt-10 mb-12 md:mb-16">
+    <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 md:p-10 rounded-xl shadow-2xl">
+        
+        <!-- Botón de regreso -->
+        <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
+           class="mb-6 flex items-center text-alef-primary hover:text-alef-secondary transition duration-200 font-semibold inline-block">
+            <i data-lucide="arrow-left" class="w-5 h-5 mr-2 inline"></i>
+            Volver a las Unidades
+        </a>
 
-        <div class="card-body">
-            <div class="row g-4">
+        <header class="pb-4 border-b border-alef-primary/20 dark:border-alef-primary/50 mb-6">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold neuropro-title">
+                @Model.NombreUnidad
+            </h1>
+            <p class="text-lg sm:text-xl text-alef-secondary dark:text-alef-primary font-medium mt-2">
+                @Model.Detalle
+            </p>
+        </header>
 
-                <div class="col-md-6">
-                    <div class="d-flex align-items-start gap-3">
-                        <i class="fas fa-book-open fa-lg text-warning mt-1"></i>
-                        <div>
-                            <small class="text-muted">Nombre de la Unidad</small>
-                            <div class="fw-bold text-white">@Model.NombreUnidad</div>
+        <!-- Contenedor de Etapas -->
+        <div id="course-steps-container" class="space-y-6 md:space-y-8">
+            
+            <!-- 1. Etapa de Bienvenida/Contenido -->
+            <div id="step-content" class="step-view space-y-4 md:space-y-6">
+                <!-- Welcome Section with Mascot -->
+                <div class="welcome-section p-4 sm:p-6 rounded-xl">
+                    <div class="flex flex-col md:flex-row items-start md:space-x-6 gap-4 md:gap-0">
+                        <div class="mb-4 md:mb-0">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-gradient-to-br from-alef-primary to-alef-secondary rounded-full flex items-center justify-center">
+                                <i data-lucide="sparkles" class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="text-xl sm:text-2xl font-bold text-alef-primary dark:text-alef-secondary mb-2">
+                                ¡Bienvenido a esta Unidad!
+                            </h3>
+                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg font-light">
+                                Explora el fascinante mundo de esta unidad está diseñada para potenciar tus habilidades y conocimientos de manera interactiva y divertida.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="d-flex align-items-start gap-3">
-                        <i class="fas fa-align-left fa-lg text-info mt-1"></i>
+                <!-- Información General -->
+                <div class="glass-card p-4 sm:p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
+                        <i data-lucide="info" class="w-6 h-6 mr-2 text-alef-primary"></i>
+                        Información General
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <small class="text-muted">Detalle</small>
-                            <div class="fw-bold text-white">@Model.Detalle</div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Fecha de Registro</p>
+                            <p class="font-semibold text-gray-800 dark:text-gray-200">@Model.FechaRegistro?.ToString("dd/MM/yyyy")</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="d-flex align-items-start gap-3">
-                        <i class="fas fa-user fa-lg text-success mt-1"></i>
-                        <div>
-                            <small class="text-muted">Responsable</small>
-                            <div class="fw-bold text-white">@Model.Responsable</div>
-                        </div>
-                    </div>
+                <!-- Concepto Central -->
+                <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl border-2 border-alef-primary/20 dark:border-alef-secondary/20 shadow-md">
+                    <h4 class="text-xl font-semibold text-alef-teal-base dark:text-alef-green-base mb-3 flex items-center">
+                        <i data-lucide="lightbulb" class="w-5 h-5 mr-2"></i>
+                        Concepto Central
+                    </h4>
+                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                        @Model.Detalle
+                    </p>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="d-flex align-items-start gap-3">
-                        <i class="fas fa-calendar-alt fa-lg text-danger mt-1"></i>
-                        <div>
-                            <small class="text-muted">Fecha de Registro</small>
-                            <div class="fw-bold text-white">@Model.FechaRegistro?.ToString("dd/MM/yyyy")</div>
-                        </div>
+                <!-- Actividades Interactivas -->
+                <div class="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 p-4 sm:p-6 rounded-xl border border-gray-200 dark:border-gray-600">
+                    <h3 class="text-xl sm:text-2xl font-bold text-alef-primary dark:text-alef-secondary mb-4 flex items-center">
+                        <i data-lucide="gamepad-2" class="w-6 h-6 mr-2"></i>
+                        Neuro-Actividades
+                    </h3>
+                    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 md:mb-6">Practica y afianza los conceptos de esta unidad de una forma divertida.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                        @if (Model.TieneSopaLetras)
+                        {
+                            <div class="activity-card p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border-l-4 border-blue-500" data-bs-toggle="modal" data-bs-target="#modalSopa">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                                            <i data-lucide="grid-3x3" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-800 dark:text-gray-200">Sopa de Letras</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Encuentra las palabras</p>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.TieneCrucigrama)
+                        {
+                            <div class="activity-card p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border-l-4 border-green-500" data-bs-toggle="modal" data-bs-target="#modalCrucigrama">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                                            <i data-lucide="puzzle" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-800 dark:text-gray-200">Crucigrama</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Resuelve el desafío</p>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                                </div>
+                            </div>
+                        }
+                        
+                        @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneMemorama && !Model.TieneJuegoRol)
+                        {
+                            <div class="col-span-2 text-center py-8">
+                                <i data-lucide="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-3"></i>
+                                <p class="text-gray-500 dark:text-gray-400 italic">No hay actividades configuradas para esta unidad.</p>
+                            </div>
+                        }
                     </div>
                 </div>
+            </div>
+
+            <!-- Botón de Navegación -->
+            <div id="course-navigation-bar" class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-700">
 
             </div>
         </div>
+    </div>
+</div>
 
+<!-- Modales -->
+<!-- Sopa de Letras -->
+<div class="modal fade" id="modalSopa" tabindex="-1" aria-hidden="true" style="z-index: 9999;">
+    <div class="modal-dialog modal-lg" style="z-index: 10000;">
+        <div class="modal-content dark:bg-gray-800 dark:text-white">
+            <div class="modal-header border-b dark:border-gray-700">
+                <h5 class="modal-title font-bold">Sopa de Letras</h5>
+                <button type="button" class="btn-close dark:filter dark:invert" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-        <div class="card-footer border-top border-light">
-            <h5 class="mt-3 text-white"><i class="fas fa-puzzle-piece"></i> Actividades seleccionadas</h5>
+            <div class="modal-body">
 
-            @if (Model.TieneSopaLetras)
-            {
-                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #0d6efd;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-grip-horizontal text-primary"></i>
-                            <span class="fw-bold">Sopa de Letras</span>
-                        </div>
-                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalSopa">
-                            <i class="fas fa-circle-plus"></i> Ver
-                        </button>
-                    </div>
+                <!-- Contenedor visual de la sopa -->
+                <div id="sopaContainer" class="grid gap-1 text-center font-bold text-sm sm:text-base md:text-lg mb-4" style="grid-template-columns: repeat(auto-fit, minmax(1.5rem, 1fr));">
+                    <!-- Aquí se genera automáticamente -->
                 </div>
-
-
-                <div class="modal fade" id="modalSopa" tabindex="-1" aria-labelledby="modalSopaLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content text-dark">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Vista previa - Sopa de Letras</h5>
-                                <button class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                    @foreach (var palabra in Model.PalabrasSopa?.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? new string[0])
-                                    {
-                                        <li>@palabra.Trim()</li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-
-            @if (Model.TieneCrucigrama)
-            {
-                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #198754;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-question text-success"></i>
-                            <span class="fw-bold">Crucigrama</span>
-                        </div>
-                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalCrucigrama">
-                            <i class="fas fa-circle-plus"></i> Ver
-                        </button>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="modalCrucigrama" tabindex="-1" aria-labelledby="modalCrucigramaLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content text-dark">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Vista previa - Crucigrama</h5>
-                                <button class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                    @foreach (var pregunta in Model.PreguntasCrucigrama?.Split(";", StringSplitOptions.RemoveEmptyEntries) ?? new string[0])
-                                    {
-                                        <li>@pregunta.Trim()</li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-
-            @if (Model.TieneRelacionar)
-            {
-                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #ffc107;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-random text-warning"></i>
-                            <span class="fw-bold">Relacionar Columnas</span>
-                        </div>
-                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalRelacionar">
-                            <i class="fas fa-circle-plus"></i> Ver
-                        </button>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="modalRelacionar" tabindex="-1" aria-labelledby="modalRelacionarLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content text-dark">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Vista previa - Relacionar Columnas</h5>
-                                <button class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                    @foreach (var par in Model.RelacionarColumnas?.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? new string[0])
-                                    {
-                                        <li>@par.Trim()</li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-
-            @if (Model.TieneMemorama)
-            {
-                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #0dcaf0;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-clone text-info"></i>
-                            <span class="fw-bold">Memorama</span>
-                        </div>
-                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalMemorama">
-                            <i class="fas fa-circle-plus"></i> Ver
-                        </button>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="modalMemorama" tabindex="-1" aria-labelledby="modalMemoramaLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content text-dark">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Vista previa - Memorama</h5>
-                                <button class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Esta actividad consiste en emparejar conceptos clave.</p>
-                                <p><em>Preparación visual pendiente.</em></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-
-            @if (Model.TieneJuegoRol)
-            {
-                <div class="card mt-3 bg-glass text-white border-start border-4" style="border-color: #adb5bd;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-theater-masks text-light"></i>
-                            <span class="fw-bold">Juego de Rol</span>
-                        </div>
-                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalRol">
-                            <i class="fas fa-circle-plus"></i> Ver
-                        </button>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="modalRol" tabindex="-1" aria-labelledby="modalRolLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content text-dark">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Vista previa - Juego de Rol</h5>
-                                <button class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Esta actividad implica representar una situación real.</p>
-                                <p><em>El contenido específico se definirá por el facilitador.</em></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-
-           @*  @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneMemorama && !Model.TieneJuegoRol)
-            {
-                <div class="alert alert-dark mt-3">
-                    <i class="fas fa-ban"></i> Esta unidad no tiene actividades asociadas.
-                </div>
-            } *@
-            @* @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneMemorama && !Model.TieneJuegoRol)
-            {
-                <div class="alert alert-dark mt-3">
-                    <i class="fas fa-ban"></i> Esta unidad no tiene actividades asociadas.
-                </div>
-            } *@
-            @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneMemorama && !Model.TieneJuegoRol)
-            {
-                <div class="alert alert-dark mt-3">
-                    <i class="fas fa-ban"></i> Esta unidad no tiene actividades asociadas.
-                </div>
-            }
-
-
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Estilos para modales -->
+
+
+
+<!-- Crucigrama -->
+
+<!-- Relacionar -->
+
+
+<!-- Memorama -->
+
+
+<!-- Rol -->
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+
+        let currentStep = 1;
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const palabras = "@Model.PalabrasSopa".split(",").map(p => p.trim().toUpperCase());
+            const gridSize = 12;
+            let grid = [];
+
+            // Genera una matriz vacía
+            for (let i = 0; i < gridSize; i++) {
+                grid[i] = [];
+                for (let j = 0; j < gridSize; j++) {
+                    grid[i][j] = "";
+                }
+            }
+
+            // Intenta colocar cada palabra horizontalmente
+            palabras.forEach(palabra => {
+                let placed = false;
+                let attempts = 0;
+
+                while (!placed && attempts < 50) {
+                    attempts++;
+                    let row = Math.floor(Math.random() * gridSize);
+                    let col = Math.floor(Math.random() * (gridSize - palabra.length));
+
+                    // Validar espacio
+                    let fits = true;
+                    for (let i = 0; i < palabra.length; i++) {
+                        if (grid[row][col + i] !== "" && grid[row][col + i] !== palabra[i]) {
+                            fits = false;
+                            break;
+                        }
+                    }
+
+                    if (!fits) continue;
+
+                    // Colocar
+                    for (let i = 0; i < palabra.length; i++) {
+                        grid[row][col + i] = palabra[i];
+                    }
+                    placed = true;
+                }
+            });
+
+            // Rellenar espacios vacíos
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (grid[i][j] === "") {
+                        grid[i][j] = letters[Math.floor(Math.random() * letters.length)];
+                    }
+                }
+            }
+
+            // Renderizar al abrir el modal
+            document.getElementById("modalSopa").addEventListener("shown.bs.modal", () => {
+                const container = document.getElementById("sopaContainer");
+                container.innerHTML = "";
+
+                grid.forEach(row => {
+                    row.forEach(letter => {
+                        const cell = document.createElement("div");
+                        cell.classList =
+                            "w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded";
+                        cell.textContent = letter;
+                        container.appendChild(cell);
+                    });
+                });
+            });
+
+        });
+    </script>
+
+    <!-- Bootstrap JS for Modals (if not already included in Layout) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+}
