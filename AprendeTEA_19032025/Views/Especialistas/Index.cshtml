@@ -1,0 +1,222 @@
+@model Especialista
+
+@{
+    ViewData["Title"] = "Gestión de Especialistas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Header con Logo -->
+<div class="mb-4 mb-md-5 d-flex flex-column align-items-center pt-4">
+    <div class="hero-title-container mb-3 d-flex align-items-center gap-2 gap-md-3">
+        <img src="~/img/logo.png"
+             alt="Logo Neuro Pro"
+             class="hero-logo"
+             style="width: 3rem; height: 3rem; object-fit: contain;"
+             onerror="this.style.display='none';" />
+
+        <h2 class="display-5 display-md-4 m-0 fw-bold text-adaptive">
+            NEURO PRO
+        </h2>
+    </div>
+    <h3 class="h5 h4-md fw-semibold text-adaptive-inverse text-center px-3" style="max-width: 600px;">
+        Rutas de Consciencia y Neurodiversidad
+    </h3>
+</div>
+
+<div class="container my-4 my-md-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-4">
+        <h2 class="h3 h2-md fw-bold neuropro-title mb-0">
+            <i data-lucide="users" class="me-2" style="width: 28px; height: 28px;"></i>
+            Especialistas TEA
+        </h2>
+        <a asp-action="Form" asp-controller="Especialistas" class="btn btn-alef-submit py-2 px-4 d-flex align-items-center gap-2 shadow">
+            <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
+            Nuevo Especialista
+        </a>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <i data-lucide="info" style="width: 18px; height: 18px;" class="me-2"></i>
+            @TempData["Mensaje"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card-bg rounded-3 shadow-sm p-3 p-md-4">
+        @if (Model.Especialistas != null && Model.Especialistas.Any())
+        {
+            <!-- Desktop Table View -->
+            <div class="d-none d-lg-block">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th scope="col" class="text-center text-body-custom" style="width: 80px;">Foto</th>
+                                <th scope="col" class="text-body-custom">Nombre Completo</th>
+                                <th scope="col" class="text-body-custom">Email</th>
+                                <th scope="col" class="text-body-custom">Teléfono</th>
+                                <th scope="col" class="text-body-custom">Municipio</th>
+                                <th scope="col" class="text-center text-body-custom" style="width: 120px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Especialistas)
+                            {
+                                var especialista = (Especialista)item;
+                                <tr>
+                                    <td class="text-center">
+                                        @if (!string.IsNullOrEmpty(especialista.FotografiaBase64))
+                                        {
+                                            <img src="@especialista.FotografiaBase64" 
+                                                 alt="Foto de @especialista.NombreCompleto" 
+                                                 class="rounded-circle object-fit-cover"
+                                                 style="width: 50px; height: 50px;" />
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle bg-alef-primary-subtle d-flex align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px;">
+                                                <i data-lucide="user" class="text-alef-primary" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td class="fw-semibold text-body-custom">@especialista.NombreCompleto</td>
+                                    <td class="text-muted-custom">
+                                        @if (!string.IsNullOrEmpty(especialista.Email))
+                                        {
+                                            <a href="mailto:@especialista.Email" class="text-decoration-none">
+                                                <i data-lucide="mail" style="width: 14px; height: 14px;" class="me-1"></i>
+                                                @especialista.Email
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td class="text-muted-custom">
+                                        @if (!string.IsNullOrEmpty(especialista.Telefono))
+                                        {
+                                            <i data-lucide="phone" style="width: 14px; height: 14px;" class="me-1"></i>
+                                            @especialista.Telefono
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td class="text-muted-custom">
+                                        @if (!string.IsNullOrEmpty(especialista.Municipio))
+                                        {
+                                            <i data-lucide="map-pin" style="width: 14px; height: 14px;" class="me-1"></i>
+                                            @especialista.Municipio
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="Form" 
+                                           asp-controller="Especialistas" 
+                                           asp-route-IdEspecialista="@especialista.IdEspecialista"
+                                           class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                                           title="Ver y editar">
+                                            <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
+                                            Ver
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="d-lg-none">
+                @foreach (var item in Model.Especialistas)
+                {
+                    var especialista = (Especialista)item;
+                    <div class="card mb-3 border-0 shadow-sm card-bg">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="flex-shrink-0">
+                                    @if (!string.IsNullOrEmpty(especialista.FotografiaBase64))
+                                    {
+                                        <img src="@especialista.FotografiaBase64" 
+                                             alt="Foto de @especialista.NombreCompleto" 
+                                             class="rounded-circle object-fit-cover"
+                                             style="width: 60px; height: 60px;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="rounded-circle bg-alef-primary-subtle d-flex align-items-center justify-content-center"
+                                             style="width: 60px; height: 60px;">
+                                            <i data-lucide="user" class="text-alef-primary" style="width: 28px; height: 28px;"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold text-body-custom mb-2">@especialista.NombreCompleto</h6>
+                                    
+                                    @if (!string.IsNullOrEmpty(especialista.Email))
+                                    {
+                                        <div class="small text-muted-custom mb-1">
+                                            <i data-lucide="mail" style="width: 12px; height: 12px;" class="me-1"></i>
+                                            <a href="mailto:@especialista.Email" class="text-decoration-none">@especialista.Email</a>
+                                        </div>
+                                    }
+                                    
+                                    @if (!string.IsNullOrEmpty(especialista.Telefono))
+                                    {
+                                        <div class="small text-muted-custom mb-1">
+                                            <i data-lucide="phone" style="width: 12px; height: 12px;" class="me-1"></i>
+                                            @especialista.Telefono
+                                        </div>
+                                    }
+                                    
+                                    @if (!string.IsNullOrEmpty(especialista.Municipio))
+                                    {
+                                        <div class="small text-muted-custom mb-2">
+                                            <i data-lucide="map-pin" style="width: 12px; height: 12px;" class="me-1"></i>
+                                            @especialista.Municipio
+                                        </div>
+                                    }
+                                    
+                                    <a asp-action="Form" 
+                                       asp-controller="Especialistas" 
+                                       asp-route-IdEspecialista="@especialista.IdEspecialista"
+                                       class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 w-100 justify-content-center">
+                                        <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
+                                        Ver Detalles
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state-box">
+                <i data-lucide="users" style="width: 64px; height: 64px;" class="text-muted-custom mx-auto d-block mb-3"></i>
+                <h4 class="text-muted-custom">No hay especialistas registrados</h4>
+                <p class="text-muted-custom">Haz clic en "Nuevo Especialista" para agregar el primero.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+}
