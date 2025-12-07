@@ -82,7 +82,7 @@ namespace AprendeTEA_19032025.Controllers
 
         // Save (Insert/Update)
         [HttpPost]
-        [RequestSizeLimit(10_485_760)] // 10 MB
+        [RequestSizeLimit(10_485_760)] 
         [RequestFormLimits(MultipartBodyLengthLimit = 10_485_760)] // 10 MB
         public async Task<IActionResult> Form(Models.Especialista especialista, IFormFile? FotografiaFile)
         {
