@@ -1,0 +1,334 @@
+@model AprendeTEA_19032025.Models.CalificacionDetalle
+
+@{
+    ViewData["Title"] = "Mi Progreso";
+    var nombreCompleto = Model.NombreCompleto ?? "Usuario";
+}
+
+<!-- Contenido Principal del Dashboard -->
+<section id="progreso">
+    <!-- Título centrado como en PlanTrabajo -->
+    <div class="mb-4 mb-md-5 d-flex flex-column align-items-center pt-4">
+        <div class="hero-title-container mb-3 d-flex align-items-center gap-2 gap-md-3">
+            <img src="~/img/logo.png"
+                 alt="Logo Neuro Pro"
+                 class="hero-logo"
+                 style="width: 3rem; height: 3rem; object-fit: contain;"
+                 onerror="this.style.display='none';" />
+            <h2 class="display-5 display-md-4 m-0 fw-bold text-adaptive">
+                NEURO PRO
+            </h2>
+        </div>
+    </div>
+
+    <!-- Título del Dashboard de Usuario -->
+    <h1 class="h2 fw-bold text-center mb-2 neuropro-title">
+        Mi Progreso: @nombreCompleto
+    </h1>
+    <p class="lead text-center text-body-custom mb-5">
+        Resumen de tus avances y desempeño en las actividades de Neuro Pro.
+    </p>
+
+    <!-- Tarjetas Resumen (2 tarjetas) -->
+    <div class="row g-4 mb-5">
+        <!-- Promedio de Calificación -->
+        <div class="col-md-6">
+            <div class="card card-bg border-0 shadow-sm p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted-custom mb-1 small fw-medium">Promedio de Calificación</p>
+                        <h3 id="average-score" class="text-alef-blue fw-bold mb-0 display-6">--</h3>
+                    </div>
+                    <i class="fas fa-chart-line text-alef-blue" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Promedio de Tiempo por Unidad -->
+        <div class="col-md-6">
+            <div class="card card-bg border-0 shadow-sm p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted-custom mb-1 small fw-medium">Promedio de Tiempo por Unidad</p>
+                        <h3 id="average-time" class="text-alef-red fw-bold mb-0 display-6">-- min</h3>
+                    </div>
+                    <i class="fas fa-clock text-alef-red" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row g-4 mb-5">
+        <!-- Gráfico de Promedio de Calificaciones -->
+        <div class="col-lg-6">
+            <div class="card card-bg border-0 shadow-sm p-4" style="height: 400px;">
+                <h5 class="fw-semibold mb-3 neuropro-title">
+                    Promedio de Calificaciones por Unidad
+                </h5>
+                <div style="position: relative; height: calc(100% - 40px);">
+                    <canvas id="chart-calificaciones"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gráfico de Promedio de Tiempo -->
+        <div class="col-lg-6">
+            <div class="card card-bg border-0 shadow-sm p-4" style="height: 400px;">
+                <h5 class="fw-semibold mb-3 neuropro-title">
+                    Promedio de Tiempo Dedicado por Unidad (min)
+                </h5>
+                <div style="position: relative; height: calc(100% - 40px);">
+                    <canvas id="chart-tiempo"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Resultados -->
+    <div class="card card-bg border-0 shadow-sm p-4">
+        <h5 class="fw-semibold mb-4 neuropro-title">
+            Historial Detallado de Actividades
+        </h5>
+        
+        @if (Model.Calificaciones != null && Model.Calificaciones.Any())
+        {
+            <!-- Desktop Table View -->
+            <div class="d-none d-lg-block">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th scope="col" class="text-body-custom fw-semibold">Unidad</th>
+                                <th scope="col" class="text-body-custom fw-semibold">Tiempo (min)</th>
+                                <th scope="col" class="text-body-custom fw-semibold">Calificación</th>
+                                <th scope="col" class="text-body-custom fw-semibold">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Calificaciones)
+                            {
+                                var scoreClass = item.Calificacion >= 9 ? "text-success fw-bold" :
+                                                item.Calificacion >= 7 ? "text-warning" :
+                                                "text-danger";
+                                
+                                <tr>
+                                    <td class="text-body-custom fw-medium">
+                                        <i data-lucide="book-open" style="width: 14px; height: 14px;" class="me-1"></i>
+                                        @item.Unidad
+                                    </td>
+                                    <td class="text-muted-custom">
+                                        <i data-lucide="clock" style="width: 14px; height: 14px;" class="me-1"></i>
+                                        @(item.TiempoDedicado?.ToString("F2") ?? "0.00")
+                                    </td>
+                                    <td class="@scoreClass">
+                                        <i data-lucide="star" style="width: 14px; height: 14px;" class="me-1"></i>
+                                        @(item.Calificacion?.ToString("F2") ?? "0.00")
+                                    </td>
+                                    <td class="text-muted-custom">
+                                        <i data-lucide="calendar" style="width: 14px; height: 14px;" class="me-1"></i>
+                                        @item.FechaRegistro?.ToString("yyyy-MM-dd")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="d-lg-none">
+                @foreach (var item in Model.Calificaciones)
+                {
+                    var scoreClass = item.Calificacion >= 9 ? "text-success fw-bold" :
+                                    item.Calificacion >= 7 ? "text-warning" :
+                                    "text-danger";
+                    var scoreBg = item.Calificacion >= 9 ? "bg-success bg-opacity-10" :
+                                 item.Calificacion >= 7 ? "bg-warning bg-opacity-10" :
+                                 "bg-danger bg-opacity-10";
+                    
+                    <div class="card mb-3 border-0 shadow-sm card-bg">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold text-body-custom mb-0">
+                                    <i data-lucide="book-open" style="width: 14px; height: 14px;" class="me-1"></i>
+                                    @item.Unidad
+                                </h6>
+                                <span class="badge @scoreBg @scoreClass px-2 py-1 rounded-pill">
+                                    @(item.Calificacion?.ToString("F2") ?? "0.00")
+                                </span>
+                            </div>
+                            
+                            <div class="d-flex flex-wrap gap-3 small text-muted-custom">
+                                <div>
+                                    <i data-lucide="clock" style="width: 12px; height: 12px;" class="me-1"></i>
+                                    @(item.TiempoDedicado?.ToString("F2") ?? "0.00") min
+                                </div>
+                                <div>
+                                    <i data-lucide="calendar" style="width: 12px; height: 12px;" class="me-1"></i>
+                                    @item.FechaRegistro?.ToString("yyyy-MM-dd")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i data-lucide="clipboard-list" style="width: 64px; height: 64px;" class="text-muted-custom mx-auto d-block mb-3"></i>
+                <h4 class="text-muted-custom">No hay registros</h4>
+                <p class="text-muted-custom">Aún no hay actividades completadas para mostrar.</p>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Inicializar iconos Lucide
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+
+        // Datos desde el servidor
+        const data = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+            (Model.Calificaciones ?? new List<AprendeTEA_19032025.Models.CalificacionDetalle>())
+            .Select(c => new {
+                unidad = c.Unidad ?? "Sin Unidad",
+                tiempo = c.TiempoDedicado ?? 0,
+                calificacion = c.Calificacion ?? 0
+            }).ToList()
+        ));
+
+        console.log("📊 Datos cargados:", data);
+
+        // Calcular resumen
+        const total = data.length;
+        const totalScore = data.reduce((sum, x) => sum + x.calificacion, 0);
+        const avgScore = total === 0 ? 0 : (totalScore / total).toFixed(2);
+        
+        const totalTime = data.reduce((sum, x) => sum + x.tiempo, 0);
+        const avgTime = total === 0 ? 0 : (totalTime / total).toFixed(2);
+
+        document.getElementById("average-score").innerText = avgScore;
+        document.getElementById("average-time").innerText = avgTime + " min";
+
+        // Promedios por unidad
+        const grouped = {};
+        data.forEach(x => {
+            if (!grouped[x.unidad]) {
+                grouped[x.unidad] = { totalScore: 0, totalTime: 0, count: 0 };
+            }
+            grouped[x.unidad].totalScore += x.calificacion;
+            grouped[x.unidad].totalTime += x.tiempo;
+            grouped[x.unidad].count++;
+        });
+
+        const labels = Object.keys(grouped);
+        const avgScores = labels.map(u => (grouped[u].totalScore / grouped[u].count).toFixed(2));
+        const avgTimes = labels.map(u => (grouped[u].totalTime / grouped[u].count).toFixed(2));
+
+        // Detectar modo oscuro
+        const isDark = document.body.classList.contains('dark-mode');
+        const textColor = isDark ? '#ccc' : '#333';
+        const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+
+        // Gráfica de Calificaciones (Barras)
+        const barColors = avgScores.map(score => {
+            if (score >= 9) return 'rgba(136, 212, 142, 0.8)';
+            if (score >= 7) return 'rgba(255, 165, 0, 0.8)';
+            return 'rgba(227, 136, 136, 0.8)';
+        });
+
+        new Chart(document.getElementById("chart-calificaciones"), {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Promedio de Calificación",
+                    data: avgScores,
+                    backgroundColor: barColors,
+                    borderColor: barColors.map(c => c.replace('0.8', '1')),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
+                    },
+                    x: {
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Promedio: ' + context.parsed.y;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de Tiempo (Línea)
+        new Chart(document.getElementById("chart-tiempo"), {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Promedio de Tiempo (min)",
+                    data: avgTimes,
+                    borderColor: 'rgba(114, 155, 255, 1)',
+                    backgroundColor: 'rgba(114, 155, 255, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
+                    },
+                    x: {
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Promedio: ' + context.parsed.y + ' min';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}

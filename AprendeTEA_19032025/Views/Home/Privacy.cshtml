@@ -1,6 +1,255 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewBag.Title = "Política de Privacidad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="mb-4 mb-md-5 d-flex flex-column align-items-center pt-4">
+    <div class="hero-title-container mb-3 d-flex align-items-center gap-2 gap-md-3">
+        <img src="~/img/logo.png"
+             alt="Logo Neuro Pro"
+             class="hero-logo"
+             style="width: 3rem; height: 3rem; object-fit: contain;"
+             onerror="this.style.display='none';" />
+        <h2 class="display-5 display-md-4 m-0 fw-bold text-adaptive">
+            NEURO PRO
+        </h2>
+    </div>
+    <h3 class="h5 h4-md fw-semibold text-adaptive-inverse text-center px-3" style="max-width: 600px;">
+        Rutas de Consciencia y Neurodiversidad
+    </h3>
+</div>
+
+<div class="container my-4" style="max-width: 900px;">
+    <header class="mb-5 border-bottom border-4 border-alef-primary pb-3 text-center opacity-75">
+        <h1 class="h2 fw-bold mb-2 neuropro-title d-flex align-items-center justify-content-center gap-2">
+            @* <i data-lucide="shield-check" style="width: 32px; height: 32px;"></i> *@
+            <span>Política de Privacidad</span>
+        </h1>
+        <p class="lead fs-6 text-body-custom fw-medium mb-0">
+            Tu privacidad es importante para nosotros
+        </p>
+    </header>
+
+    <div class="card card-bg border-0 shadow-sm p-4 p-md-5 mb-4">
+        <section class="mb-5">
+            <p class="text-body-custom lh-lg">
+                <strong class="text-alef-primary">NeuroPro</strong> se compromete a proteger su privacidad. Esta política de privacidad explica cómo <strong class="text-alef-primary">NeuroPro</strong> recopila, usa y divulga su información personal.
+            </p>
+            <p class="text-body-custom lh-lg">
+                Esta política de privacidad se aplica a nuestra aplicación, <strong class="text-alef-primary">NeuroPro</strong>, y sus subdominios asociados (colectivamente, nuestro "servicio"). Al acceder o utilizar nuestro servicio, usted indica que ha leído, entendido y aceptado nuestra recopilación, almacenamiento, uso y divulgación de su información personal como se describe en esta política de privacidad y en nuestros términos de servicio.
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 fw-bold neuropro-title mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                <i data-lucide="book-open" class="me-2" style="width: 20px; height: 20px;"></i>
+                Definiciones y Términos Clave
+            </h2>
+            <p class="text-body-custom mb-3">Para ayudar a explicar las cosas de la manera más clara posible en esta política de privacidad:</p>
+            <ul class="list-unstyled">
+                <li class="d-flex gap-2 mb-3">
+                    <span class="badge bg-alef-primary rounded-circle p-2 flex-shrink-0" style="width: 8px; height: 8px;"></span>
+                    <div><strong class="text-alef-secondary">Cookie:</strong> <span class="text-muted-custom">Pequeña cantidad de datos generados por un sitio web y guardados por su navegador web.</span></div>
+                </li>
+                <li class="d-flex gap-2 mb-3">
+                    <span class="badge bg-alef-primary rounded-circle p-2 flex-shrink-0" style="width: 8px; height: 8px;"></span>
+                    <div><strong class="text-alef-secondary">Compañía:</strong> <span class="text-muted-custom">Cuando esta política menciona "compañía", "nosotros", "nos" o "nuestro", se refiere a NeuroPro.</span></div>
+                </li>
+                <li class="d-flex gap-2 mb-3">
+                    <span class="badge bg-alef-primary rounded-circle p-2 flex-shrink-0" style="width: 8px; height: 8px;"></span>
+                    <div><strong class="text-alef-secondary">Plataforma:</strong> <span class="text-muted-custom">Sitio web de Internet, aplicación web o aplicación digital de cara al público de NeuroPro.</span></div>
+                </li>
+                <li class="d-flex gap-2 mb-3">
+                    <span class="badge bg-alef-primary rounded-circle p-2 flex-shrink-0" style="width: 8px; height: 8px;"></span>
+                    <div><strong class="text-alef-secondary">País:</strong> <span class="text-muted-custom">Donde se encuentra NeuroPro o los propietarios/fundadores, en este caso, es México.</span></div>
+                </li>
+                <li class="d-flex gap-2 mb-3">
+                    <span class="badge bg-alef-primary rounded-circle p-2 flex-shrink-0" style="width: 8px; height: 8px;"></span>
+                    <div><strong class="text-alef-secondary">Dispositivo:</strong> <span class="text-muted-custom">Cualquier dispositivo conectado a Internet, como un teléfono, tableta o computadora.</span></div>
+                </li>
+                <li class="d-flex gap-2 mb-3">
+                    <span class="badge bg-alef-primary rounded-circle p-2 flex-shrink-0" style="width: 8px; height: 8px;"></span>
+                    <div><strong class="text-alef-secondary">Datos Personales:</strong> <span class="text-muted-custom">Cualquier información que permita la identificación de una persona física.</span></div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 fw-bold neuropro-title mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                <i data-lucide="database" class="me-2" style="width: 20px; height: 20px;"></i>
+                ¿Qué información recopilamos?
+            </h2>
+            <p class="text-body-custom mb-3">Recopilamos información suya cuando visita nuestra plataforma, se registra en nuestro sitio o completa un formulario:</p>
+            <div class="row g-2">
+                <div class="col-6 col-md-4">
+                    <div class="d-flex align-items-center gap-2 p-2 rounded bg-alef-primary bg-opacity-10">
+                        <i data-lucide="user" style="width: 16px; height: 16px;" class="text-alef-primary"></i>
+                        <span class="small text-body-custom">Nombre/usuario</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="d-flex align-items-center gap-2 p-2 rounded bg-alef-primary bg-opacity-10">
+                        <i data-lucide="phone" style="width: 16px; height: 16px;" class="text-alef-primary"></i>
+                        <span class="small text-body-custom">Teléfono</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="d-flex align-items-center gap-2 p-2 rounded bg-alef-primary bg-opacity-10">
+                        <i data-lucide="mail" style="width: 16px; height: 16px;" class="text-alef-primary"></i>
+                        <span class="small text-body-custom">Correo electrónico</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="d-flex align-items-center gap-2 p-2 rounded bg-alef-primary bg-opacity-10">
+                        <i data-lucide="map-pin" style="width: 16px; height: 16px;" class="text-alef-primary"></i>
+                        <span class="small text-body-custom">Dirección</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="d-flex align-items-center gap-2 p-2 rounded bg-alef-primary bg-opacity-10">
+                        <i data-lucide="calendar" style="width: 16px; height: 16px;" class="text-alef-primary"></i>
+                        <span class="small text-body-custom">Edad</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="d-flex align-items-center gap-2 p-2 rounded bg-alef-primary bg-opacity-10">
+                        <i data-lucide="lock" style="width: 16px; height: 16px;" class="text-alef-primary"></i>
+                        <span class="small text-body-custom">Contraseña</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 fw-bold neuropro-title mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                <i data-lucide="settings" class="me-2" style="width: 20px; height: 20px;"></i>
+                ¿Cómo usamos la información que recopilamos?
+            </h2>
+            <ul class="list-unstyled">
+                <li class="d-flex gap-2 mb-2">
+                    <i data-lucide="check-circle" style="width: 18px; height: 18px;" class="text-success flex-shrink-0 mt-1"></i>
+                    <span class="text-body-custom">Para personalizar su experiencia</span>
+                </li>
+                <li class="d-flex gap-2 mb-2">
+                    <i data-lucide="check-circle" style="width: 18px; height: 18px;" class="text-success flex-shrink-0 mt-1"></i>
+                    <span class="text-body-custom">Para mejorar nuestra plataforma</span>
+                </li>
+                <li class="d-flex gap-2 mb-2">
+                    <i data-lucide="check-circle" style="width: 18px; height: 18px;" class="text-success flex-shrink-0 mt-1"></i>
+                    <span class="text-body-custom">Para mejorar el servicio al cliente</span>
+                </li>
+                <li class="d-flex gap-2 mb-2">
+                    <i data-lucide="check-circle" style="width: 18px; height: 18px;" class="text-success flex-shrink-0 mt-1"></i>
+                    <span class="text-body-custom">Para procesar transacciones</span>
+                </li>
+                <li class="d-flex gap-2 mb-2">
+                    <i data-lucide="check-circle" style="width: 18px; height: 18px;" class="text-success flex-shrink-0 mt-1"></i>
+                    <span class="text-body-custom">Para enviar correos electrónicos periódicos</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 fw-bold neuropro-title mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                <i data-lucide="shield" class="me-2" style="width: 20px; height: 20px;"></i>
+                ¿Cómo protegemos su información?
+            </h2>
+            <div class="card card-bg border-0 shadow-sm p-3">
+                <div class="d-flex gap-3">
+                    <i data-lucide="lock" style="width: 24px; height: 24px;" class="text-alef-primary flex-shrink-0"></i>
+                    <p class="text-body-custom mb-0 lh-lg">
+                        Implementamos una variedad de medidas de seguridad para mantener la seguridad de su información personal. Ofrecemos el uso de un servidor seguro y toda la información confidencial se transmite a través de tecnología Secure Socket Layer (SSL) y luego se encripta en nuestra base de datos.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 fw-bold neuropro-title mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                <i data-lucide="user-check" class="me-2" style="width: 20px; height: 20px;"></i>
+                Sus Derechos
+            </h2>
+            <p class="text-body-custom mb-3">Puede comunicarse con nosotros para:</p>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card card-bg border-0 shadow-sm h-100 p-3 text-center">
+                        <i data-lucide="edit" style="width: 32px; height: 32px;" class="text-alef-primary mx-auto mb-2"></i>
+                        <span class="small fw-medium text-body-custom">Actualizar o corregir su información</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-bg border-0 shadow-sm h-100 p-3 text-center">
+                        <i data-lucide="settings" style="width: 32px; height: 32px;" class="text-alef-primary mx-auto mb-2"></i>
+                        <span class="small fw-medium text-body-custom">Cambiar sus preferencias</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-bg border-0 shadow-sm h-100 p-3 text-center">
+                        <i data-lucide="trash-2" style="width: 32px; height: 32px;" class="text-alef-primary mx-auto mb-2"></i>
+                        <span class="small fw-medium text-body-custom">Eliminar su información</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 fw-bold neuropro-title mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                <i data-lucide="cookie" class="me-2" style="width: 20px; height: 20px;"></i>
+                Cookies
+            </h2>
+            <p class="text-body-custom lh-lg">
+                <strong class="text-alef-primary">NeuroPro</strong> utiliza "cookies" para identificar las áreas de nuestro sitio web que ha visitado. Una cookie es una pequeña porción de datos que su navegador web almacena en su computadora o dispositivo móvil. Usamos cookies para mejorar el rendimiento y la funcionalidad de nuestra plataforma.
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 fw-bold neuropro-title mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                <i data-lucide="baby" class="me-2" style="width: 20px; height: 20px;"></i>
+                Privacidad de los Niños
+            </h2>
+            <div class="card card-bg border-0 shadow-sm p-3">
+                <p class="text-body-custom mb-0 lh-lg">
+                    Recopilamos información de niños menores de 13 años solo para mejorar nuestros servicios. Si usted es padre o tutor y sabe que su hijo nos ha proporcionado datos personales sin su permiso, comuníquese con nosotros.
+                </p>
+            </div>
+        </section>
+
+        <section class="mb-4">
+            <h2 class="h4 fw-bold neuropro-title mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                <i data-lucide="mail" class="me-2" style="width: 20px; height: 20px;"></i>
+                Contáctenos
+            </h2>
+            <p class="text-body-custom mb-3">No dude en contactarnos si tiene alguna pregunta:</p>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-3 p-3 rounded bg-alef-primary bg-opacity-10">
+                        <i data-lucide="mail" style="width: 24px; height: 24px;" class="text-alef-primary"></i>
+                        <div>
+                            <small class="text-muted-custom d-block">Correo electrónico</small>
+                            <a href="mailto:neuropro07@gmail.com" class="fw-medium text-decoration-none">neuropro07@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-3 p-3 rounded bg-alef-secondary bg-opacity-10">
+                        <i data-lucide="phone" style="width: 24px; height: 24px;" class="text-alef-secondary"></i>
+                        <div>
+                            <small class="text-muted-custom d-block">Teléfono</small>
+                            <a href="tel:5549595108" class="fw-medium text-decoration-none">55 4959 5108</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+}
