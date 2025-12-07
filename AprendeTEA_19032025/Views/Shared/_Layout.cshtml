@@ -60,24 +60,30 @@
                 </a>
             </li>
 
-            <li class="list @IsActive("Home", "MisionVision")" style="--clr: #88d48e">
+            <li class="list @IsActive("especialistas", "Index")" style="--clr: #88d48e">
                 <a asp-controller="especialistas" asp-action="Index">
                     <span class="icon"><ion-icon name="compass-outline"></ion-icon></span>
                     <span class="text">Especialistas</span>
                 </a>
             </li>
 
-            <li class="list @IsActive("Home", "Valores")" style="--clr: #b2a1ff">
+            <li class="list @IsActive("especialistas", "catalogo")" style="--clr: #b2a1ff">
                 <a asp-controller="especialistas" asp-action="catalogo">
                     <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
                     <span class="text">Especialistas Clientes</span>
                 </a>
             </li>
 
-            <li class="list @IsActive("Home", "Historia")" style="--clr: #09cbb4">
-                <a asp-controller="Home" asp-action="Historia">
+            <li class="list @IsActive("Calificaciones", "Index")" style="--clr: #09cbb4">
+                <a asp-controller="Calificaciones" asp-action="Index">
                     <span class="icon"><ion-icon name="time-outline"></ion-icon></span>
-                    <span class="text">Historia</span>
+                    <span class="text">Historial</span>
+                </a>
+            </li>
+            <li class="list @IsActive("Home", "Privacy")" style="--clr: #09cbb4">
+                <a asp-controller="Home" asp-action="Privacy">
+                    <span class="icon"><ion-icon name="time-outline"></ion-icon></span>
+                    <span class="text">Historial</span>
                 </a>
             </li>
 

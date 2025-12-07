@@ -742,3 +742,225 @@ body.dark-mode .navigation ul li a .icon {
 body.dark-mode .navigation ul li.active a .icon {
     color: #ffffff !important;
 }
+
+/* ========================================
+   DASHBOARD CALIFICACIONES STYLES
+   ======================================== */
+
+/* Dashboard Body */
+.dashboard-body {
+    background-color: #f9fafb;
+}
+
+body.dark-mode .dashboard-body {
+    background-color: #111827;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 120px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    transition: margin-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    font-family: "Inter", sans-serif;
+}
+
+.main-title-container {
+    font-family: "Inter", sans-serif;
+}
+
+.main-title {
+    color: #729bff;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+body.dark-mode .main-title {
+    color: #e38888;
+    filter: drop-shadow(0 2px 4px rgba(227, 136, 136, 0.4));
+}
+
+.hero-title-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hero-logo {
+    height: 48px;
+    width: auto;
+}
+
+/* Stat Cards */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(114, 155, 255, 0.2);
+}
+
+body.dark-mode .card {
+    background-color: #1f2937;
+    color: #f9fafb;
+}
+
+.stat-card-blue {
+    background-color: #e0f2fe;
+    border-color: #729bff;
+}
+
+.stat-card-green {
+    background-color: #d1fae5;
+    border-color: #88d48e;
+}
+
+.stat-card-red {
+    background-color: #fee2e2;
+    border-color: #e38888;
+}
+
+body.dark-mode .stat-card-blue,
+body.dark-mode .stat-card-green,
+body.dark-mode .stat-card-red {
+    background-color: #374151;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .stat-card-blue .text-alef-blue {
+    color: #729bff !important;
+}
+
+body.dark-mode .stat-card-green .text-alef-green {
+    color: #88d48e !important;
+}
+
+body.dark-mode .stat-card-red .text-alef-red {
+    color: #e38888 !important;
+}
+
+/* Content Shadow */
+.content-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+body.dark-mode .content-shadow {
+    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.05),
+        0 2px 4px -2px rgba(255, 255, 255, 0.03);
+}
+
+/* Social Buttons */
+.social-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.social-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    text-decoration: none;
+    border-radius: 50%;
+    background: #fff;
+    text-align: center;
+    transition: transform 0.3s ease-out;
+}
+
+body.dark-mode .social-button {
+    background: #1f2937;
+}
+
+.social-button::after {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    display: block;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.social-button:focus,
+.social-button:hover {
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+.social-button:focus::after,
+.social-button:hover::after {
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    margin-left: calc(-50% - 2px);
+}
+
+.social-button ion-icon {
+    position: relative;
+    z-index: 1;
+    transition: 0.3s;
+    font-size: 1.5rem;
+}
+
+.social-button--facebook {
+    color: #3b5999;
+}
+
+.social-button--facebook::after {
+    background: #3b5999;
+}
+
+.social-button--twitter {
+    color: #55acee;
+}
+
+.social-button--twitter::after {
+    background: #55acee;
+}
+
+.social-button--instagram {
+    color: #e4405f;
+}
+
+.social-button--instagram::after {
+    background: #e4405f;
+}
+
+.social-button--linkedin {
+    color: #0077b5;
+}
+
+.social-button--linkedin::after {
+    background: #0077b5;
+}
+
+.social-button--mail {
+    color: #e38888;
+}
+
+.social-button--mail::after {
+    background: #e38888;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .main-content.menu-shifted {
+        transform: translateX(270px);
+    }
+}
