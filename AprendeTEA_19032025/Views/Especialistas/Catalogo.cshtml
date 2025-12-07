@@ -1,0 +1,322 @@
+@model Especialista
+
+@{
+    ViewData["Title"] = "Catálogo de Especialistas TEA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Catalog-specific styles */
+    .specialist-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+        .specialist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.2);
+        }
+
+    body.dark-mode .specialist-card {
+        background-color: #374151;
+        border: 1px solid #4b5563;
+    }
+
+        body.dark-mode .specialist-card:hover {
+            border-color: var(--alef-primary);
+        }
+
+    .profile-section {
+        border: 1px solid rgba(114, 155, 255, 0.3);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark-mode .profile-section {
+        border: 1px solid rgba(227, 136, 136, 0.3);
+        box-shadow: inset 0 1px 3px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .profile-section h4 {
+        color: #729bff;
+    }
+
+    body.dark-mode .profile-section h4 {
+        color: #e38888;
+    }
+</style>
+
+<!-- Header con Logo -->
+<div class="mb-4 mb-md-5 d-flex flex-column align-items-center pt-4">
+    <div class="hero-title-container mb-3 d-flex align-items-center gap-2 gap-md-3">
+        <img src="~/img/logo.png"
+             alt="Logo Neuro Pro"
+             class="hero-logo"
+             style="width: 3rem; height: 3rem; object-fit: contain;"
+             onerror="this.style.display='none';" />
+
+        <h2 class="display-5 display-md-4 m-0 fw-bold text-adaptive">
+            NEURO PRO
+        </h2>
+    </div>
+    <h3 class="h5 h4-md fw-semibold text-adaptive-inverse text-center px-3" style="max-width: 600px;">
+        Rutas de Consciencia y Neurodiversidad
+    </h3>
+</div>
+
+<div class="container my-4 my-md-5">
+    <div class="text-center mb-4 mb-md-5">
+        <h2 class="h3 h2-md fw-bold neuropro-title mb-3">
+            <i data-lucide="users" class="me-2" style="width: 36px; height: 36px;"></i>
+            Catálogo de Especialistas
+        </h2>
+        <p class="h5 h6-sm text-alef-secondary mb-2">
+            Trastorno del Espectro Autista (TEA)
+        </p>
+        <p class="text-muted-custom mt-2 px-3">
+            Encuentra profesionales verificados para apoyo y acompañamiento integral.
+        </p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-8">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-white border-end-0">
+                    <i data-lucide="search" style="width: 20px; height: 20px;"></i>
+                </span>
+                <input type="text" 
+                       id="search-input" 
+                       class="form-control border-start-0 custom-input" 
+                       placeholder="Buscar por nombre o especialidad..." />
+                <button id="clear-search-button" class="btn btn-outline-secondary" type="button">
+                    <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                    Limpiar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Specialists Grid -->
+    <div id="specialists-grid" class="row g-4">
+        @if (Model.Especialistas != null && Model.Especialistas.Any())
+        {
+            foreach (var item in Model.Especialistas)
+            {
+                var especialista = (Especialista)item;
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 specialist-item" 
+                     data-name="@especialista.NombreCompleto.ToLower()" 
+                     data-email="@(especialista.Email?.ToLower() ?? "")">
+                    <div class="card specialist-card h-100 card-bg border-0 shadow-sm">
+                        <div class="card-body text-center p-3 p-md-4 d-flex flex-column">
+                            @if (!string.IsNullOrEmpty(especialista.FotografiaBase64))
+                            {
+                                <img src="@especialista.FotografiaBase64" 
+                                     alt="Foto de @especialista.NombreCompleto"
+                                     class="rounded-circle object-fit-cover mb-3 border border-3 border-alef-primary mx-auto"
+                                     style="width: 100px; height: 100px;" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-alef-primary-subtle d-inline-flex align-items-center justify-content-center mb-3 border border-3 border-alef-primary mx-auto"
+                                     style="width: 100px; height: 100px;">
+                                    <i data-lucide="user" class="text-alef-primary" style="width: 48px; height: 48px;"></i>
+                                </div>
+                            }
+                            <h5 class="fw-bold text-body-custom mb-1">@especialista.NombreCompleto</h5>
+                            <p class="text-alef-primary fw-semibold mb-2 small">Especialista en TEA</p>
+                            @if (!string.IsNullOrEmpty(especialista.Municipio))
+                            {
+                                <p class="text-muted-custom small mb-3">
+                                    <i data-lucide="map-pin" style="width: 12px; height: 12px;" class="me-1"></i>
+                                    @especialista.Municipio
+                                </p>
+                            }
+                            <a asp-action="Card" 
+                               asp-controller="Especialistas"
+                               asp-route-IdEspecialista="@especialista.IdEspecialista"
+                               class="btn btn-outline-primary btn-sm mt-auto w-100">
+                                <i data-lucide="eye" style="width: 14px; height: 14px;" class="me-1"></i>
+                                Ver Más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="empty-state-box">
+                    <i data-lucide="users" style="width: 64px; height: 64px;" class="text-muted-custom mx-auto d-block mb-3"></i>
+                    <h4 class="text-muted-custom">No hay especialistas disponibles</h4>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div id="no-results" class="col-12 text-center py-5 d-none">
+        <i data-lucide="search-x" style="width: 64px; height: 64px;" class="text-muted-custom mx-auto d-block mb-3"></i>
+        <p class="text-muted-custom h5">No se encontraron especialistas que coincidan con la búsqueda.</p>
+    </div>
+</div>
+
+<!-- Bootstrap Modal for Specialist Details -->
+<div class="modal fade" id="specialistModal" tabindex="-1" aria-labelledby="specialistModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content card-bg">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-4 px-md-5 pt-0">
+                <div class="text-center mb-4">
+                    <img id="modal-img" src="" alt="" class="rounded-circle object-fit-cover mb-3 border border-4 border-alef-primary shadow" style="width: 150px; height: 150px;" />
+                    <h3 id="modal-name" class="fw-bold text-body-custom mb-1"></h3>
+                    <p id="modal-specialty" class="h5 text-alef-primary mb-2">Especialista en TEA</p>
+                </div>
+
+                <div class="row g-3">
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <div class="profile-section p-3 rounded">
+                            <h4 class="h6 fw-bold mb-2 text-body-custom">
+                                <i data-lucide="mail" style="width: 16px; height: 16px;" class="me-2"></i>
+                                Email
+                            </h4>
+                            <p id="modal-email" class="mb-0 text-muted-custom"></p>
+                        </div>
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="col-md-6">
+                        <div class="profile-section p-3 rounded">
+                            <h4 class="h6 fw-bold mb-2 text-body-custom">
+                                <i data-lucide="phone" style="width: 16px; height: 16px;" class="me-2"></i>
+                                Teléfono
+                            </h4>
+                            <p id="modal-phone" class="mb-0 text-muted-custom"></p>
+                        </div>
+                    </div>
+
+                    <!-- Ubicación Completa -->
+                    <div class="col-12">
+                        <div class="profile-section p-3 rounded">
+                            <h4 class="h6 fw-bold mb-2 text-body-custom">
+                                <i data-lucide="map-pin" style="width: 16px; height: 16px;" class="me-2"></i>
+                                Ubicación
+                            </h4>
+                            <p id="modal-location" class="mb-0 text-muted-custom"></p>
+                        </div>
+                    </div>
+
+                    <!-- Fecha de Registro -->
+                    <div class="col-12">
+                        <div class="profile-section p-3 rounded">
+                            <h4 class="h6 fw-bold mb-2 text-body-custom">
+                                <i data-lucide="calendar" style="width: 16px; height: 16px;" class="me-2"></i>
+                                Fecha de Registro
+                            </h4>
+                            <p id="modal-fecha" class="mb-0 text-muted-custom"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Specialists data for modal
+        const specialistsData = @Html.Raw(Json.Serialize(Model.Especialistas?.Cast<Especialista>().ToList() ?? new List<Especialista>()));
+
+        // Bootstrap modal instance
+        let specialistModal;
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const items = document.querySelectorAll('.specialist-item');
+            let visibleCount = 0;
+
+            items.forEach(item => {
+                const name = item.dataset.name;
+                const email = item.dataset.email;
+                
+                if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                    item.style.display = '';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            const noResults = document.getElementById('no-results');
+            if (visibleCount === 0 && searchTerm !== '') {
+                noResults.classList.remove('d-none');
+            } else {
+                noResults.classList.add('d-none');
+            }
+        });
+
+        document.getElementById('clear-search-button').addEventListener('click', function() {
+            document.getElementById('search-input').value = '';
+            document.querySelectorAll('.specialist-item').forEach(item => {
+                item.style.display = '';
+            });
+            document.getElementById('no-results').classList.add('d-none');
+        });
+
+        // Load specialist data into modal
+        function loadSpecialistData(id) {
+            const specialist = specialistsData.find(s => s.IdEspecialista === id);
+            if (!specialist) return;
+
+            // Update modal content
+            const imgElement = document.getElementById('modal-img');
+            if (specialist.FotografiaBase64 && specialist.FotografiaBase64.trim() !== '') {
+                imgElement.src = specialist.FotografiaBase64;
+                imgElement.classList.remove('d-none');
+            } else {
+                imgElement.classList.add('d-none');
+            }
+            
+            document.getElementById('modal-name').textContent = specialist.NombreCompleto;
+            document.getElementById('modal-email').textContent = specialist.Email || 'No disponible';
+            document.getElementById('modal-phone').textContent = specialist.Telefono || 'No disponible';
+            
+            let location = [];
+            if (specialist.Colonia) location.push(specialist.Colonia);
+            if (specialist.Municipio) location.push(specialist.Municipio);
+            if (specialist.Estado) location.push(specialist.Estado);
+            document.getElementById('modal-location').textContent = location.join(', ') || 'No disponible';
+
+            const fecha = specialist.FechaRegistro ? new Date(specialist.FechaRegistro).toLocaleDateString('es-MX') : 'No disponible';
+            document.getElementById('modal-fecha').textContent = fecha;
+
+            // Refresh Lucide icons in modal
+            setTimeout(() => {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }, 100);
+        }
+
+        // Initialize icons on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+
+        // Refresh icons when modal is shown
+        document.getElementById('specialistModal').addEventListener('shown.bs.modal', function () {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+}
