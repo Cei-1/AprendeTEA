@@ -99,5 +99,26 @@ namespace AprendeTEA_19032025.Controllers
 
             return RedirectToAction("Index");
         }
+
+        /// <summary>
+        /// Vista de progreso del usuario en los planes de trabajo
+        /// Usa SP_Progreso_PlanesDeTrabajo
+        /// </summary>
+        /// <param name="IdUsuario">ID del usuario (default: 1 para pruebas)</param>
+        public IActionResult Progreso(int? IdUsuario)
+        {
+            // Por defecto usamos IdUsuario = 1 para pruebas
+            int userId = IdUsuario ?? 1;
+
+            Models.ProgresoPlanesTrabajo progreso = new Models.ProgresoPlanesTrabajo();
+            Models.Result result = BL.ProgresoPlanesTrabajo.GetProgresoByUsuarioId(userId);
+
+            if (result.Correct)
+            {
+                progreso.PlanesTrabajo = result.Objects?.Cast<Models.ProgresoPlanesTrabajo>().ToList();
+            }
+
+            return View(progreso);
+        }
     }
 }

@@ -15,14 +15,12 @@
             </a>
         </div>
 
-        <header class="pb-3 border-bottom border-secondary border-opacity-25 mb-4">
-            <h1 class="h2 fw-bold neuropro-title mb-2">
-                Plan de Trabajo #@ViewBag.IdPlanTrabajo
-            </h1>
-            <p class="fs-5 text-muted-custom fw-medium m-0">
-                Gestión de Unidades de Aprendizaje
-            </p>
-        </header>
+        <h1 class="h2 fw-bold neuropro-title mb-2 text-center">
+            Plan de Trabajo #@ViewBag.IdPlanTrabajo
+        </h1>
+        <p class="lead text-center text-body-custom mb-4">
+            Gestión de Unidades de Aprendizaje
+        </p>
 
         @if (TempData["Mensaje"] != null)
         {
@@ -72,7 +70,9 @@
                             </div>
 
                             <div class="w-100 w-md-auto d-flex">
-                                <a asp-action="DetalleUnidad" asp-controller="Unidad" asp-route-IdUnidad="@unidad.IdUnidad"
+                                <a asp-action="DetalleUnidad" asp-controller="Unidad" 
+                                   asp-route-IdUnidad="@unidad.IdUnidad" 
+                                   asp-route-IdUsuario="@ViewBag.IdUsuario"
                                    class="btn-alef-submit py-2 px-4 d-flex align-items-center justify-content-center w-100 text-decoration-none shadow-sm"
                                    style="font-size: 0.9rem;">
                                     <i data-lucide="eye" style="width: 16px; height: 16px;" class="me-2"></i>

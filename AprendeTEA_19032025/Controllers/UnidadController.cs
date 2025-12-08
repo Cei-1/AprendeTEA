@@ -15,9 +15,10 @@ namespace AprendeTEA_19032025.Controllers
             _unidadBL = new BL.Unidad(context);
         }
 
-        public IActionResult Index(int IdPlanTrabajo)
+        public IActionResult Index(int IdPlanTrabajo, int? IdUsuario = null)
         {
             ViewBag.IdPlanTrabajo = IdPlanTrabajo;
+            ViewBag.IdUsuario = IdUsuario;
             Models.Result result = BL.Unidad.GetByPlanTrabajo(IdPlanTrabajo);
 
             Models.Unidad unidad = new Models.Unidad();
@@ -100,19 +101,98 @@ namespace AprendeTEA_19032025.Controllers
 
 
 
-        public IActionResult DetalleUnidad(int IdUnidad)
+        public IActionResult DetalleUnidad(int IdUnidad, int? IdUsuario = null)
         {
             var result = BL.Unidad.GetByIdUnidad(IdUnidad);
 
             if (result.Correct)
             {
                 var unidad = (Models.Unidad)result.Object;
+                ViewBag.IdUsuario = IdUsuario;
+
+                if (IdUsuario != null)
+                {
+                    // Randomly select one available activity
+                    List<string> available = new List<string>();
+                    if (unidad.TieneSopaLetras) available.Add("Sopa");
+                    if (unidad.TieneRelacionar) available.Add("Relacionar");
+                    if (unidad.TieneAgrupacion) available.Add("Agrupacion");
+
+                    if (available.Count > 0)
+                    {
+                        var random = new Random();
+                        string selected = available[random.Next(available.Count)];
+
+                        // Reset tags to hide others
+                        unidad.TieneSopaLetras = selected == "Sopa";
+                        unidad.TieneRelacionar = selected == "Relacionar";
+                        unidad.TieneAgrupacion = selected == "Agrupacion";
+                        
+                        // Disable others not in the main 3 requested
+                        unidad.TieneCrucigrama = false; 
+                        unidad.TieneOrdenar = false;
+                    }
+                }
+
                 return View(unidad);
             }
             else
             {
                 TempData["Mensaje"] = "No se pudo obtener el detalle de la unidad.";
                 return RedirectToAction("Index", "PlanTrabajo");
+            }
+        }
+
+        public IActionResult SopaLetras(int IdUnidad, int? IdUsuario = null)
+        {
+            var result = BL.Unidad.GetByIdUnidad(IdUnidad);
+            if (result.Correct)
+            {
+                var unidad = (Models.Unidad)result.Object;
+                unidad.PalabrasSopa = BL.Unidad.GetSopaLetras(IdUnidad); // Explicitly use new BL method
+                ViewBag.IdUsuario = IdUsuario;
+                return View(unidad);
+            }
+            return RedirectToAction("Index", "PlanTrabajo");
+        }
+
+        public IActionResult Relacionar(int IdUnidad, int? IdUsuario = null)
+        {
+            var result = BL.Unidad.GetByIdUnidad(IdUnidad);
+            if (result.Correct)
+            {
+                var unidad = (Models.Unidad)result.Object;
+                unidad.RelacionarColumnas = BL.Unidad.GetRelacionarColumnas(IdUnidad);
+                ViewBag.IdUsuario = IdUsuario;
+                return View(unidad);
+            }
+            return RedirectToAction("Index", "PlanTrabajo");
+        }
+
+        public IActionResult Agrupacion(int IdUnidad, int? IdUsuario = null)
+        {
+            var result = BL.Unidad.GetByIdUnidad(IdUnidad);
+            if (result.Correct)
+            {
+                var unidad = (Models.Unidad)result.Object;
+                unidad.Agrupacion = BL.Unidad.GetAgrupacion(IdUnidad);
+                ViewBag.IdUsuario = IdUsuario;
+                return View(unidad);
+            }
+            return RedirectToAction("Index", "PlanTrabajo");
+        }
+
+        [HttpPost]
+        public JsonResult GuardarCalificacion([FromBody] Models.CalificacionDetalle calificacion)
+        {
+            try
+            {
+                var result = BL.Calificaciones.Insert(calificacion);
+                return Json(new { success = result.Correct, message = result.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
             }
         }
 

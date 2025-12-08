@@ -261,5 +261,88 @@ namespace AprendeTEA_19032025.BL
             return result;
         }
 
+        public static string GetSopaLetras(int IdUnidad)
+        {
+            string palabras = "";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
+                {
+                    string query = "SP_UnidadPT_GetSopaLetras";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@IdUnidad", IdUnidad);
+                        connection.Open();
+                        var result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            palabras = result.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Manejar excepción o loguear
+            }
+            return palabras;
+        }
+
+        public static string GetRelacionarColumnas(int IdUnidad)
+        {
+            string relacionar = "";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
+                {
+                    string query = "SP_UnidadPT_GetRelacionarColumnas";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@IdUnidad", IdUnidad);
+                        connection.Open();
+                        var result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            relacionar = result.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Manejar excepción
+            }
+            return relacionar;
+        }
+
+        public static string GetAgrupacion(int IdUnidad)
+        {
+            string agrupacion = "";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
+                {
+                    string query = "SP_UnidadPT_GetAgrupacion";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@IdUnidad", IdUnidad);
+                        connection.Open();
+                        var result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            agrupacion = result.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Manejar excepción
+            }
+            return agrupacion;
+        }
     }
 }
