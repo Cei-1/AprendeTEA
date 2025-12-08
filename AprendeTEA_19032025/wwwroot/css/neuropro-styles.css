@@ -1205,3 +1205,53 @@ body.dark-mode .timeline-dot {
 .dot-violet {
     background-color: var(--alef-violet-base);
 }
+
+
+/* ========================================================= */
+/* TABLAS ADAPTATIVAS (MODO OSCURO)                          */
+/* ========================================================= */
+
+.table {
+    margin-bottom: 0; /* Quitar margen inferior default */
+}
+
+    /* Encabezados de tabla */
+    .table thead th {
+        background-color: transparent;
+        border-bottom: 2px solid #e5e7eb;
+        color: #6b7280; /* Gris medio */
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    /* Celdas del cuerpo */
+    .table tbody td {
+        vertical-align: middle;
+        border-bottom: 1px solid #f3f4f6;
+        padding: 1rem 0.5rem;
+        color: #374151; /* Gris oscuro */
+    }
+
+/* --- MODO OSCURO --- */
+body.dark-mode .table thead th {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+    color: #9ca3af; /* Gris claro */
+}
+
+body.dark-mode .table tbody td {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+    color: #e5e7eb; /* Blanco suave */
+}
+
+/* Hover en filas */
+.table-hover tbody tr:hover {
+    background-color: rgba(114, 155, 255, 0.05); /* Azul muy sutil */
+}
+
+body.dark-mode .table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}

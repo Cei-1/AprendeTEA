@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Error al confirmar correo";
+}
+
+<div class="card-bg p-5 rounded-4 shadow text-center mx-auto" style="max-width: 450px;">
+    <img src="~/img/logo.png" class="mb-4" style="width: 70px;" />
+
+    <h2 class="fw-bold text-danger mb-3">No se pudo confirmar el correo ❌</h2>
+
+    <p class="text-muted mb-4">
+        El enlace es inválido o ya expiró.<br />
+        Si necesitas uno nuevo, puedes solicitarlo.
+    </p>
+
+    <a class="btn btn-alef-submit px-4 py-2" href="@Url.Action("ReenviarConfirmacion", "Login")">
+        Reenviar enlace de confirmación
+    </a>
+</div>
+

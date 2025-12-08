@@ -30,6 +30,9 @@ namespace AprendeTEA_19032025.Models
         public int IdPerfil { get; set; }
 
         // opcional, pero muy útil para claims y vistas
-        public string NombrePerfil { get; set; }
+        public string NombrePerfil { get; set; } //NombrePerfil
+
+        public string EmailConfirmToken { get; set; }
+        public DateTime? EmailConfirmTokenExpira { get; set; }
     }
 }

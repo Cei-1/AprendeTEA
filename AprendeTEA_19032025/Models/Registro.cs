@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace AprendeTEA_19032025.Models
 {
@@ -16,5 +17,8 @@ namespace AprendeTEA_19032025.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
         public string ConfirmPassword { get; set; }
+
+        public List<SelectListItem> Estados { get; set; } = new();
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model Registro
 
 @{
-    Layout = null; // Sin layout principal para evitar el menú lateral
+    Layout = null; // Mantenemos null para que no salga el menú lateral
 }
 
 <!DOCTYPE html>
@@ -13,8 +13,6 @@
     <link rel="icon" type="image/jpeg" href="~/img/logo.png" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -24,18 +22,18 @@
 
     <style>
         /* ========================================================= */
-        /* ESTILOS EXTRA PARA REGISTRO                               */
+        /* ESTILOS ESPECÍFICOS PARA REGISTRO                         */
         /* ========================================================= */
 
-        /* Contenedor del formulario con scroll personalizado */
+        /* Scroll personalizado para el formulario */
         .register-form-container {
-            max-height: 85vh; /* Altura máxima relativa a la ventana */
-            overflow-y: auto; /* Scroll vertical si es necesario */
-            scrollbar-width: thin; /* Firefox */
+            max-height: 85vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
             scrollbar-color: var(--alef-primary) transparent;
+            padding-right: 5px; /* Evita solapamiento con contenido */
         }
 
-            /* Scrollbar Webkit (Chrome, Edge, Safari) */
             .register-form-container::-webkit-scrollbar {
                 width: 6px;
             }
@@ -49,7 +47,7 @@
                 border-radius: 20px;
             }
 
-        /* Sección de Títulos Pequeños en el Formulario */
+        /* Títulos de sección */
         .form-section-title {
             color: var(--alef-primary);
             font-size: 0.75rem;
@@ -64,6 +62,42 @@
 
         body.dark-mode .form-section-title {
             color: var(--alef-secondary);
+        }
+
+        /* --- NUEVO BOTÓN DE REGISTRO MEJORADO --- */
+        .btn-register-modern {
+            background: linear-gradient(135deg, var(--alef-primary) 0%, #B2A1FF 100%); /* Azul a Violeta */
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px -5px rgba(114, 155, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-register-modern:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 30px -5px rgba(178, 161, 255, 0.5);
+                color: white;
+            }
+
+            .btn-register-modern:active {
+                transform: scale(0.98);
+            }
+
+        /* Checkbox personalizado */
+        .form-check-input:checked {
+            background-color: var(--alef-primary);
+            border-color: var(--alef-primary);
         }
     </style>
 </head>
@@ -99,87 +133,74 @@
                         <p class="text-muted-custom small">Únete a nuestra comunidad de diversidad.</p>
                     </div>
 
-                    @* Mostrar errores generales *@
+                    @* Errores Generales *@
                     <div>
-                        @Html.ValidationSummary(false, "", new { @class = "text-danger small" })
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger small fw-bold mb-3" })
                     </div>
 
                     <form asp-action="Registro" asp-controller="Login" method="post">
                         @Html.AntiForgeryToken()
 
-                        <!-- ========================================================= -->
-                        <!-- DATOS DE ACCESO (EMAIL + CONTRASEÑA)                      -->
-                        <!-- ========================================================= -->
                         <div class="mb-4">
                             <div class="form-section-title text-alef-teal">
                                 <i data-lucide="lock" style="width: 16px; height: 16px;"></i> Datos de acceso
                             </div>
-
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label asp-for="Usuario.Email" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="Usuario.Email" class="form-label fw-bold text-body-custom small mb-1">Correo Electrónico</label>
                                     <div class="position-relative">
                                         <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
                                             <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
                                         </span>
-                                        <input asp-for="Usuario.Email" class="form-control custom-input ps-5 py-2" placeholder="tucorreo@ejemplo.com" />
+                                        <input asp-for="Usuario.Email" class="form-control custom-input ps-5 py-2" placeholder="nombre@ejemplo.com" />
                                     </div>
                                     <span asp-validation-for="Usuario.Email" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label asp-for="Password" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="Password" class="form-label fw-bold text-body-custom small mb-1">Contraseña</label>
                                     <div class="position-relative">
                                         <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
                                             <i data-lucide="key" style="width: 18px; height: 18px;"></i>
                                         </span>
-                                        <input asp-for="Password" class="form-control custom-input ps-5 py-2" />
+                                        <input asp-for="Password" class="form-control custom-input ps-5 py-2" placeholder="••••••••" />
                                     </div>
                                     <span asp-validation-for="Password" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label asp-for="ConfirmPassword" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="ConfirmPassword" class="form-label fw-bold text-body-custom small mb-1">Confirmar Contraseña</label>
                                     <div class="position-relative">
                                         <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
                                             <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
                                         </span>
-                                        <input asp-for="ConfirmPassword" class="form-control custom-input ps-5 py-2" />
+                                        <input asp-for="ConfirmPassword" class="form-control custom-input ps-5 py-2" placeholder="••••••••" />
                                     </div>
                                     <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- ========================================================= -->
-                        <!-- DATOS PERSONALES                                          -->
-                        <!-- ========================================================= -->
                         <div class="mb-5">
                             <div class="form-section-title">
                                 <i data-lucide="user" style="width: 16px; height: 16px;"></i> Datos Personales
                             </div>
-
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label asp-for="InfoPersonal.Nombre" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="InfoPersonal.Nombre" class="form-label fw-bold text-body-custom small mb-1">Nombre(s)</label>
                                     <input asp-for="InfoPersonal.Nombre" class="form-control custom-input py-2" placeholder="Ej. Juan Carlos" />
                                     <span asp-validation-for="InfoPersonal.Nombre" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label asp-for="InfoPersonal.ApellidoPaterno" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="InfoPersonal.ApellidoPaterno" class="form-label fw-bold text-body-custom small mb-1">Apellido Paterno</label>
                                     <input asp-for="InfoPersonal.ApellidoPaterno" class="form-control custom-input py-2" placeholder="Ej. Pérez" />
                                     <span asp-validation-for="InfoPersonal.ApellidoPaterno" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label asp-for="InfoPersonal.ApellidoMaterno" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="InfoPersonal.ApellidoMaterno" class="form-label fw-bold text-body-custom small mb-1">Apellido Materno</label>
                                     <input asp-for="InfoPersonal.ApellidoMaterno" class="form-control custom-input py-2" placeholder="Ej. López" />
                                     <span asp-validation-for="InfoPersonal.ApellidoMaterno" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label asp-for="InfoPersonal.FechaNacimiento" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="InfoPersonal.FechaNacimiento" class="form-label fw-bold text-body-custom small mb-1">Fecha de Nacimiento</label>
                                     <div class="position-relative">
                                         <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
                                             <i data-lucide="calendar" style="width: 18px; height: 18px;"></i>
@@ -188,9 +209,8 @@
                                     </div>
                                     <span asp-validation-for="InfoPersonal.FechaNacimiento" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label asp-for="InfoPersonal.Genero" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="InfoPersonal.Genero" class="form-label fw-bold text-body-custom small mb-1">Género</label>
                                     <div class="position-relative">
                                         <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
                                             <i data-lucide="users" style="width: 18px; height: 18px;"></i>
@@ -199,7 +219,7 @@
                                             <option value="">Selecciona una opción</option>
                                             <option value="Femenino">Femenino</option>
                                             <option value="Masculino">Masculino</option>
-                                            <option value="No binario">No binario</option>
+                                            @* <option value="No binario">No binario</option> *@
                                             <option value="Prefiero no decir">Prefiero no decir</option>
                                         </select>
                                     </div>
@@ -208,48 +228,35 @@
                             </div>
                         </div>
 
-                        <!-- ========================================================= -->
-                        <!-- FOTO DE PERFIL (BASE64)                                   -->
-                        <!-- ========================================================= -->
                         <div class="mb-4">
                             <div class="form-section-title text-alef-teal">
                                 <i data-lucide="image" style="width: 16px; height: 16px;"></i> Foto de perfil (opcional)
                             </div>
-
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label fw-bold text-body-custom small mb-1">Selecciona una imagen</label>
                                     <input type="file" id="fotoFile" accept="image/*" class="form-control custom-input py-2" />
 
-                                    @* Campo oculto que se ligará al modelo con el Base64 *@
                                     <input asp-for="InfoPersonal.FotoBase64" type="hidden" id="FotoBase64" />
                                     <span asp-validation-for="InfoPersonal.FotoBase64" class="text-danger small"></span>
 
-                                    <div class="mt-2">
-                                        <small class="text-muted-custom">
-                                            La imagen se convertirá a Base64 y se guardará de forma segura.
-                                        </small>
-                                    </div>
-
                                     <div class="mt-3 d-none" id="previewContainer">
-                                        <span class="small fw-bold text-muted-custom d-block mb-1">Vista previa:</span>
-                                        <img id="previewImg" src="#" alt="Vista previa" class="rounded shadow-sm" style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img id="previewImg" src="#" alt="Vista previa" class="rounded-circle shadow-sm border border-2 border-primary" style="width: 60px; height: 60px; object-fit: cover;" />
+                                            <small class="text-success fw-bold">¡Imagen cargada correctamente!</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- ========================================================= -->
-                        <!-- CONTACTO Y UBICACIÓN                                      -->
-                        <!-- ========================================================= -->
                         <div class="mb-4">
                             <div class="form-section-title text-alef-teal">
                                 <i data-lucide="map-pin" style="width: 16px; height: 16px;"></i> Contacto y Ubicación
                             </div>
-
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label asp-for="InfoPersonal.Telefono" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="InfoPersonal.Telefono" class="form-label fw-bold text-body-custom small mb-1">Teléfono</label>
                                     <div class="position-relative">
                                         <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
                                             <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
@@ -258,37 +265,52 @@
                                     </div>
                                     <span asp-validation-for="InfoPersonal.Telefono" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label asp-for="InfoPersonal.Estado" class="form-label fw-bold text-body-custom small mb-1"></label>
-                                    <select asp-for="InfoPersonal.Estado" class="form-select custom-input py-2 cursor-pointer">
+                                    <label asp-for="InfoPersonal.Estado" class="form-label fw-bold text-body-custom small mb-1">Estado</label>
+                                    @*  <select asp-for="InfoPersonal.Estado" class="form-select custom-input py-2 cursor-pointer">
                                         <option value="">Selecciona Estado</option>
                                         <option value="Ciudad de México">Ciudad de México</option>
                                         <option value="Estado de México">Estado de México</option>
                                         <option value="Jalisco">Jalisco</option>
                                         <option value="Nuevo León">Nuevo León</option>
+                                    </select> *@
+                                    <select asp-for="InfoPersonal.Estado"
+                                            asp-items="Model.Estados"
+                                            class="form-select custom-input py-2 cursor-pointer">
                                     </select>
                                     <span asp-validation-for="InfoPersonal.Estado" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label asp-for="InfoPersonal.Municipio" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="InfoPersonal.Municipio" class="form-label fw-bold text-body-custom small mb-1">Municipio</label>
                                     <input asp-for="InfoPersonal.Municipio" class="form-control custom-input py-2" placeholder="Ej. Coyoacán" />
                                     <span asp-validation-for="InfoPersonal.Municipio" class="text-danger small"></span>
                                 </div>
-
                                 <div class="col-12">
-                                    <label asp-for="InfoPersonal.Colonia" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <label asp-for="InfoPersonal.Colonia" class="form-label fw-bold text-body-custom small mb-1">Colonia</label>
                                     <input asp-for="InfoPersonal.Colonia" class="form-control custom-input py-2" placeholder="Ej. Del Carmen" />
                                     <span asp-validation-for="InfoPersonal.Colonia" class="text-danger small"></span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="pt-3">
-                            <button type="submit" class="btn-login-lg">
+                        <div class="mb-4 mt-4">
+                            <div class="form-check">
+                                <input class="form-check-input cursor-pointer" type="checkbox" id="privacyCheck" required>
+                                <label class="form-check-label small text-muted-custom cursor-pointer" for="privacyCheck">
+                                    He leído y acepto el
+                                    <a href="@Url.Action("Privacy", "Home")" target="_blank" class="fw-bold text-alef-primary text-decoration-none hover-underline">
+                                        Aviso de Privacidad
+                                    </a>
+                                    y los Términos de uso de Neuro Pro.
+                                </label>
+                            </div>
+                        </div>
+                       
+
+                        <div class="pt-2 pb-4">
+                            <button type="submit" class="btn-register-modern">
                                 <span>Registrarme</span>
-                                <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
+                                <i data-lucide="arrow-right" style="width: 24px; height: 24px;"></i>
                             </button>
 
                             <p class="mt-4 text-center text-muted-custom small">
@@ -329,18 +351,14 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-
     <script>
-        // Inicializar Iconos
-        if (typeof lucide !== "undefined") {
-            lucide.createIcons();
-        }
+        // Inicializar Iconos Lucide
+        if (typeof lucide !== "undefined") lucide.createIcons();
 
-        // --- DARK MODE LOGIC (Reutilizada) ---
+        // --- DARK MODE LOGIC ---
         const bodyElement = document.body;
         const darkModeBtn = document.getElementById("dark-mode-toggle-reg");
         const darkModeIcon = document.getElementById("dark-mode-icon-reg");
@@ -349,27 +367,29 @@
             bodyElement.classList.add("dark-mode");
             bodyElement.classList.remove("bg-light");
             bodyElement.classList.add("bg-dark-custom");
-            darkModeIcon.name = "sunny-outline";
+            if(darkModeIcon) darkModeIcon.name = "sunny-outline";
             localStorage.setItem("theme", "dark");
         }
 
         function disableDarkMode() {
             bodyElement.classList.remove("dark-mode", "bg-dark-custom");
             bodyElement.classList.add("bg-light");
-            darkModeIcon.name = "moon-outline";
+            if(darkModeIcon) darkModeIcon.name = "moon-outline";
             localStorage.setItem("theme", "light");
         }
 
+        // Cargar preferencia guardada
         if (localStorage.getItem("theme") === "dark") enableDarkMode();
 
-        darkModeBtn.addEventListener("click", () => {
-            if (bodyElement.classList.contains("dark-mode")) disableDarkMode();
-            else enableDarkMode();
-        });
+        // Event listener toggle
+        if(darkModeBtn){
+            darkModeBtn.addEventListener("click", () => {
+                if (bodyElement.classList.contains("dark-mode")) disableDarkMode();
+                else enableDarkMode();
+            });
+        }
 
-        // =========================================================
-        // CONVERSIÓN DE FOTO A BASE64
-        // =========================================================
+        // --- CONVERSIÓN FOTO BASE64 ---
         const fotoFileInput = document.getElementById("fotoFile");
         const fotoBase64Input = document.getElementById("FotoBase64");
         const previewContainer = document.getElementById("previewContainer");
@@ -383,16 +403,11 @@
                     previewContainer.classList.add("d-none");
                     return;
                 }
-
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    const dataUrl = e.target.result; // data:image/png;base64,xxxx
-                    // Opcional: guardar solo la parte Base64 sin el "data:..."
+                    const dataUrl = e.target.result;
                     const base64 = dataUrl.split(',')[1];
-
                     fotoBase64Input.value = base64;
-
-                    // Vista previa
                     previewImg.src = dataUrl;
                     previewContainer.classList.remove("d-none");
                 };
@@ -400,7 +415,5 @@
             });
         }
     </script>
-
-
 </body>
 </html>

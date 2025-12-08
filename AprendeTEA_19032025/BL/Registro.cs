@@ -45,6 +45,13 @@ namespace AprendeTEA_19032025.BL
                                 : registro.InfoPersonal.FotoBase64);
                         cmd.Parameters.AddWithValue("@EstatusInfo", registro.InfoPersonal.Estatus);
 
+                        string token = Guid.NewGuid().ToString("N");
+
+                        // Guardar token y expiración 24 horas
+                        cmd.Parameters.AddWithValue("@EmailConfirmToken", token);
+                        cmd.Parameters.AddWithValue("@EmailConfirmTokenExpira", DateTime.UtcNow.AddHours(24));
+
+
                         // --------- Parámetro OUTPUT para IdUsuario ----------
                         SqlParameter outputIdUsuario = new SqlParameter("@IdUsuarioGenerado", SqlDbType.Int)
                         {
@@ -65,7 +72,12 @@ namespace AprendeTEA_19032025.BL
                         if (idGenerado > 0)
                         {
                             result.Correct = true;
-                            result.Object = idGenerado; // IdUsuario generado
+                            //result.Object = idGenerado; // IdUsuario generado
+                            result.Object = new Models.RegistroResultado
+                            {
+                                IdUsuario = idGenerado,
+                                EmailConfirmToken = token
+                            };
                         }
                         else
                         {
@@ -75,11 +87,22 @@ namespace AprendeTEA_19032025.BL
                     }
                 }
             }
+            catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601 || ex.Number == 50000)
+            {
+                // 2627 y 2601 = violación de UNIQUE KEY / índice único
+                result.Correct = false;
+                result.ErrorMessage = "El correo electrónico ya se encuentra registrado.";
+                // Si quieres, puedes guardar un código para diferenciar este caso
+                result.ErrorCode = "DUPLICATE_EMAIL";
+            }
             catch (Exception ex)
             {
                 result.Correct = false;
-                result.ErrorMessage = ex.Message;
+                // Mensaje genérico para el usuario (el detalle real lo puedes loguear)
+                result.ErrorMessage = "Ocurrió un error al registrar el usuario. Inténtalo de nuevo más tarde.";
+                // aquí puedes loguear ex.Message internamente, pero no enviarlo al usuario
             }
+
 
             return result;
         }
