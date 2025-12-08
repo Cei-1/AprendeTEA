@@ -964,3 +964,244 @@ body.dark-mode .social-button {
         transform: translateX(270px);
     }
 }
+
+/* ========================================================= */
+/* PERFIL DE USUARIO INTEGRADO EN EL MENÚ                    */
+/* ========================================================= */
+/* Elemento de lista especial para el perfil */
+.navigation ul li.profile-item {
+    list-style: none;
+    position: relative;
+    width: 100%;
+    height: 70px; /* Un poco más alto para que quepa el nombre */
+    padding: 0 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    pointer-events: none; /* No clickable */
+}
+
+/* Contenedor interno */
+.profile-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+    /* El Avatar ocupa el lugar del ICONO */
+    .profile-container .icon-avatar {
+        position: relative;
+        display: flex; /* Centrado perfecto */
+        align-items: center;
+        justify-content: center;
+        min-width: 55px;
+        height: 55px;
+        line-height: 60px;
+        border-radius: 10px;
+        z-index: 10;
+    }
+
+/* Círculo visual del avatar */
+.avatar-circle {
+    width: 45px;
+    height: 45px;
+    background: var(--alef-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 6px rgba(114, 155, 255, 0.3);
+}
+
+/* El Texto del nombre ocupa el lugar del TEXTO del menú */
+.profile-container .text-user {
+    position: relative;
+    padding: 0 15px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+    white-space: nowrap;
+}
+
+/* Mostrar texto cuando el menú se abre */
+.navigation.open .profile-container .text-user {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Ajustes Dark Mode */
+body.dark-mode .navigation ul li.profile-item {
+    border-bottom-color: rgba(255,255,255,0.1);
+}
+
+body.dark-mode .text-user strong {
+    color: #fff;
+}
+
+body.dark-mode .text-user small {
+    color: #9ca3af;
+}
+
+/* ========================================================= */
+/* ARREGLO PERFIL MODO OSCURO                                */
+/* ========================================================= */
+
+/* Texto del Nombre */
+.profile-name {
+    color: #1f2937; /* Gris oscuro por defecto */
+    transition: color 0.3s ease;
+}
+
+/* Texto del Estado (En línea) */
+.profile-status {
+    color: #6b7280; /* Gris medio por defecto */
+    transition: color 0.3s ease;
+}
+
+/* --- MODO OSCURO --- */
+body.dark-mode .profile-name {
+    color: #f3f4f6 !important; /* Blanco casi puro */
+}
+
+body.dark-mode .profile-status {
+    color: #d1d5db !important; /* Gris muy claro */
+}
+
+/* Línea divisoria en modo oscuro */
+body.dark-mode .navigation ul li.profile-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+/* ========================================================= */
+/* ESTILOS DE PERFIL DE USUARIO (VISTA DETALLE)              */
+/* ========================================================= */
+
+/* 1. Banner Superior */
+.profile-banner-bg {
+    background: linear-gradient(135deg, var(--alef-primary) 0%, #b2a1ff 100%);
+    height: 200px;
+    border-radius: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+body.dark-mode .profile-banner-bg {
+    background: linear-gradient(135deg, #111827 0%, #374151 100%);
+    border-bottom: 2px solid var(--alef-primary);
+}
+
+/* 2. Tarjeta Flotante (Contenedor Principal de Info) */
+.profile-floating-card {
+    margin-top: -80px; /* Efecto flotante sobre el banner */
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: 1.5rem;
+}
+
+/* 3. Avatar Grande */
+.profile-avatar-lg {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    background-color: #f3f4f6;
+    object-fit: cover;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .profile-avatar-lg {
+    border-color: #1f2937; /* Borde oscuro para fusionarse con la tarjeta */
+}
+
+/* 4. Indicador de Estado (Punto verde) */
+.status-indicator-online {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 25px;
+    height: 25px;
+    background-color: #10b981;
+    border: 3px solid #fff;
+    border-radius: 50%;
+}
+
+body.dark-mode .status-indicator-online {
+    border-color: #1f2937;
+}
+
+/* 5. Insignias (Grid) */
+.badge-item {
+    background-color: #f9fafb;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+    .badge-item:hover {
+        transform: translateY(-5px);
+        background-color: #eff6ff;
+    }
+
+body.dark-mode .badge-item {
+    background-color: #374151;
+}
+
+    body.dark-mode .badge-item:hover {
+        background-color: #4b5563;
+    }
+
+/* 6. Línea de Tiempo (Timeline) */
+.timeline-list {
+    position: relative;
+    padding-left: 2rem;
+    border-left: 2px solid #e5e7eb;
+}
+
+body.dark-mode .timeline-list {
+    border-left-color: #4b5563;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -2.6rem;
+    top: 0;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background-color: var(--alef-primary);
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px rgba(114, 155, 255, 0.2);
+}
+
+body.dark-mode .timeline-dot {
+    border-color: #1f2937;
+}
+
+/* Colores específicos para los puntos */
+.dot-primary {
+    background-color: var(--alef-primary);
+}
+
+.dot-secondary {
+    background-color: var(--alef-secondary);
+}
+
+.dot-violet {
+    background-color: var(--alef-violet-base);
+}

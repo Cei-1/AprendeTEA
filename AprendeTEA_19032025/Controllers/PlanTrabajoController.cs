@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AprendeTEA_19032025.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
 
     public class PlanTrabajoController : Controller
     {

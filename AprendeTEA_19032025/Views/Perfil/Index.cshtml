@@ -1,0 +1,380 @@
+﻿@model AprendeTEA_19032025.Models.Perfil
+
+@{
+    ViewData["Title"] = "Mi Perfil";
+
+    string nombreCompleto = string.IsNullOrWhiteSpace(Model?.NombreCompleto)
+        ? Model?.Email
+        : Model.NombreCompleto;
+
+    string ubicacion = (!string.IsNullOrWhiteSpace(Model?.Estado) || !string.IsNullOrWhiteSpace(Model?.Municipio))
+        ? $"{Model?.Estado}, {Model?.Municipio}".Trim().Trim(',', ' ')
+        : "Sin ubicación registrada";
+
+    string telefono = string.IsNullOrWhiteSpace(Model?.Telefono)
+        ? "Sin teléfono"
+        : Model.Telefono;
+
+    string cumple = Model?.FechaNacimiento.HasValue == true
+        ? Model.FechaNacimiento.Value.ToString("dd 'de' MMMM")
+        : "Sin registro";
+
+    // Foto: si hay Base64 la usamos; si no, ui-avatars
+    string fotoPerfil = string.IsNullOrEmpty(Model?.FotoBase64)
+        ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(nombreCompleto ?? "Usuario")}&background=729BFF&color=fff&size=256"
+        : $"data:image/png;base64,{Model.FotoBase64}";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-5 card-bg p-4 rounded-4 shadow-sm">
+    <div class="d-flex align-items-center gap-3">
+        <div class="p-2 rounded-3 bg-alef-primary-subtle">
+            <img src="~/img/logo.png" alt="Logo" style="width: 32px; height: 32px; object-fit: contain;"
+                 onerror="this.onerror=null; this.src='https://placehold.co/40x40/729BFF/ffffff?text=NP';" />
+        </div>
+        <div>
+            <h1 class="h4 fw-bold text-body-custom m-0">Hola, @nombreCompleto</h1>
+            <p class="small text-muted-custom m-0">¡Listo para seguir aprendiendo!</p>
+        </div>
+    </div>
+
+    <form asp-controller="Login" asp-action="Logout" method="post" class="d-inline">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-link text-muted-custom p-2" title="Cerrar Sesión">
+            <i data-lucide="log-out" style="width: 24px; height: 24px;"></i>
+        </button>
+    </form>
+</div>
+
+@if (TempData["PerfilMensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["PerfilMensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
+
+<div class="container-fluid px-0">
+    <div class="profile-banner-bg shadow-sm">
+        <div class="position-absolute top-0 end-0 bg-white opacity-10 rounded-circle"
+             style="width: 200px; height: 200px; transform: translate(50px, -50px); filter: blur(40px);"></div>
+        <div class="position-absolute bottom-0 start-0 bg-danger opacity-10 rounded-circle"
+             style="width: 200px; height: 200px; filter: blur(40px);"></div>
+    </div>
+
+    <div class="card-bg profile-floating-card shadow-lg mx-3 mx-md-5 position-relative">
+        <div class="row align-items-end">
+            <!-- Avatar con foto real o avatar automático -->
+            <div class="col-md-auto text-center text-md-start position-relative">
+                <div class="d-inline-block position-relative" style="margin-top: -5rem;">
+                    <img src="@fotoPerfil"
+                         alt="Avatar" class="profile-avatar-lg" style="object-fit: cover;" />
+                    <div class="status-indicator-online" title="En línea"></div>
+                </div>
+            </div>
+
+            <!-- Info cabecera -->
+            <div class="col-md text-center text-md-start mt-3 mt-md-0">
+                <h2 class="fw-bold text-body-custom mb-1">@nombreCompleto</h2>
+
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 text-alef-primary fw-bold mb-2">
+                    <i data-lucide="award" style="width: 18px; height: 18px;"></i>
+                    <span>Explorador Neuro Pro</span>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-4 text-muted-custom small">
+                    <span id="display-address-header">
+                        <i data-lucide="map-pin" style="width: 14px; height: 14px; margin-right: 4px;"></i>
+                        @ubicacion
+                    </span>
+                    <span>
+                        <i data-lucide="calendar" style="width: 14px; height: 14px; margin-right: 4px;"></i>
+                        Unido en @Model.FechaRegistro.Year
+                    </span> @* 🔹 año real de registro *@
+                </div>
+            </div>
+
+            <!-- Botón editar perfil -->
+            <div class="col-md-auto mt-4 mt-md-0 text-center">
+                <button type="button"
+                        class="btn btn-alef-submit px-4 py-2 d-inline-flex align-items-center gap-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editProfileModal">
+                    <i data-lucide="edit-3" style="width: 16px; height: 16px;"></i>
+                    Editar Perfil
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-4">
+    <!-- Columna izquierda -->
+    <div class="col-lg-4">
+        <!-- Estado actual -->
+        <div class="card-bg p-4 rounded-4 shadow-sm mb-4 border border-2 border-transparent position-relative overflow-hidden"
+             style="border-color: rgba(178, 161, 255, 0.2) !important;">
+            <div class="d-flex justify-content-between align-items-center mb-3 position-relative z-index-10">
+                <h5 class="fw-bold text-body-custom m-0">Mi Estado Actual</h5>
+                <i data-lucide="heart-pulse" class="text-alef-secondary"></i>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 position-relative z-index-10">
+                <div style="width: 60px; height: 60px;">
+                    <img src="~/img/latimente.png" alt="Latimente" class="img-fluid"
+                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/729BFF/ffffff?text=LM';" />
+                </div>
+                <div class="w-100">
+                    <label class="small text-muted-custom mb-1">Hoy me siento:</label>
+                    <select class="form-select custom-input form-select-sm">
+                        <option>😊 Motivado</option>
+                        <option>🤔 Curioso</option>
+                        <option>😌 Tranquilo</option>
+                        <option>🤯 Sobrecargado</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info personal -->
+        <div class="card-bg p-4 rounded-4 shadow-sm">
+            <h5 class="fw-bold text-body-custom mb-4 pb-2 border-bottom border-secondary border-opacity-10">
+                Información Personal
+            </h5>
+
+            <div class="d-flex flex-column gap-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-2 rounded bg-alef-primary-subtle text-alef-primary">
+                        <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                        <div class="small text-muted-custom">Correo Electrónico</div>
+                        <div class="fw-bold text-body-custom text-break">@Model.Email</div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-2 rounded bg-alef-primary-subtle text-alef-primary">
+                        <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                        <div class="small text-muted-custom">Teléfono</div>
+                        <div class="fw-bold text-body-custom" id="display-phone">@telefono</div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-2 rounded bg-alef-primary-subtle text-alef-primary">
+                        <i data-lucide="map" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                        <div class="small text-muted-custom">Ubicación</div>
+                        <div class="fw-bold text-body-custom" id="display-address">@ubicacion</div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-2 rounded bg-alef-primary-subtle text-alef-primary">
+                        <i data-lucide="cake" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                        <div class="small text-muted-custom">Cumpleaños</div>
+                        <div class="fw-bold text-body-custom">@cumple</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna derecha (badges + timeline dummy) -->
+    <div class="col-lg-8">
+        <div class="card-bg p-4 rounded-4 shadow-sm mb-4">
+            <h5 class="fw-bold text-body-custom mb-4">Mis Insignias</h5>
+
+            <div class="row row-cols-2 row-cols-sm-4 g-3">
+                <div class="col">
+                    <div class="badge-item opacity-50">
+                        <div class="fs-1 mb-2">🧠</div>
+                        <div class="fw-bold text-body-custom small">Mente Curiosa</div>
+                        <div class="text-muted-custom x-small">Nivel 1</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="badge-item opacity-50">
+                        <div class="fs-1 mb-2">🤝</div>
+                        <div class="fw-bold text-body-custom small">Empático</div>
+                        <div class="text-muted-custom x-small">Nivel 2</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="badge-item opacity-50">
+                        <div class="fs-1 mb-2">📚</div>
+                        <div class="fw-bold text-body-custom small">Lector Voraz</div>
+                        <div class="text-muted-custom x-small">Nivel 1</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="badge-item opacity-50">
+                        <div class="fs-1 mb-2 grayscale">🚀</div>
+                        <div class="fw-bold text-muted-custom small">Futuro Líder</div>
+                        <div class="text-muted-custom x-small">Bloqueado</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-bg p-4 rounded-4 shadow-sm">
+            <h5 class="fw-bold text-body-custom mb-4">Mi Viaje Reciente</h5>
+
+            <div class="timeline-list">
+                <div class="timeline-item">
+                    <div class="timeline-dot dot-primary"></div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold text-body-custom mb-1">Completaste "Entendiendo el TDAH"</h6>
+                            <p class="small text-muted-custom mb-0">Módulo 1: Introducción a la neurodivergencia</p>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill">Completado</span>
+                    </div>
+                    <small class="text-muted-custom d-block mt-1">Hace 2 horas</small>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot dot-secondary"></div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold text-body-custom mb-1">Actualizaste tu perfil</h6>
+                            <p class="small text-muted-custom mb-0">Agregaste nueva información de contacto</p>
+                        </div>
+                    </div>
+                    <small class="text-muted-custom d-block mt-1">Ayer</small>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot dot-violet"></div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold text-body-custom mb-1">Te uniste a Neuro Pro</h6>
+                            <p class="small text-muted-custom mb-0">¡Bienvenido a la comunidad!</p>
+                        </div>
+                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">Inicio</span>
+                    </div>
+                    <small class="text-muted-custom d-block mt-1">
+                        @Model.FechaRegistro.ToString("dd MMMM, yyyy")
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: Editar Perfil (Incluye foto) -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content card-bg">
+            <div class="modal-header border-bottom border-secondary border-opacity-10">
+                <h5 class="modal-title fw-bold text-alef-primary">Editar Información</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form asp-action="Actualizar" asp-controller="Perfil" method="post" id="editForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <input type="hidden" asp-for="IdUsuario" />
+
+                    <div class="mb-3">
+                        <label asp-for="Telefono" class="form-label small fw-bold text-muted-custom"></label>
+                        <input asp-for="Telefono" class="form-control custom-input" id="editPhone" />
+                        <span asp-validation-for="Telefono" class="text-danger small"></span>
+                    </div>
+
+                    <h6 class="fw-bold text-body-custom mt-4 mb-3">Dirección</h6>
+
+                    <div class="mb-3">
+                        <label asp-for="Estado" class="form-label small fw-bold text-muted-custom"></label>
+                        <input asp-for="Estado" class="form-control custom-input" id="editState" />
+                        <span asp-validation-for="Estado" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Municipio" class="form-label small fw-bold text-muted-custom"></label>
+                        <input asp-for="Municipio" class="form-control custom-input" id="editMunicipio" />
+                        <span asp-validation-for="Municipio" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Colonia" class="form-label small fw-bold text-muted-custom"></label>
+                        <input asp-for="Colonia" class="form-control custom-input" id="editColonia" />
+                        <span asp-validation-for="Colonia" class="text-danger small"></span>
+                    </div>
+
+                    <hr class="my-3" />
+
+                    <!-- Foto -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted-custom">Foto de Perfil</label>
+                        <input type="file" accept="image/*" class="form-control custom-input" id="fotoFile" />
+
+                        <input type="hidden" asp-for="FotoBase64" id="FotoBase64" />
+
+                        <div class="mt-3 text-center">
+                            <img id="previewImg" src="@fotoPerfil"
+                                 class="rounded shadow-sm"
+                                 style="max-width: 140px; max-height: 140px; object-fit: cover;" />
+                        </div>
+
+                        <small class="text-muted-custom d-block mt-1">
+                            Si no seleccionas una imagen nueva, se mantendrá la actual.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-top border-secondary border-opacity-10">
+                    <button type="button" class="btn btn-cancel-custom" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-alef-submit">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        // Conversión de foto a Base64
+        const fotoFile = document.getElementById("fotoFile");
+        const fotoBase = document.getElementById("FotoBase64");
+        const previewImg = document.getElementById("previewImg");
+
+        if (fotoFile) {
+            fotoFile.addEventListener("change", function () {
+                const file = this.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const dataUrl = e.target.result;
+                    const base64 = dataUrl.split(',')[1];
+
+                    fotoBase.value = base64;
+                    previewImg.src = dataUrl;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+        });
+    </script>
+}

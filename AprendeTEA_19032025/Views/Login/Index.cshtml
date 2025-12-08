@@ -1,0 +1,387 @@
+﻿@model Login
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión - Neuro Pro</title>
+    <link rel="icon" type="image/jpeg" href="~/img/logo.png" />
+
+    @* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"> *@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/neuropro-styles.css" asp-append-version="true" />
+
+    <style>
+        /* ========================================================= */
+        /* ESTILOS ESPECÍFICOS PARA EL LOGIN                         */
+        /* ========================================================= */
+
+        /* Contenedor derecho con degradado */
+        .login-visual-side {
+            background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%); /* Blue-50 to Indigo-100 */
+            position: relative;
+            overflow: hidden;
+            border-left: 1px solid #f3f4f6;
+        }
+
+        body.dark-mode .login-visual-side {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%); /* Gray-800 to Gray-900 */
+            border-color: #374151;
+        }
+
+        /* Burbujas decorativas (Blobs) */
+        .blob-decoration {
+            position: absolute;
+            width: 20rem;
+            height: 20rem;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        .blob-1 {
+            top: 0;
+            right: 0;
+            background-color: rgba(114, 155, 255, 0.2); /* alef-primary */
+            transform: translate(30%, -30%);
+        }
+
+        .blob-2 {
+            bottom: 0;
+            left: 0;
+            background-color: rgba(227, 136, 136, 0.2); /* alef-secondary */
+            transform: translate(-30%, 30%);
+        }
+
+        /* Animación de Rebote (Hola 👋) */
+        @@keyframes bounce-custom {
+            0%, 100%
+
+        {
+            transform: translateY(-25%);
+            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+        }
+
+        50% {
+            transform: translateY(0);
+            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        }
+
+        }
+
+        .animate-bounce-custom {
+            animation: bounce-custom 1s infinite;
+            display: inline-block;
+        }
+
+        /* Animación Sombra Pulsante (Imagen) */
+        @@keyframes pulse-shadow-custom {
+            0%
+
+        {
+            filter: drop-shadow(0 0 0 rgba(114, 155, 255, 0));
+        }
+
+        50% {
+            filter: drop-shadow(0 0 20px rgba(114, 155, 255, 0.4));
+        }
+
+        100% {
+            filter: drop-shadow(0 0 0 rgba(114, 155, 255, 0));
+        }
+
+        }
+
+        .pulse-img {
+            animation: pulse-shadow-custom 4s ease-in-out infinite;
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+
+        /* Botón de Login (Estilo Grueso) */
+        .btn-login-lg {
+            background-color: var(--alef-primary);
+            color: white;
+            font-weight: 700;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            border: none;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 15px -3px rgba(114, 155, 255, 0.3);
+        }
+
+            .btn-login-lg:hover {
+                background-color: #2563eb; /* Un azul un poco más oscuro */
+                transform: translateY(-2px);
+            }
+
+            .btn-login-lg:active {
+                transform: scale(0.98);
+            }
+
+    </style>
+</head>
+
+<body class="bg-light transition-colors min-vh-100 d-flex align-items-center justify-content-center p-3" id="main-body">
+
+    <a href="@Url.Action("Index", "Home")" class="text-decoration-none position-absolute top-0 start-0 m-4 d-flex align-items-center gap-2 link-back z-index-10">
+        <div class="p-2 rounded-circle card-bg shadow-sm d-flex align-items-center justify-content-center border border-secondary border-opacity-10">
+            <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="fw-bold d-none d-sm-inline">Volver al inicio</span>
+    </a>
+
+    <button id="dark-mode-toggle-login" class="btn position-absolute top-0 end-0 m-4 p-2 rounded-circle card-bg shadow-sm border border-secondary border-opacity-10">
+        <ion-icon name="moon-outline" id="dark-mode-icon-login" style="font-size: 1.5rem; vertical-align: middle;"></ion-icon>
+    </button>
+
+    <div class="card-bg rounded-5 shadow-lg overflow-hidden w-100" style="max-width: 1100px; min-height: 650px;">
+        <div class="row g-0 h-100">
+
+            <div class="col-md-6 p-4 p-md-5 d-flex flex-column justify-content-center">
+
+                <div class="mb-5">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded-3 bg-alef-primary-subtle">
+                            <img src="~/img/logo.png" alt="Logo" style="width: 32px; height: 32px; object-fit: contain;"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/40x40/729BFF/ffffff?text=NP';" />
+                        </div>
+                        <span class="fw-bold text-muted-custom small text-uppercase ls-2">Neuro Pro</span>
+                    </div>
+                    <h2 class="display-5 fw-bold text-body-custom mb-2">
+                        ¡Hola de nuevo! <span class="animate-bounce-custom">👋</span>
+                    </h2>
+                    <p class="fs-5 text-muted-custom">Ingresa tus datos para continuar.</p>
+                </div>
+
+              @*   <form id="loginForm" class="d-flex flex-column gap-4">
+
+                    <div>
+                        <label for="email" class="form-label fw-bold text-body-custom small mb-2">Correo Electrónico</label>
+                        <div class="position-relative">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                <i data-lucide="mail" style="width: 20px; height: 20px;"></i>
+                            </span>
+                            <input type="email" id="email"
+                                   class="form-control form-control-lg ps-5 custom-input py-3"
+                                   placeholder="nombre@ejemplo.com" required />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="password" class="form-label fw-bold text-body-custom small m-0">Contraseña</label>
+                            <a href="#" class="small fw-bold text-alef-primary text-decoration-none">¿Olvidaste la contraseña?</a>
+                        </div>
+                        <div class="position-relative">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                <i data-lucide="lock" style="width: 20px; height: 20px;"></i>
+                            </span>
+                            <input type="password" id="password"
+                                   class="form-control form-control-lg ps-5 pe-5 custom-input py-3"
+                                   placeholder="••••••••" required />
+                            <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y me-2 text-muted-custom border-0 bg-transparent" tabindex="-1">
+                                <i data-lucide="eye" style="width: 20px; height: 20px;"></i>
+                            </button>
+                        </div>
+                        <div id="error-msg" class="text-danger small mt-2 fw-bold d-none align-items-center gap-1">
+                            <i data-lucide="alert-circle" style="width: 16px; height: 16px;"></i>
+                            Credenciales incorrectas
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-login-lg mt-2">
+                        <span>Iniciar Sesión</span>
+                        <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
+                    </button>
+
+                </form> *@
+                <form asp-action="Index" asp-controller="Login" method="post" class="d-flex flex-column gap-4">
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger small mb-2" })
+
+                    <div>
+                        <label asp-for="Email" class="form-label fw-bold text-body-custom small mb-2"></label>
+                        <div class="position-relative">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                <i data-lucide="mail" style="width: 20px; height: 20px;"></i>
+                            </span>
+                            <input asp-for="Email"
+                                   class="form-control form-control-lg ps-5 custom-input py-3"
+                                   placeholder="nombre@ejemplo.com" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label asp-for="Password" class="form-label fw-bold text-body-custom small m-0"></label>
+                            <a href="#" class="small fw-bold text-alef-primary text-decoration-none">¿Olvidaste la contraseña?</a>
+                        </div>
+                        <div class="position-relative">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                <i data-lucide="lock" style="width: 20px; height: 20px;"></i>
+                            </span>
+                            <input asp-for="Password"
+                                   class="form-control form-control-lg ps-5 pe-5 custom-input py-3"
+                                   placeholder="••••••••" />
+                            <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y me-2 text-muted-custom border-0 bg-transparent" tabindex="-1">
+                                <i data-lucide="eye" style="width: 20px; height: 20px;"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn-login-lg mt-2">
+                        <span>Iniciar Sesión</span>
+                        <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
+                    </button>
+                </form>
+
+                <div class="my-4 position-relative text-center">
+                    <hr class="text-secondary opacity-25">
+                </div>
+
+                <p class="text-center text-muted-custom small">
+                    ¿Aún no tienes cuenta?
+                    <a href="@Url.Action("Registro", "Home")" class="fw-bold text-alef-secondary text-decoration-underline">Regístrate gratis</a>
+                </p>
+
+            </div>
+
+            <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center login-visual-side">
+
+                <div class="blob-decoration blob-1"></div>
+                <div class="blob-decoration blob-2"></div>
+
+                <div class="position-relative z-2 text-center p-5">
+                    <div class="mb-5 pulse-img mx-auto">
+                        <img src="~/img/latimente.png" alt="Latimente" class="img-fluid"
+                             onerror="this.onerror=null; this.src='https://placehold.co/300x300/729BFF/ffffff?text=LATIMENTE';" />
+                    </div>
+
+                    <blockquote class="h3 fw-light fst-italic text-body-custom mb-4 font-monospace">
+                        "La diversidad es el arte de pensar independientemente juntos."
+                    </blockquote>
+
+                    <div class="d-flex align-items-center justify-content-center gap-2 opacity-75">
+                        <span class="rounded-circle bg-alef-primary" style="width: 6px; height: 6px;"></span>
+                        <span class="small fw-bold text-alef-primary ls-2">#casaNeuro-Pro</span>
+                        <span class="rounded-circle bg-alef-primary" style="width: 6px; height: 6px;"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+    <script>
+        // Inicializar Iconos
+        if (typeof lucide !== "undefined") {
+            lucide.createIcons();
+        }
+
+        // --- DARK MODE LOGIC ---
+        const bodyElement = document.body;
+        const darkModeBtn = document.getElementById("dark-mode-toggle-login");
+        const darkModeIcon = document.getElementById("dark-mode-icon-login");
+
+        function enableDarkMode() {
+            bodyElement.classList.add("dark-mode");
+            bodyElement.classList.remove("bg-light");
+            bodyElement.classList.add("bg-dark-custom"); // Color de fondo global oscuro
+
+            darkModeIcon.name = "sunny-outline";
+            localStorage.setItem("theme", "dark");
+        }
+
+        function disableDarkMode() {
+            bodyElement.classList.remove("dark-mode", "bg-dark-custom");
+            bodyElement.classList.add("bg-light");
+
+            darkModeIcon.name = "moon-outline";
+            localStorage.setItem("theme", "light");
+        }
+
+        // Chequear preferencia guardada
+        if (localStorage.getItem("theme") === "dark") enableDarkMode();
+
+        // Evento Click
+        darkModeBtn.addEventListener("click", () => {
+            if (bodyElement.classList.contains("dark-mode")) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        });
+
+        // --- LOGIN LOGIC ---
+        const loginForm = document.getElementById("loginForm");
+        const errorMsg = document.getElementById("error-msg");
+
+        // loginForm.addEventListener("submit", function (e) {
+        //     e.preventDefault();
+
+        //     const emailInput = document.getElementById("email").value;
+        //     const passwordInput = document.getElementById("password").value;
+
+        //     // Credenciales Hardcoded (Temporal)
+        //     const validUser = "aguirre@gmail.com";
+        //     const validPass = "Development25";
+
+        //     if (emailInput === validUser && passwordInput === validPass) {
+        //         // Éxito
+        //         errorMsg.classList.add("d-none");
+        //         errorMsg.classList.remove("d-flex");
+
+        //         const btn = loginForm.querySelector('button[type="submit"]');
+        //         btn.innerHTML = "<span>Entrando...</span>";
+        //         btn.disabled = true;
+
+        //         setTimeout(() => {
+        //             // Redirigir al Index del Dashboard
+        //             // Usamos @@Url.Action si es razor, o string directo si es html puro
+        //             window.location.href = '@Url.Action("Index", "Home")';
+        //         }, 800);
+
+        //     } else {
+        //         // Error
+        //         errorMsg.classList.remove("d-none");
+        //         errorMsg.classList.add("d-flex");
+
+        //         // Efecto vibración simple añadiendo clase (requiere css extra) o visual
+        //         loginForm.classList.add("shake-animation"); // Si quieres agregar esa animación
+        //     }
+        // });
+    </script>
+</body>
+</html>

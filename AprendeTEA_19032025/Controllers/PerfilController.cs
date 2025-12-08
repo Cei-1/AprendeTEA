@@ -1,83 +1,104 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AprendeTEA_19032025.Controllers
 {
+    [Authorize] // cualquier usuario logueado
     public class PerfilController : Controller
     {
-        // GET: PerfilController
-        public ActionResult MiPerfil()
+        private int GetCurrentUserId()
         {
-            return View();
+            var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(idClaim);
         }
 
-        // GET: PerfilController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public IActionResult Index()
         {
-            return View();
+            int idUsuario = GetCurrentUserId();
+
+            var result = BL.Perfil.GetPerfilByIdUsuario(idUsuario);
+
+            if (!result.Correct || result.Object == null)
+            {
+                // podrías mandar a error o mostrar mensaje
+                ViewBag.Error = result.ErrorMessage ?? "No se pudo cargar el perfil.";
+                return View(new Models.Perfil
+                {
+                    IdUsuario = idUsuario,
+                    Email = User.Identity.Name
+                });
+            }
+
+            var model = (Models.Perfil)result.Object;
+            return View(model);
         }
 
-        // GET: PerfilController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PerfilController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [ValidateAntiForgeryToken] //filtro de seguridad que evita ataques Cross-Site Request Forgery (CSRF).
+        public IActionResult Actualizar(Models.Perfil model)
         {
+            // Seguridad: forzar que el IdUsuario sea el del usuario logueado
+            model.IdUsuario = GetCurrentUserId();
+
+            var result = BL.Perfil.UpdatePerfil(model);
+
+            if (!result.Correct)
+            {
+                ModelState.AddModelError("", result.ErrorMessage ?? "No se pudo actualizar el perfil.");
+                return View("Index", model);
+            }
+
+            TempData["PerfilMensaje"] = "Perfil actualizado correctamente.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult FotoPerfil()
+        {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(idClaim) || !int.TryParse(idClaim, out int idUsuario))
+            {
+                return NotFound();
+            }
+
+            var result = BL.Perfil.GetPerfilByIdUsuario(idUsuario);
+            if (!result.Correct || result.Object is not Models.Perfil perfil)
+            {
+                return DefaultAvatar();
+            }
+
+            if (string.IsNullOrEmpty(perfil.FotoBase64))
+            {
+                return DefaultAvatar();
+            }
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                byte[] bytes = Convert.FromBase64String(perfil.FotoBase64);
+                return File(bytes, "image/png");
             }
             catch
             {
-                return View();
+                return DefaultAvatar();
             }
         }
 
-        // GET: PerfilController/Edit/5
-        public ActionResult Edit(int id)
+        private IActionResult DefaultAvatar()
         {
-            return View();
-        }
+            // Puedes usar una imagen en wwwroot/img o generar algo fijo
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "default-avatar.png");
 
-        // POST: PerfilController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
+            if (!System.IO.File.Exists(path))
             {
-                return RedirectToAction(nameof(Index));
+                // Si no tienes una imagen, regresamos 404 o podrías redirigir
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: PerfilController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: PerfilController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var bytes = System.IO.File.ReadAllBytes(path);
+            return File(bytes, "image/png");
         }
     }
 }
