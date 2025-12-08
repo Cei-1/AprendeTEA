@@ -7,6 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Neuro Pro</title>
     <link rel="icon" type="image/jpeg" href="~/img/logo.png" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Plataforma educativa para el espectro autista - Rutas de Consciencia y Neurodiversidad" />
+    <meta name="theme-color" content="#729bff" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="AprendeTEA" />
+    
+    <!-- Apple PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="AprendeTEA" />
+    <link rel="apple-touch-icon" href="~/img/logo.png" />
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="~/manifest.json" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
@@ -292,6 +307,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <!-- PWA Registration -->
+    <script src="~/js/pwa.js" asp-append-version="true"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
