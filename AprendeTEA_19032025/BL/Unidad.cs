@@ -181,10 +181,10 @@ namespace AprendeTEA_19032025.BL
                             TieneRelacionar = row["TieneRelacionar"] != DBNull.Value && Convert.ToBoolean(row["TieneRelacionar"]),
                             RelacionarColumnas = row["RelacionarColumnas"]?.ToString(),
 
-                            TieneAgrupacion = row["TieneAgrupacion"] != DBNull.Value && Convert.ToBoolean(row["TieneRelacionar"]),
+                            TieneAgrupacion = row["TieneAgrupacion"] != DBNull.Value && Convert.ToBoolean(row["TieneAgrupacion"]),
                             Agrupacion = row["Agrupacion"]?.ToString(),
 
-                            TieneOrdenar = row["TieneOrdenar"] != DBNull.Value && Convert.ToBoolean(row["TieneRelacionar"]),
+                            TieneOrdenar = row["TieneOrdenar"] != DBNull.Value && Convert.ToBoolean(row["TieneOrdenar"]),
                             OrdenarPasos = row["OrdenarPasos"]?.ToString()
                         };
 
