@@ -21,7 +21,7 @@ namespace AprendeTEA_19032025.BL
             {
                 using (SqlConnection connection = new SqlConnection(Data.Conexion.GetConnectionString()))
                 {
-                    string query = "SP_Calificaciones_Insert";
+                    string query = "SP_Calificaciones_Insert_Update";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;

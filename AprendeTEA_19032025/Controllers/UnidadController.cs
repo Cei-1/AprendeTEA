@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using System.Security.Claims;
 
 namespace AprendeTEA_19032025.Controllers
 {
@@ -15,9 +16,22 @@ namespace AprendeTEA_19032025.Controllers
             _unidadBL = new BL.Unidad(context);
         }
 
+        private int GetCurrentUserId()
+        {
+            var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(idClaim);
+        }
+
+        private string GetCurrentUserType()
+        {
+            var roleType = User.FindFirstValue(ClaimTypes.Role);
+            return roleType;
+        }
+
         public IActionResult Index(int IdPlanTrabajo, int? IdUsuario = null)
         {
             ViewBag.IdPlanTrabajo = IdPlanTrabajo;
+            // Si viene IdUsuario (de Progreso), usarlo; si no, no lo pases
             ViewBag.IdUsuario = IdUsuario;
             Models.Result result = BL.Unidad.GetByPlanTrabajo(IdPlanTrabajo);
 
@@ -101,16 +115,19 @@ namespace AprendeTEA_19032025.Controllers
 
 
 
-        public IActionResult DetalleUnidad(int IdUnidad, int? IdUsuario = null)
+        public IActionResult DetalleUnidad(int IdUnidad)
         {
             var result = BL.Unidad.GetByIdUnidad(IdUnidad);
 
             if (result.Correct)
             {
                 var unidad = (Models.Unidad)result.Object;
-                ViewBag.IdUsuario = IdUsuario;
-
-                if (IdUsuario != null)
+                
+                // Verificar el tipo de usuario
+                string userType = GetCurrentUserType();
+                
+                // Si es "Usuario" (estudiante), mostrar solo una actividad aleatoria
+                if (userType == "Usuario")
                 {
                     // Randomly select one available activity
                     List<string> available = new List<string>();
@@ -133,6 +150,7 @@ namespace AprendeTEA_19032025.Controllers
                         unidad.TieneOrdenar = false;
                     }
                 }
+                // Si es "Admin", mostrar todas las actividades disponibles
 
                 return View(unidad);
             }
@@ -143,40 +161,40 @@ namespace AprendeTEA_19032025.Controllers
             }
         }
 
-        public IActionResult SopaLetras(int IdUnidad, int? IdUsuario = null)
+        public IActionResult SopaLetras(int IdUnidad)
         {
             var result = BL.Unidad.GetByIdUnidad(IdUnidad);
             if (result.Correct)
             {
                 var unidad = (Models.Unidad)result.Object;
-                unidad.PalabrasSopa = BL.Unidad.GetSopaLetras(IdUnidad); // Explicitly use new BL method
-                ViewBag.IdUsuario = IdUsuario;
+                unidad.PalabrasSopa = BL.Unidad.GetSopaLetras(IdUnidad);
+                ViewBag.IdUsuario = GetCurrentUserId();
                 return View(unidad);
             }
             return RedirectToAction("Index", "PlanTrabajo");
         }
 
-        public IActionResult Relacionar(int IdUnidad, int? IdUsuario = null)
+        public IActionResult Relacionar(int IdUnidad)
         {
             var result = BL.Unidad.GetByIdUnidad(IdUnidad);
             if (result.Correct)
             {
                 var unidad = (Models.Unidad)result.Object;
                 unidad.RelacionarColumnas = BL.Unidad.GetRelacionarColumnas(IdUnidad);
-                ViewBag.IdUsuario = IdUsuario;
+                ViewBag.IdUsuario = GetCurrentUserId();
                 return View(unidad);
             }
             return RedirectToAction("Index", "PlanTrabajo");
         }
 
-        public IActionResult Agrupacion(int IdUnidad, int? IdUsuario = null)
+        public IActionResult Agrupacion(int IdUnidad)
         {
             var result = BL.Unidad.GetByIdUnidad(IdUnidad);
             if (result.Correct)
             {
                 var unidad = (Models.Unidad)result.Object;
                 unidad.Agrupacion = BL.Unidad.GetAgrupacion(IdUnidad);
-                ViewBag.IdUsuario = IdUsuario;
+                ViewBag.IdUsuario = GetCurrentUserId();
                 return View(unidad);
             }
             return RedirectToAction("Index", "PlanTrabajo");
@@ -194,6 +212,39 @@ namespace AprendeTEA_19032025.Controllers
             {
                 return Json(new { success = false, message = ex.Message });
             }
+        }
+
+        /// <summary>
+        /// Muestra las unidades de un plan con su estado de progreso/completado
+        /// Usa SP_Unidades_ProgresoPorPlan
+        /// </summary>
+        public IActionResult ProgresoUnidades(int IdPlanTrabajo)
+        {
+            int userId = GetCurrentUserId();
+            
+            Models.Result result = BL.Unidad.GetProgresoPorPlan(IdPlanTrabajo, userId);
+
+            Models.UnidadProgreso unidadProgreso = new Models.UnidadProgreso();
+
+            if (result.Correct && result.Objects != null)
+            {
+                unidadProgreso.Unidades = result.Objects.Cast<Models.UnidadProgreso>().ToList();
+                
+                // Si hay al menos una unidad, tomar el IdPlanTrabajo de la primera
+                if (unidadProgreso.Unidades.Any())
+                {
+                    unidadProgreso.IdPlanTrabajo = unidadProgreso.Unidades.First().IdPlanTrabajo;
+                }
+            }
+            else
+            {
+                unidadProgreso.Unidades = new List<Models.UnidadProgreso>();
+            }
+
+            ViewBag.IdPlanTrabajo = IdPlanTrabajo;
+            ViewBag.IdUsuario = userId;
+
+            return View(unidadProgreso);
         }
 
     }

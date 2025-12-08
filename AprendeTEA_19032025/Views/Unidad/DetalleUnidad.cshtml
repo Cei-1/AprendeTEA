@@ -1,19 +1,25 @@
 ﻿@model AprendeTEA_19032025.Models.Unidad
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Detalle de Unidad";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int? idUsuario = ViewBag.IdUsuario as int?;
+    
+    // Detectar rol del usuario para navegación
+    var esAdmin = User.IsInRole("Admin");
+    var accionRetorno = esAdmin ? "Index" : "ProgresoUnidades";
+    var textoRetorno = esAdmin ? "Volver a las Unidades" : "Volver a Mi Progreso";
 }
 
-<div class="container my-5" style="max-width: 900px;">
-    <div class="form-container p-4 p-md-5">
+<div class="responsive-container my-4 my-md-5 px-2 px-md-3">
+    <div class="form-container">
 
         <div class="mb-4">
-            <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
+            <a asp-action="@accionRetorno" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
                class="link-back">
                 <i data-lucide="arrow-left" style="width: 20px; height: 20px;" class="me-2"></i>
-                Volver a las Unidades
+                @textoRetorno
             </a>
         </div>
 

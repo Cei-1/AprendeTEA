@@ -1,10 +1,11 @@
 ﻿using AprendeTEA_19032025.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AprendeTEA_19032025.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
 
     public class PlanTrabajoController : Controller
     {
@@ -14,7 +15,7 @@ namespace AprendeTEA_19032025.Controllers
         {
             _planTrabajoBL = planTrabajoBL;
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             Models.PlanTrabajo planTrabajo = new Models.PlanTrabajo();
@@ -29,6 +30,7 @@ namespace AprendeTEA_19032025.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Form(int? IdPlanTrabajo)
         {
             Models.PlanTrabajo planTrabajo = new Models.PlanTrabajo();
@@ -51,6 +53,7 @@ namespace AprendeTEA_19032025.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Form(Models.PlanTrabajo planTrabajo)
         {
             if (planTrabajo.IdPlanTrabajo == 0 || planTrabajo.IdPlanTrabajo == null)
@@ -66,7 +69,7 @@ namespace AprendeTEA_19032025.Controllers
 
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Detalle(int IdPlanTrabajo)
         {
             ViewBag.IdPlanTrabajo = IdPlanTrabajo;
@@ -84,6 +87,7 @@ namespace AprendeTEA_19032025.Controllers
 
         // --- Nuevo método para eliminar ---
         [HttpGet] // Se usa HttpGet para simplificar por ahora, pero lo ideal es un HttpPost con un formulario.
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int IdPlanTrabajo)
         {
             Models.Result result = BL.PlanTrabajo.Delete(IdPlanTrabajo);
@@ -99,16 +103,22 @@ namespace AprendeTEA_19032025.Controllers
 
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Usuario")]
+        private int GetCurrentUserId()
+        {
+            var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(idClaim);
+        }
 
         /// <summary>
         /// Vista de progreso del usuario en los planes de trabajo
         /// Usa SP_Progreso_PlanesDeTrabajo
         /// </summary>
-        /// <param name="IdUsuario">ID del usuario (default: 1 para pruebas)</param>
-        public IActionResult Progreso(int? IdUsuario)
+        /// 
+        [Authorize(Roles = "Usuario")]
+        public IActionResult Progreso()
         {
-            // Por defecto usamos IdUsuario = 1 para pruebas
-            int userId = IdUsuario ?? 1;
+            int userId = GetCurrentUserId();
 
             Models.ProgresoPlanesTrabajo progreso = new Models.ProgresoPlanesTrabajo();
             Models.Result result = BL.ProgresoPlanesTrabajo.GetProgresoByUsuarioId(userId);

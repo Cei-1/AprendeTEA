@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -6,7 +8,7 @@
     <title>@ViewData["Title"] - Neuro Pro</title>
     <link rel="icon" type="image/jpeg" href="~/img/logo.png" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -18,17 +20,25 @@
 </head>
 
 @{
-        // LOGICA PARA DETECTAR LA PÁGINA ACTIVA
-        // Obtenemos el controlador y la acción actuales de la ruta
-        var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
-        var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+                var isAuthenticated = User?.Identity != null && User.Identity.IsAuthenticated;
+                var esAdmin = User.IsInRole("Admin");
+                var esUsuario = User.IsInRole("Usuario");
+                string nombreUsuario = User?.Identity?.Name ?? "Usuario";
 
-        // Función local para asignar la clase 'active'
-        string IsActive(string controller, string action)
-        {
-                return (string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) && 
-                        string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase)) ? "active" : "";
-        }
+                   // URL al endpoint de la foto
+                string fotoPerfilUrl = Url.Action("FotoPerfil", "Perfil");
+}
+@{
+                            // LOGICA PARA DETECTAR LA PÁGINA ACTIVA
+                            // Obtenemos el controlador y la acción actuales de la ruta
+                            var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+                            var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+
+                            // Función local para asignar la clase 'active'
+                            string IsActive(string controller, string action)
+                            {
+                                                        return (currentController == controller && currentAction == action) ? "active" : "";
+                            }
 }
 
 <body class="bg-light text-dark transition-colors" data-mode="light">
@@ -44,62 +54,138 @@
 
     <div class="navigation shadow-lg">
         <div class="menuToggle"></div>
+        @if (isAuthenticated)
+        {
+            <ul class="p-0 m-0 w-100 d-flex flex-column gap-2">
 
-        <ul class="p-0 m-0 w-100 d-flex flex-column gap-2">
+                <!-- PERFIL (Avatar) - Para todos los usuarios autenticados -->
+                <li class="list @IsActive("Perfil", "Index")" style="--clr: #88d48e">
+                    <a href="@Url.Action("Index", "Perfil")" class="profile-container text-decoration-none d-flex align-items-center">
+                        <div class="icon-avatar d-flex align-items-center justify-content-center">
+                            <img src="@fotoPerfilUrl"
+                                 alt="Avatar"
+                                 class="avatar-img"
+                                 style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+                        </div>
+                        <div class="text-user ms-2">
+                            <strong class="d-block profile-name">@nombreUsuario</strong>
+                            <small class="profile-status" style="font-size: 0.7rem;">Ver perfil</small>
+                        </div>
+                    </a>
+                </li>
 
-            <li class="list @IsActive("Home", "Index")" style="--clr: #e38888">
-                <a asp-controller="Home" asp-action="Index">
-                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                    <span class="text">Inicio</span>
-                </a>
-            </li>
+                <!-- INICIO - Para todos -->
+                <li class="list @IsActive("Home", "Index")" style="--clr: #e38888">
+                    <a asp-controller="Home" asp-action="Index">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="text">Inicio</span>
+                    </a>
+                </li>
 
-            <li class="list @IsActive("PlanTrabajo", "Index")" style="--clr: #ffa500">
-                <a asp-controller="PlanTrabajo" asp-action="Index">
-                    <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-                    <span class="text">Actividades</span>
-                </a>
-            </li>
+                @if (esAdmin)
+                {
+                    <!-- ADMIN: Planes de Trabajo -->
+                    <li class="list @IsActive("PlanTrabajo", "Index")" style="--clr: #ffa500">
+                        <a asp-controller="PlanTrabajo" asp-action="Index">
+                            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                            <span class="text">Planes de Trabajo</span>
+                        </a>
+                    </li>
 
-            <li class="list @IsActive("especialistas", "Index")" style="--clr: #88d48e">
-                <a asp-controller="especialistas" asp-action="Index">
-                    <span class="icon"><ion-icon name="compass-outline"></ion-icon></span>
-                    <span class="text">Especialistas</span>
-                </a>
-            </li>
+                    <!-- ADMIN: Especialistas -->
+                    <li class="list @IsActive("Especialistas", "Index")" style="--clr: #88d48e">
+                        <a asp-controller="Especialistas" asp-action="Index">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                            <span class="text">Especialistas</span>
+                        </a>
+                    </li>
+                }
+                else if (esUsuario)
+                {
+                    <!-- USUARIO: Mi Progreso -->
+                    <li class="list @IsActive("PlanTrabajo", "Progreso")" style="--clr: #ffa500">
+                        <a asp-controller="PlanTrabajo" asp-action="Progreso">
+                            <span class="icon"><ion-icon name="analytics-outline"></ion-icon></span>
+                            <span class="text">Mi Progreso</span>
+                        </a>
+                    </li>
 
-            <li class="list @IsActive("especialistas", "catalogo")" style="--clr: #b2a1ff">
-                <a asp-controller="especialistas" asp-action="catalogo">
-                    <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
-                    <span class="text">Especialistas Clientes</span>
-                </a>
-            </li>
+                    <!-- USUARIO: Mis Calificaciones -->
+                    <li class="list @IsActive("Calificaciones", "Index")" style="--clr: #09cbb4">
+                        <a asp-controller="Calificaciones" asp-action="Index">
+                            <span class="icon"><ion-icon name="school-outline"></ion-icon></span>
+                            <span class="text">Mis Calificaciones</span>
+                        </a>
+                    </li>
+                    <!-- USUARIO: Especialistas -->
+                    <li class="list @IsActive("Especialistas", "Catalogo")" style="--clr: #88d48e">
+                        <a asp-controller="Especialistas" asp-action="Catalogo">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                            <span class="text">Especialistas</span>
+                        </a>
+                    </li>
+                }
 
-            <li class="list @IsActive("Calificaciones", "Index")" style="--clr: #09cbb4">
-                <a asp-controller="Calificaciones" asp-action="Index">
-                    <span class="icon"><ion-icon name="time-outline"></ion-icon></span>
-                    <span class="text">Historial</span>
-                </a>
-            </li>
-            <li class="list @IsActive("PlanTrabajo", "Progreso")" style="--clr: #09cbb4">
-                <a asp-controller="PlanTrabajo" asp-action="Progreso">
-                    <span class="icon"><ion-icon name="time-outline"></ion-icon></span>
-                    <span class="text">Historial</span>
-                </a>
-            </li>
+                <!-- DARK MODE TOGGLE - Para todos -->
+                <li class="list" style="--clr: #729bff" id="dark-mode-toggle">
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="moon-outline" id="dark-mode-icon"></ion-icon>
+                        </span>
+                        <span class="text">Modo Obscuro</span>
+                    </a>
+                </li>
 
-            <li class="list" style="--clr: #729bff" id="dark-mode-toggle">
-                <a href="#">
-                    <span class="icon">
-                        <ion-icon name="moon-outline" id="dark-mode-icon"></ion-icon>
-                    </span>
-                    <span class="text">Modo Obscuro</span>
-                </a>
-            </li>
-        </ul>
+                <!-- CERRAR SESIÓN - Para todos -->
+                <li class="list" style="--clr: #ff4b5c">
+                    <form asp-controller="Login" asp-action="Logout" method="post" id="logoutForm" class="w-100 m-0 p-0">
+                        @Html.AntiForgeryToken()
+                        <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">
+                            <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                            <span class="text">Cerrar Sesión</span>
+                        </a>
+                    </form>
+                </li>
+            </ul>
+        }
+        else
+        {
+            <ul class="p-0 m-0 w-100 d-flex flex-column gap-2">
+
+                <li class="list @IsActive("Home", "Index")" style="--clr: #e38888">
+                    <a asp-controller="Home" asp-action="Index">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="text">Inicio</span>
+                    </a>
+                </li>
+
+                <li class="list @IsActive("Login", "Index")" style="--clr: #ffa500">
+                    <a asp-controller="Login" asp-action="Index">
+                        <span class="icon"><ion-icon name="log-in-outline"></ion-icon></span>
+                        <span class="text">Iniciar Sesión</span>
+                    </a>
+                </li>
+
+                <li class="list @IsActive("Login", "Registro")" style="--clr: #88d48e">
+                    <a asp-controller="Login" asp-action="Registro">
+                        <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+                        <span class="text">Registrase</span>
+                    </a>
+                </li>
+
+                <li class="list" style="--clr: #729bff" id="dark-mode-toggle">
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="moon-outline" id="dark-mode-icon"></ion-icon>
+                        </span>
+                        <span class="text">Modo Obscuro</span>
+                    </a>
+                </li>
+            </ul>
+        }
     </div>
 
-    <main class="main-content p-4 p-md-5 min-vh-100">
+    <main class="main-content p-2 p-md-4 p-lg-5 min-vh-100">
         @RenderBody()
 
         <footer class="mt-5 pt-5 border-top text-center text-muted">
@@ -121,7 +207,7 @@
         </footer>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script> *@
 
     <script>
         // -------------------------------------
@@ -194,210 +280,9 @@
             if (typeof lucide !== "undefined") lucide.createIcons();
         };
     </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-@* <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Neuro Pro</title>
-    <link rel="icon" type="image/jpeg" href="~/img/logo.png" />
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/neuropro-styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/NeuroPro.styles.css" asp-append-version="true" />
-</head>
-<body class="bg-light text-dark transition-colors" data-mode="light">
-
-    <header class="d-md-none sticky-top w-100 p-3 bg-white shadow-sm d-flex align-items-center justify-content-between mobile-header">
-        <h1 class="h5 m-0 font-weight-bold text-truncate custom-text-primary">
-            @ViewData["Title"]
-        </h1>
-
-        <div class="menuToggle-mobile d-block cursor-pointer" id="menuToggleMobile" style="font-size: 1.8rem;">
-            <ion-icon name="menu-outline"></ion-icon>
-        </div>
-    </header>
-
-    <div class="navigation shadow-lg">
-        <div class="menuToggle d-md-none"></div>
-        <ul class="p-0 m-0 w-100 d-flex flex-column gap-2">
-            <li class="list active" style="--clr: #e38888">
-                <a asp-controller="Home" asp-action="Index">
-                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                    <span class="text">Inicio</span>
-                </a>
-            </li>
-            <li class="list" style="--clr: #ffa500">
-                <a asp-controller="PlanTrabajo" asp-action="Index">
-                    <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-                    <span class="text">Actividades</span>
-                </a>
-            </li>
-            <li class="list" style="--clr: #88d48e">
-                <a asp-controller="Home" asp-action="Privacy">
-                    <span class="icon"><ion-icon name="compass-outline"></ion-icon></span>
-                    <span class="text">Misión/Visión</span>
-                </a>
-            </li>
-            <li class="list" style="--clr: #b2a1ff">
-                <a asp-controller="Home" asp-action="Privacy">
-                    <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
-                    <span class="text">Valores</span>
-                </a>
-            </li>
-            <li class="list" style="--clr: #09cbb4">
-                <a asp-controller="Home" asp-action="Privacy">
-                    <span class="icon"><ion-icon name="time-outline"></ion-icon></span>
-                    <span class="text">Historia</span>
-                </a>
-            </li>
-            <li class="list" style="--clr: #729bff" id="dark-mode-toggle">
-                <a href="#">
-                    <span class="icon">
-                        <ion-icon name="moon-outline" id="dark-mode-icon"></ion-icon>
-                    </span>
-                    <span class="text">Modo Obscuro</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <main class="main-content p-4 p-md-5 min-vh-100">
-        @RenderBody()
-
-        <footer class="mt-5 pt-5 border-top text-center text-muted">
-            <div class="container">
-                <div class="social-buttons mb-4 scale-110 d-flex justify-content-center gap-3">
-                    <a class="social-button social-button--facebook" href="https://www.facebook.com/share/17kufCAKj8/" aria-label="Facebook" target="_blank">
-                        <ion-icon name="logo-facebook"></ion-icon>
-                    </a>
-                    <a class="social-button social-button--tiktok" href="https://www.tiktok.com/@@neuropro07" aria-label="TikTok" target="_blank">
-                        <ion-icon name="logo-tiktok"></ion-icon>
-                    </a>
-                    <a class="social-button social-button--instagram" href="https://www.instagram.com/neuro___pro/" aria-label="Instagram" target="_blank">
-                        <ion-icon name="logo-instagram"></ion-icon>
-                    </a>
-                </div>
-
-                <p class="small opacity-75">&copy; 2025 Neuro Pro. Consciencia y Neurodiversidad.</p>
-            </div>
-        </footer>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-
-    <script>
-        // -------------------------------------
-        // VARIABLES DE CONTROL Y DARK MODE
-        // -------------------------------------
-        const menuToggleMobile = document.getElementById("menuToggleMobile");
-        const navigation = document.querySelector(".navigation");
-        const lists = document.querySelectorAll(".list");
-        const mainContent = document.querySelector("main");
-        const htmlElement = document.documentElement;
-        const darkModeIcon = document.getElementById("dark-mode-icon");
-        const darkModeToggle = document.getElementById("dark-mode-toggle");
-        const bodyElement = document.body;
-
-        // --- DARK MODE FUNCTIONS ---
-        function enableDarkMode() {
-            bodyElement.classList.add("dark-mode"); // Usamos clase propia en lugar de 'dark' de tailwind
-            bodyElement.classList.remove("bg-light", "text-dark"); // Quitar clases light de bootstrap
-            bodyElement.classList.add("bg-dark-custom", "text-light"); // Añadir clases custom dark
-
-            bodyElement.setAttribute("data-mode", "dark");
-            darkModeIcon.name = "sunny-outline";
-            localStorage.setItem("theme", "dark");
-        }
-
-        function disableDarkMode() {
-            bodyElement.classList.remove("dark-mode", "bg-dark-custom", "text-light");
-            bodyElement.classList.add("bg-light", "text-dark");
-
-            bodyElement.setAttribute("data-mode", "light");
-            darkModeIcon.name = "moon-outline";
-            localStorage.setItem("theme", "light");
-        }
-
-        // Inicializar el tema al cargar
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme === "dark") enableDarkMode();
-        else disableDarkMode();
-
-        // Función auxiliar para móvil (Bootstrap md breakpoint es 768px)
-        function isMobile() {
-            return window.innerWidth < 768;
-        }
-
-        function handleMenuToggle() {
-            navigation.classList.toggle("open");
-            if (isMobile()) {
-                mainContent.classList.toggle("menu-shifted");
-            }
-        }
-
-        if (menuToggleMobile) {
-            menuToggleMobile.onclick = handleMenuToggle;
-        }
-
-        function activarLink(event) {
-            const clickedItem = event.currentTarget;
-            if (clickedItem.id === "dark-mode-toggle") return;
-
-            lists.forEach((item) => {
-                if (item.id !== "dark-mode-toggle") item.classList.remove("active");
-            });
-            clickedItem.classList.add("active");
-
-            if (navigation.classList.contains("open") && isMobile()) {
-                setTimeout(() => {
-                    navigation.classList.remove("open");
-                    mainContent.classList.remove("menu-shifted");
-                }, 300);
-            }
-        }
-
-        if (darkModeToggle) {
-            darkModeToggle.addEventListener("click", (e) => {
-                e.preventDefault();
-                if (bodyElement.classList.contains("dark-mode")) disableDarkMode();
-                else enableDarkMode();
-
-                if (navigation.classList.contains("open") && isMobile()) {
-                    setTimeout(() => {
-                        navigation.classList.remove("open");
-                        mainContent.classList.remove("menu-shifted");
-                    }, 300);
-                }
-            });
-        }
-
-        lists.forEach((item) => {
-            if (item.id !== "dark-mode-toggle") item.addEventListener("click", activarLink);
-        });
-
-        window.addEventListener("resize", () => {
-            if (!isMobile()) {
-                mainContent.classList.remove("menu-shifted");
-                navigation.classList.remove("open");
-            }
-        });
-
-        window.onload = function () {
-            if (typeof lucide !== "undefined") lucide.createIcons();
-        };
-    </script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
-
- *@
