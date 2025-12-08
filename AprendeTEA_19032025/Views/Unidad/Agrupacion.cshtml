@@ -1,18 +1,588 @@
 @model AprendeTEA_19032025.Models.Unidad
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Agrupación - AprendeTEA";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int? idUsuario = ViewBag.IdUsuario as int?;
+    var esAdmin = User.IsInRole("Admin");
 }
 
-<div class="container py-5 text-center">
-    <h2>@Model.NombreUnidad</h2>
-    <h3 class="text-muted mb-4">Agrupación</h3>
-    
-    <div class="alert alert-info">
-        Esta actividad está en construcción. Los datos cargados son: <br/>
-        <code>@Model.Agrupacion</code>
-    </div>
+<style>
+    /* =========================================
+           1. ESTILOS GLOBALES Y DEL HEADER (ADAPTADOS DE SOPA)
+           ========================================= */
 
-    <a href="@Url.Action("DetalleUnidad", new { IdUnidad = Model.IdUnidad })" class="btn btn-secondary">Volver</a>
+    /* Variables de color según el tema */
+    :root {
+        --bg-body: #f8fafc;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        /* Colores específicos de la actividad */
+        --item-bg: #ffffff;
+        --item-border: #cbd5e1;
+        --dropzone-bg: #e2e8f0;
+        --dropzone-border: #94a3b8;
+    }
+
+    [data-bs-theme="dark"] {
+        --bg-body: #0f172a;
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --item-bg: #1e293b;
+        --item-border: #475569;
+        --dropzone-bg: #1e293b;
+        --dropzone-border: #475569;
+    }
+
+    /* Clases de utilidad para texto adaptativo */
+    .text-adaptive {
+        color: var(--text-main) !important;
+    }
+
+    .text-adaptive-inverse {
+        color: var(--text-muted) !important;
+    }
+
+    /* Estilos del Logo del Header */
+    .hero-logo {
+        transition: transform 0.3s ease;
+    }
+
+        .hero-logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+    /* Contenedor Principal */
+    .activity-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* =========================================
+           2. ESTILOS ESPECÍFICOS DE AGRUPACIÓN
+           ========================================= */
+
+    /* --- CAJAS DE GRUPO (DROPZONES) --- */
+    .group-dropzone {
+        background-color: var(--dropzone-bg);
+        border: 2px dashed var(--dropzone-border);
+        border-radius: 1rem;
+        min-height: 280px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 0.5rem;
+        cursor: pointer;
+        position: relative;
+        height: 100%;
+    }
+
+        .group-dropzone:hover, .group-dropzone.drag-over, .group-dropzone.target-active {
+            background-color: rgba(114, 155, 255, 0.15);
+            border-color: var(--alef-primary, #0d6efd);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+    /* --- TÍTULOS DE LOS GRUPOS (CON FIX DE CORTE) --- */
+    .group-title {
+        font-weight: 800;
+        margin-bottom: 1.2rem;
+        color: var(--text-main);
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        pointer-events: none;
+        /* Fix palabras largas */
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        text-align: center;
+        width: 100%;
+        line-height: 1.3;
+        padding: 0 5px;
+    }
+
+    /* --- ÍTEMS (PALABRAS) --- */
+    .draggable-item {
+        padding: 0.6rem 1rem;
+        margin: 0.25rem;
+        background-color: var(--item-bg);
+        border: 2px solid var(--item-border);
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: grab;
+        user-select: none;
+        transition: all 0.2s ease;
+        color: var(--text-main);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        display: inline-block;
+        font-size: 0.85rem;
+        max-width: 100%;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+        /* Interacción Item */
+        .draggable-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .draggable-item:active {
+            cursor: grabbing;
+        }
+
+        /* Estado Seleccionado (Click) */
+        .draggable-item.selected {
+            background-color: var(--alef-primary, #0d6efd) !important;
+            color: white !important;
+            border-color: var(--alef-primary, #0d6efd) !important;
+            transform: scale(1.05);
+            box-shadow: 0 0 0 4px rgba(114, 155, 255, 0.3);
+            z-index: 10;
+        }
+
+        /* Estados de Respuesta */
+        .draggable-item.correct {
+            background-color: #10b981 !important;
+            border-color: #10b981 !important;
+            color: white !important;
+            pointer-events: none;
+            animation: popIn 0.3s ease;
+        }
+
+        .draggable-item.incorrect {
+            animation: shake 0.5s;
+            background-color: #ef4444 !important;
+            border-color: #ef4444 !important;
+            color: white !important;
+        }
+
+    @@keyframes shake {
+        0%, 100%
+
+    {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+
+    }
+    @@keyframes popIn {
+        0%
+
+    {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    }
+
+    /* Banco de Palabras */
+    .items-bank {
+        background-color: var(--bg-body); /* Se funde con el fondo o usa card-bg */
+        border-radius: 1rem;
+        padding: 1.5rem;
+        min-height: 250px;
+        border: 1px solid var(--dropzone-border);
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* Timer */
+    .timer-badge {
+        font-variant-numeric: tabular-nums;
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+    }
+
+    /* =========================================
+           3. ESTILOS DEL MODAL (Dark Mode Support)
+           ========================================= */
+    .modal-content-custom {
+        background-color: #ffffff;
+        color: #1e293b;
+        border: none;
+    }
+
+    [data-bs-theme="dark"] .modal-content-custom {
+        background-color: #1e293b;
+        color: #f1f5f9;
+        border: 1px solid #334155;
+    }
+
+        [data-bs-theme="dark"] .modal-content-custom h2 {
+            color: #4ade80 !important;
+        }
+
+        [data-bs-theme="dark"] .modal-content-custom .op-75 {
+            color: #cbd5e1 !important;
+        }
+
+    .time-badge-modal {
+        background-color: #f8fafc;
+        color: #0f172a;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: bold;
+        border: 1px solid #e2e8f0;
+    }
+
+    [data-bs-theme="dark"] .time-badge-modal {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        border-color: #334155;
+    }
+
+</style>
+
+<div class="mb-4 mb-md-5 d-flex flex-column align-items-center pt-4">
+    <div class="hero-title-container mb-2 d-flex align-items-center gap-2 gap-md-3">
+        <img src="~/img/logo.png"
+             alt="Logo Neuro Pro"
+             class="hero-logo"
+             style="width: 3.5rem; height: 3.5rem; object-fit: contain;"
+             onerror="this.style.display='none';" />
+        <h2 class="display-5 display-md-4 m-0 fw-bold text-adaptive">
+            NEURO PRO
+        </h2>
+    </div>
+    <h3 class="h6 text-uppercase fw-bold text-adaptive-inverse text-center px-3 ls-1">
+        Rutas de Consciencia y Neurodiversidad
+    </h3>
 </div>
+
+<div class="activity-container px-3 pb-5">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3 bg-opacity-10 rounded-4 p-3 border border-secondary border-opacity-10" style="background-color: rgba(114, 155, 255, 0.05);">
+        <div class="text-center text-md-start">
+            <h2 class="h4 fw-bold text-adaptive mb-1">Agrupación de Conceptos</h2>
+            <p class="text-adaptive-inverse mb-0 small">
+                <i data-lucide="mouse-pointer-2" class="me-1" style="width: 14px;"></i>
+                Haz clic en una palabra y luego toca el grupo correcto.
+            </p>
+        </div>
+        <div class="px-4 py-2 rounded-pill bg-white shadow-sm border border-secondary border-opacity-10 d-flex align-items-center gap-2">
+            <i data-lucide="timer" class="text-primary"></i>
+            <span id="timer" class="fw-bold text-primary timer-badge">00:00</span>
+        </div>
+    </div>
+@* 
+    <div id="mensajeSinDatos" class="alert alert-warning rounded-4 shadow-sm border-0 d-flex align-items-center gap-2" style="display:none;">
+        <i data-lucide="alert-triangle"></i>
+        <div>No hay datos de agrupación configurados para esta unidad.</div>
+    </div> *@
+
+    <div class="row g-4" id="gameArea">
+
+        <div class="col-lg-8 order-2 order-lg-1">
+            <div id="groupsContainer" class="row g-3">
+            </div>
+        </div>
+
+        <div class="col-lg-4 order-1 order-lg-2">
+            <div class="items-bank text-center sticky-lg-top" style="top: 20px; z-index: 5;">
+                <h6 class="fw-bold text-muted mb-3 small text-uppercase ls-1">
+                    <i data-lucide="layers" class="me-1" style="width: 14px;"></i> Banco de Palabras
+                </h6>
+                <div id="itemsContainer" class="d-flex flex-wrap gap-2 justify-content-center">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="victoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom rounded-4 shadow-lg overflow-hidden">
+            <div class="modal-header border-0 pb-0 justify-content-end">
+            </div>
+            <div class="modal-body text-center p-4 pt-0 pb-5">
+                <div class="mb-3 position-relative">
+                    <div class="position-absolute top-50 start-50 translate-middle" style="width: 150px; height: 150px; background: radial-gradient(circle, rgba(74, 222, 128, 0.2) 0%, rgba(0,0,0,0) 70%); z-index: 0;"></div>
+                    <img src="~/img/latimente.png" alt="Celebración" style="width: 130px; height: auto; position: relative; z-index: 1; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));"
+                         onerror="this.src='https://cdn-icons-png.flaticon.com/512/2278/2278992.png'">
+                </div>
+
+                <h2 class="fw-bold text-success mb-2">¡Excelente Trabajo!</h2>
+                <p class="mb-4 op-75 small">Has clasificado todos los conceptos correctamente.</p>
+
+                <div class="time-badge-modal d-inline-block mb-4">
+                    <p class="mb-0 small text-uppercase text-muted" style="font-size: 0.7rem;">Tiempo Total</p>
+                    <p class="mb-0 fw-bold fs-5" id="timeTakenDisplay">--:--</p>
+                </div>
+
+                <div id="savingMessage" class="d-none text-primary mb-3 fw-bold small bg-primary bg-opacity-10 p-2 rounded-3">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                    Guardando tu progreso...
+                </div>
+
+                <button id="btnContinuar" class="btn btn-primary btn-lg rounded-pill px-5 w-100 fw-bold shadow-sm">
+                    Continuar <i data-lucide="arrow-right" class="ms-2" style="width: 18px;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // --- 1. CONFIGURACIÓN Y DATOS ---
+        const rawAgrupacion = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Agrupacion ?? ""));
+        const idUsuario = @(idUsuario.HasValue? idUsuario.Value: "null");
+        const idUnidad = @Model.IdUnidad;
+        const idPlanTrabajo = @Model.IdPlanTrabajo;
+        const esAdmin = @(esAdmin.ToString().ToLower());
+        const returnURL = esAdmin
+            ? `/Unidad/Index?IdPlanTrabajo=${idPlanTrabajo}`
+            : `/Unidad/ProgresoUnidades?IdPlanTrabajo=${idPlanTrabajo}`;
+
+        // Variables de estado
+        let groups = [], items = [];
+        let correctCount = 0;
+        let selectedItem = null;
+        let startTime, timerInterval;
+
+        // --- 2. LÓGICA DE TIEMPO ---
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                const s = (elapsed % 60).toString().padStart(2, '0');
+                const timerEl = document.getElementById("timer");
+                if(timerEl) timerEl.textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+            finishActivity(elapsedSeconds);
+        }
+
+        // --- 3. PARSEO DE DATOS ---
+        function normalizeKey(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, "-").trim();
+        }
+
+        function parseData(raw) {
+            if (!raw) return;
+            // Limpia saltos de línea y divide por punto y coma
+            raw.replace(/\r?\n/g, " ").split(";").forEach((segment, gIdx) => {
+                const parts = segment.split(":");
+                if (parts.length === 2) {
+                    const groupName = parts[0].trim();
+                    if(!groupName) return;
+
+                    const groupKey = normalizeKey(groupName);
+                    groups.push({ name: groupName, key: groupKey });
+
+                    parts[1].split(",").forEach((itemTxt, iIdx) => {
+                        const txt = itemTxt.trim();
+                        if(txt) {
+                            items.push({
+                                id: `item-${gIdx}-${iIdx}`,
+                                text: txt,
+                                targetKey: groupKey
+                            });
+                        }
+                    });
+                }
+            });
+            // Revolver ítems para que no salgan en orden
+            items.sort(() => Math.random() - 0.5);
+        }
+
+        // --- 4. RENDERIZADO ---
+        function renderGame() {
+            const gContainer = document.getElementById("groupsContainer");
+            const iContainer = document.getElementById("itemsContainer");
+
+            if(groups.length === 0) {
+                document.getElementById("mensajeSinDatos").style.display = "flex";
+                return;
+            }
+
+            // Lógica responsive para columnas:
+            // Si hay 3 o más grupos, usamos col-lg-4/3. Pero en tablets (md) forzamos 2 por fila (col-md-6)
+            // para dar espacio a los títulos largos.
+            const colLgSize = groups.length <= 2 ? 6 : (groups.length === 3 ? 4 : 3);
+
+            // Render Grupos
+            gContainer.innerHTML = groups.map(g => `
+                <div class="col-md-6 col-lg-${colLgSize} col-12">
+                    <div class="group-dropzone"
+                         data-key="${g.key}"
+                         ondrop="dropHandler(event)"
+                         ondragover="allowDrop(event)"
+                         onclick="handleGroupClick('${g.key}')">
+                        <div class="group-title">${g.name}</div>
+                        </div>
+                </div>
+            `).join('');
+
+            // Render Ítems
+            iContainer.innerHTML = items.map(i => `
+                <div class="draggable-item"
+                     id="${i.id}"
+                     draggable="true"
+                     data-target="${i.targetKey}"
+                     ondragstart="dragStartHandler(event)"
+                     onclick="handleItemClick(event)">
+                    ${i.text}
+                </div>
+            `).join('');
+        }
+
+        // --- 5. LÓGICA DE JUEGO (HÍBRIDA) ---
+
+        // A) Click Logic
+        function handleItemClick(e) {
+            const clickedItem = e.target;
+            if(clickedItem.classList.contains('correct')) return;
+
+            if(selectedItem) {
+                selectedItem.classList.remove('selected');
+                if(selectedItem === clickedItem) {
+                    selectedItem = null;
+                    return;
+                }
+            }
+            selectedItem = clickedItem;
+            selectedItem.classList.add('selected');
+        }
+
+        function handleGroupClick(groupKey) {
+            if(!selectedItem) return;
+            const targetZone = document.querySelector(`.group-dropzone[data-key="${groupKey}"]`);
+            attemptDrop(selectedItem, targetZone);
+        }
+
+        // B) Drag Logic
+        function dragStartHandler(ev) {
+            ev.dataTransfer.setData("text/plain", ev.target.id);
+            if(selectedItem) selectedItem.classList.remove('selected');
+            selectedItem = ev.target;
+            ev.target.classList.add('selected');
+        }
+
+        function allowDrop(ev) { ev.preventDefault(); }
+
+        function dropHandler(ev) {
+            ev.preventDefault();
+            const itemId = ev.dataTransfer.getData("text");
+            const item = document.getElementById(itemId);
+            const dropzone = ev.target.closest('.group-dropzone');
+            attemptDrop(item, dropzone);
+        }
+
+        // C) Validación
+        function attemptDrop(item, dropzone) {
+            if(!item || !dropzone) return;
+
+            const itemTarget = item.getAttribute("data-target");
+            const zoneKey = dropzone.getAttribute("data-key");
+
+            item.classList.remove('selected');
+            selectedItem = null;
+
+            if (itemTarget === zoneKey) {
+                // Correcto
+                item.classList.add("correct");
+                item.setAttribute("draggable", "false");
+                item.onclick = null;
+                dropzone.appendChild(item);
+                correctCount++;
+
+                if (correctCount === items.length) {
+                    stopTimer();
+                }
+            } else {
+                // Incorrecto
+                item.classList.add("incorrect");
+                setTimeout(() => item.classList.remove("incorrect"), 500);
+            }
+        }
+
+        // --- 6. FINALIZAR ---
+        function finishActivity(seconds) {
+            let calif = 0;
+            if (seconds <= 30) calif = 10;
+            else if (seconds <= 60) calif = 9;
+            else if (seconds <= 90) calif = 8;
+            else if (seconds <= 120) calif = 7;
+            else if (seconds <= 180) calif = 6;
+            else if (seconds <= 300) calif = 5;
+            else calif = 5;
+
+            // Mostrar Modal
+            const modalEl = document.getElementById('victoryModal');
+            const modal = new bootstrap.Modal(modalEl);
+            document.getElementById('timeTakenDisplay').textContent =
+                `${document.getElementById("timer").textContent} (${calif} pts)`;
+
+            modal.show();
+
+            const btn = document.getElementById('btnContinuar');
+            const saveMsg = document.getElementById('savingMessage');
+
+            if (idUsuario) {
+                saveMsg.classList.remove('d-none');
+                btn.disabled = true;
+
+                fetch('/Unidad/GuardarCalificacion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        IdUsuario: idUsuario,
+                        IdUnidad: idUnidad,
+                        Calificacion: calif,
+                        TiempoDedicado: seconds / 60
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    saveMsg.classList.add('d-none');
+                    btn.disabled = false;
+                    btn.onclick = () => window.location.href = returnURL;
+                    // Auto redirect
+                    setTimeout(() => window.location.href = returnURL, 4000);
+                })
+                .catch(err => {
+                    console.error(err);
+                    saveMsg.textContent = "Error de conexión. Intenta continuar.";
+                    saveMsg.className = "text-danger mb-3 small fw-bold";
+                    btn.disabled = false;
+                    btn.onclick = () => window.location.href = returnURL;
+                });
+            } else {
+                btn.onclick = () => window.location.href = returnURL;
+            }
+        }
+
+        // --- INICIO ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if(typeof lucide !== 'undefined') lucide.createIcons();
+            parseData(rawAgrupacion);
+            renderGame();
+            if(items.length > 0) startTimer();
+        });
+
+    </script>
+}
