@@ -15,7 +15,8 @@ namespace AprendeTEA_19032025.Helpers
 
         public async Task EnviarConfirmacionEmailAsync(string email, int idUsuario, string token)
         {
-            string url = $"http://localhost:11399/Login/ConfirmarEmail?id={idUsuario}&token={token}";
+            //string url = $"http://localhost:11399/Login/ConfirmarEmail?id={idUsuario}&token={token}";
+            string url = $"http://localhost:5138/Login/ConfirmarEmail?id={idUsuario}&token={token}";
             //string url = $"https://tusitio.com/Login/ConfirmarEmail?id={idUsuario}&token={token}";
 
             var mail = new MailMessage

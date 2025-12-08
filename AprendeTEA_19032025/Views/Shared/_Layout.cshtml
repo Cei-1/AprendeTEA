@@ -99,6 +99,15 @@
                             <span class="text">Especialistas</span>
                         </a>
                     </li>
+                    <!-- 👇 NUEVO MENÚ ADMIN -->
+                    <li class="list @IsActive("AdminUsuarios", "PendientesActivar")" style="--clr: #ff9f1c">
+                        <a asp-controller="AdminUsuarios" asp-action="PendientesActivar">
+                            <span class="icon">
+                                <ion-icon name="people-circle-outline"></ion-icon>
+                            </span>
+                            <span class="text">Usuarios pendientes</span>
+                        </a>
+                    </li>
                 }
                 else if (esUsuario)
                 {
