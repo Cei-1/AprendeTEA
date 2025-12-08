@@ -1,0 +1,18 @@
+@model AprendeTEA_19032025.Models.Unidad
+
+@{
+    ViewData["Title"] = "Agrupación - AprendeTEA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5 text-center">
+    <h2>@Model.NombreUnidad</h2>
+    <h3 class="text-muted mb-4">Agrupación</h3>
+    
+    <div class="alert alert-info">
+        Esta actividad está en construcción. Los datos cargados son: <br/>
+        <code>@Model.Agrupacion</code>
+    </div>
+
+    <a href="@Url.Action("DetalleUnidad", new { IdUnidad = Model.IdUnidad })" class="btn btn-secondary">Volver</a>
+</div>

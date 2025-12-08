@@ -1,0 +1,697 @@
+@model AprendeTEA_19032025.Models.Unidad
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Relación de Conceptos - AprendeTEA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int? idUsuario = ViewBag.IdUsuario as int?;
+    
+    // Detectar rol para redirección después de completar
+    var esAdmin = User.IsInRole("Admin");
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    
+    <style>
+        /* Reset y variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #729bff;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --bg-light: #f8fafb;
+            --bg-dark: #1e293b;
+            --card-light: #ffffff;
+            --card-dark: #2d3748;
+            --border-light: #cbd5e1;
+            --border-dark: #4a5568;
+            --text-light: #1e293b;
+            --text-dark: #f8fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo-title img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .logo-title h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .instructions {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        /* Timer and Stats */
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: var(--card-light);
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 150px;
+        }
+
+        body.dark-mode .stat-box {
+            background: var(--card-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-value.errors {
+            color: var(--error-color);
+        }
+
+        /* Game Container */
+        .game-container {
+            display: flex;
+            gap: 80px;
+            justify-content: center;
+            position: relative;
+            padding: 40px 20px;
+            background: var(--card-light);
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        body.dark-mode .game-container {
+            background: var(--card-dark);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .item {
+            background: var(--bg-light);
+            padding: 15px 25px;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            width: 280px;
+            text-align: center;
+            cursor: grab;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        body.dark-mode .item {
+            background: var(--bg-dark);
+            border-color: var(--border-dark);
+        }
+
+        .item:hover:not(.correct) {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(114, 155, 255, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .item.correct {
+            border-color: var(--success-color);
+            background-color: rgba(16, 185, 129, 0.1);
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .item.incorrect {
+            border-color: var(--error-color);
+            background-color: rgba(239, 68, 68, 0.1);
+            animation: shake 0.4s;
+        }
+
+        @@keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Message and Modal */
+        #message {
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 1.3rem;
+            min-height: 30px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--card-light);
+            margin: 10% auto;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        body.dark-mode .modal-content {
+            background-color: var(--card-dark);
+            color: var(--text-dark);
+        }
+
+        @@keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: var(--success-color);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .modal-content p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+            color: #64748b;
+        }
+
+        body.dark-mode .modal-content p {
+            color: #94a3b8;
+        }
+
+        .modal-content .score {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        #savingMessage {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .game-container {
+                flex-direction: column;
+                gap: 40px;
+                align-items: center;
+            }
+
+            .item {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .logo-title h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .stat-box {
+                min-width: 120px;
+                padding: 10px 20px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-custom">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-title">
+                <img src="~/img/logo.png" alt="Logo Neuro Pro" onerror="this.style.display='none';" />
+                <h1>NEURO PRO</h1>
+            </div>
+            <h2 class="subtitle">@Model.NombreUnidad</h2>
+            <p class="instructions">🧠 Arrastra cada concepto hacia su definición correcta</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-label">⏱️ Tiempo</div>
+                <div class="stat-value" id="timer">00:00</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">✅ Aciertos</div>
+                <div class="stat-value" id="aciertos">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">❌ Errores</div>
+                <div class="stat-value errors" id="errores">0</div>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div class="game-container" id="gameContainer">
+            <div class="canvas-container">
+                <canvas id="lineCanvas"></canvas>
+            </div>
+            <div class="column" id="left-column"></div>
+            <div class="column" id="right-column"></div>
+        </div>
+
+        <div id="message"></div>
+
+        <!-- Back Button -->
+        <div style="text-align: center;">
+            <a href="@Url.Action("DetalleUnidad", new { IdUnidad = Model.IdUnidad, IdUsuario = idUsuario })" class="btn btn-secondary">
+                ← Volver a la Unidad
+            </a>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="victoryModal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 ¡Felicitaciones!</h2>
+            <p>Has completado la actividad correctamente</p>
+            <p><strong>Tiempo:</strong> <span id="finalTime"></span></p>
+            <p><strong>Errores:</strong> <span id="finalErrors"></span></p>
+            <div class="score" id="finalScore">10.0</div>
+            <p id="savingMessage" style="display:none;">Guardando calificación...</p>
+            <button id="btnContinuar" class="btn btn-primary" style="display:none;">Continuar</button>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        const canvas = document.getElementById('lineCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('gameContainer');
+        const leftColumn = document.getElementById('left-column');
+        const rightColumn = document.getElementById('right-column');
+        const message = document.getElementById('message');
+        const modal = document.getElementById('victoryModal');
+        const savingMessage = document.getElementById('savingMessage');
+        const btnContinuar = document.getElementById('btnContinuar');
+
+        // Datos del juego
+        const idUnidad = @Model.IdUnidad;
+        const idPlanTrabajo = @Model.IdPlanTrabajo;
+        const idUsuario = @(idUsuario.HasValue ? idUsuario.Value : "null");
+        
+        // URL de retorno basada en rol del usuario
+        const esAdmin = @(esAdmin ? "true" : "false");
+        const returnURL = esAdmin 
+            ? `/Unidad/Index?IdPlanTrabajo=${idPlanTrabajo}` 
+            : `/Unidad/ProgresoUnidades?IdPlanTrabajo=${idPlanTrabajo}`;
+
+        // Parsear datos del modelo (formato: concepto:definicion;concepto2:definicion2;)
+        const rawData = `@Html.Raw(Model.RelacionarColumnas ?? "")`;
+        const pairs = [];
+        
+        if (rawData) {
+            const items = rawData.split(';').filter(item => item.trim());
+            items.forEach(item => {
+                const [concept, definition] = item.split(':');
+                if (concept && definition) {
+                    pairs.push({ concept: concept.trim(), definition: definition.trim() });
+                }
+            });
+        }
+
+        // Estadísticas del juego
+        let aciertos = 0;
+        let errores = 0;
+        let intentos = 0;
+        let startTime = Date.now();
+        let timerInterval;
+        let draggedItem = null;
+        const totalPairs = pairs.length;
+
+        // Inicializar canvas
+        function resizeCanvas() {
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            redrawLines();
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Inicializar juego
+        function initGame() {
+            // Mezclar conceptos y definiciones
+            const shuffledConcepts = [...pairs].sort(() => Math.random() - 0.5);
+            const shuffledDefinitions = [...pairs].sort(() => Math.random() - 0.5);
+
+            // Crear elementos de la columna izquierda (conceptos)
+            shuffledConcepts.forEach((pair, index) => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.draggable = true;
+                item.dataset.id = pairs.indexOf(pair);
+                item.textContent = pair.concept;
+                leftColumn.appendChild(item);
+
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+
+            // Crear elementos de la columna derecha (definiciones)
+            shuffledDefinitions.forEach((pair, index) => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.dataset.id = pairs.indexOf(pair);
+                item.textContent = pair.definition;
+                rightColumn.appendChild(item);
+
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+            });
+
+            startTimer();
+        }
+
+        // Timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                document.getElementById('timer').textContent = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function formatTime(ms) {
+            const minutes = Math.floor(ms / 60000);
+            const seconds = Math.floor((ms % 60000) / 1000);
+            return `${minutes} min ${seconds} seg`;
+        }
+
+        // Drag and Drop handlers
+        function handleDragStart(e) {
+            draggedItem = this;
+            this.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            draggedItem = null;
+            this.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            
+            if (draggedItem && !this.classList.contains('correct')) {
+                intentos++;
+                
+                if (draggedItem.dataset.id === this.dataset.id) {
+                    // Respuesta correcta
+                    draggedItem.classList.add('correct');
+                    this.classList.add('correct');
+                    draggedItem.setAttribute('draggable', 'false');
+                    
+                    drawLineBetweenItems(draggedItem, this);
+                    aciertos++;
+                    document.getElementById('aciertos').textContent = aciertos;
+
+                    if (aciertos === totalPairs) {
+                        setTimeout(onGameComplete, 500);
+                    }
+                } else {
+                    // Respuesta incorrecta
+                    errores++;
+                    document.getElementById('errores').textContent = errores;
+                    
+                    this.classList.add('incorrect');
+                    setTimeout(() => {
+                        this.classList.remove('incorrect');
+                    }, 800);
+                }
+            }
+        }
+
+        // Dibujar líneas
+        const lines = [];
+
+        function drawLineBetweenItems(startItem, endItem) {
+            lines.push({ start: startItem, end: endItem });
+            redrawLines();
+        }
+
+        function redrawLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            lines.forEach(({ start, end }) => {
+                const startRect = start.getBoundingClientRect();
+                const endRect = end.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+
+                const startX = startRect.right - containerRect.left;
+                const startY = startRect.top + startRect.height / 2 - containerRect.top;
+                const endX = endRect.left - containerRect.left;
+                const endY = endRect.top + endRect.height / 2 - containerRect.top;
+
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.strokeStyle = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--success-color');
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            });
+        }
+
+        // Calcular calificación basada en aciertos
+        function calculateScore() {
+            // Calificación basada puramente en aciertos
+            // Fórmula: (aciertos / totalPairs) * 10
+            const score = (aciertos / totalPairs) * 10;
+            return score.toFixed(2);
+        }
+
+        // Completar el juego
+        function onGameComplete() {
+            stopTimer();
+            const timeElapsed = Date.now() - startTime;
+            const score = calculateScore();
+            
+            document.getElementById('finalTime').textContent = formatTime(timeElapsed);
+            document.getElementById('finalErrors').textContent = errores;
+            document.getElementById('finalScore').textContent = score;
+            
+            modal.style.display = 'block';
+            
+            // Guardar calificación si hay usuario
+            if (idUsuario !== null) {
+                savingMessage.style.display = 'block';
+                savingMessage.textContent = 'Guardando calificación...';
+                
+                fetch('/Unidad/GuardarCalificacion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        IdUnidad: idUnidad,
+                        IdUsuario: idUsuario,
+                        Calificacion: parseFloat(score),
+                        TiempoDedicado: timeElapsed / 60000  // Convertir a minutos
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    savingMessage.style.display = 'none';
+                    if(data.success) {
+                        btnContinuar.textContent = 'Continuar';
+                        btnContinuar.onclick = () => window.location.href = returnURL;
+                    } else {
+                        btnContinuar.textContent = 'Error al guardar (Continuar)';
+                        btnContinuar.onclick = () => window.location.href = returnURL;
+                    }
+                    btnContinuar.style.display = 'inline-block';
+                    
+                    // Redirección automática después de 3 segundos
+                    setTimeout(() => {
+                        window.location.href = returnURL;
+                    }, 3000);
+                })
+                .catch(err => {
+                    console.error(err);
+                    savingMessage.textContent = 'Error de conexión.';
+                    btnContinuar.style.display = 'inline-block';
+                    btnContinuar.onclick = () => window.location.href = returnURL;
+                    // Redirect anyway
+                    setTimeout(() => { window.location.href = returnURL; }, 3000);
+                });
+            } else {
+                // Sin usuario, solo mostrar botón para volver
+                btnContinuar.style.display = 'inline-block';
+                btnContinuar.onclick = () => window.location.href = returnURL;
+            }
+        }
+
+        // Detectar modo oscuro
+        if (document.body.classList.contains('dark-mode')) {
+            // El modo oscuro ya está aplicado por _Layout.cshtml
+        }
+
+        // Iniciar el juego
+        initGame();
+    </script>
+
+</body>
+</html>

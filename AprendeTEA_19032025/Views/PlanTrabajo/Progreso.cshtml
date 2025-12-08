@@ -1,0 +1,201 @@
+@model AprendeTEA_19032025.Models.ProgresoPlanesTrabajo
+
+@{
+    ViewData["Title"] = "Mi Progreso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mb-4 mb-md-5 d-flex flex-column align-items-center pt-4">
+    <div class="hero-title-container mb-3 d-flex align-items-center gap-2 gap-md-3">
+        <img src="~/img/logo.png"
+             alt="Logo Neuro Pro"
+             class="hero-logo"
+             style="width: 3rem; height: 3rem; object-fit: contain;"
+             onerror="this.style.display='none';" />
+        <h2 class="display-5 display-md-4 m-0 fw-bold text-adaptive">
+            NEURO PRO
+        </h2>
+    </div>
+    <h3 class="h5 h4-md fw-semibold text-adaptive-inverse text-center px-3" style="max-width: 600px;">
+        Rutas de Consciencia y Neurodiversidad
+    </h3>
+</div>
+
+<section class="mb-5 pb-5">
+    <div class="responsive-container px-2 px-md-3">
+
+        <h1 class="h2 fw-bold text-center mb-2 neuropro-title">
+            Mi Progreso en Planes de Trabajo
+        </h1>
+        <p class="lead text-center text-body-custom mb-5">
+            Visualiza tu avance en cada plan de estudio.
+        </p>
+
+        <div class="mb-5">
+            <h2 class="h3 fw-bold text-adaptive mb-4 pb-2 border-bottom border-opacity-25 border-secondary">
+                Planes de Estudio Disponibles
+            </h2>
+
+            <div id="course-list" class="d-flex flex-column gap-3">
+                @if (Model.PlanesTrabajo != null && Model.PlanesTrabajo.Count > 0)
+                {
+                    foreach (var plan in Model.PlanesTrabajo)
+                    {
+                        var progressPercentage = plan.PorcentajeProgreso;
+                        var progressColor = progressPercentage >= 100 ? "bg-success" :
+                                           progressPercentage >= 50 ? "bg-primary" :
+                                           progressPercentage > 0 ? "bg-warning" : "bg-secondary";
+                        var progressText = progressPercentage >= 100 ? "¡Completado!" :
+                                          progressPercentage > 0 ? "En Progreso" : "Sin Iniciar";
+                        var statusBadgeClass = progressPercentage >= 100 ? "bg-success" :
+                                              progressPercentage > 0 ? "bg-primary" : "bg-secondary";
+
+                        <div class="accordion-item">
+                            <div class="accordion-header d-flex align-items-center p-3 p-md-4">
+                                <i data-lucide="brain-circuit" class="me-3 text-alef-secondary" style="width: 28px; height: 28px;"></i>
+
+                                <span class="flex-grow-1 h5 m-0 fw-bold">@plan.NombrePlan</span>
+
+                                <span class="badge @statusBadgeClass rounded-pill me-3 d-none d-sm-inline">
+                                    @progressText
+                                </span>
+
+                                <i data-lucide="chevron-down" style="width: 24px; height: 24px;"></i>
+                            </div>
+
+                            <div class="accordion-content">
+                                <div class="p-4 border-top border-secondary border-opacity-10">
+                                    <!-- Información del Plan -->
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <i data-lucide="layers" class="text-alef-primary" style="width: 18px; height: 18px;"></i>
+                                            <span class="text-body-custom fw-medium">Total de Unidades:</span>
+                                            <span class="fw-bold text-alef-primary">@plan.TotalUnidades</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <i data-lucide="check-circle" class="text-success" style="width: 18px; height: 18px;"></i>
+                                            <span class="text-body-custom fw-medium">Unidades Completadas:</span>
+                                            <span class="fw-bold text-success">@plan.UnidadesCompletadas</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Barra de Progreso -->
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="text-muted-custom small fw-medium">Progreso del Plan</span>
+                                            <span class="fw-bold @(progressPercentage >= 100 ? "text-success" : "text-alef-primary")">
+                                                @plan.PorcentajeProgreso.ToString("F1")%
+                                            </span>
+                                        </div>
+                                        <div class="progress" style="height: 12px;">
+                                            <div class="progress-bar @progressColor" 
+                                                 role="progressbar" 
+                                                 style="width: @plan.PorcentajeProgreso.ToString("F0")%;"
+                                                 aria-valuenow="@plan.PorcentajeProgreso" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mensaje de Estado -->
+                                    @if (progressPercentage >= 100)
+                                    {
+                                        <div class="alert alert-success d-flex align-items-center gap-2 mb-3">
+                                            <i data-lucide="trophy" style="width: 20px; height: 20px;"></i>
+                                            <span>¡Felicidades! Has completado todas las unidades de este plan.</span>
+                                        </div>
+                                    }
+                                    else if (progressPercentage > 0)
+                                    {
+                                        <div class="alert alert-info d-flex align-items-center gap-2 mb-3">
+                                            <i data-lucide="zap" style="width: 20px; height: 20px;"></i>
+                                            <span>¡Sigue así! Te faltan @(plan.TotalUnidades - plan.UnidadesCompletadas) unidades por completar.</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-secondary d-flex align-items-center gap-2 mb-3">
+                                            <i data-lucide="play-circle" style="width: 20px; height: 20px;"></i>
+                                            <span>Aún no has iniciado este plan. ¡Comienza ahora!</span>
+                                        </div>
+                                    }
+
+                                    <!-- Botón de Ver Progreso -->
+                                    <div class="d-flex justify-content-end pt-2">
+                                        <a asp-action="ProgresoUnidades" asp-controller="Unidad" asp-route-IdPlanTrabajo="@plan.IdPlanTrabajo"
+                                           class="btn text-white fw-bold rounded-pill shadow-sm px-4"
+                                           style="background-color: var(--alef-secondary); border: none;">
+                                            <i data-lucide="arrow-right" style="width: 16px; height: 16px;" class="me-1"></i>
+                                            Ver Mi Progreso
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center p-5 rounded-3 shadow card-bg">
+                        <div class="mb-3">
+                            <i data-lucide="book-open" class="text-muted-custom" style="width: 64px; height: 64px; opacity: 0.5;"></i>
+                        </div>
+                        <h3 class="h4 fw-bold text-body-custom">No hay planes de trabajo disponibles</h3>
+                        <p class="text-muted-custom mt-2">Aún no tienes planes de trabajo asignados.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar iconos
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // Lógica del Acordeón
+            const headers = document.querySelectorAll(".accordion-header");
+
+            headers.forEach((header) => {
+                header.addEventListener("click", () => {
+                    const item = header.parentElement;
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('[data-lucide="chevron-down"]');
+
+                    if (!content) return;
+
+                    const isClosed = !header.classList.contains("open");
+
+                    // Cerrar todos los otros items
+                    document.querySelectorAll(".accordion-item").forEach((otherItem) => {
+                        if (otherItem !== item) {
+                            const otherContent = otherItem.querySelector(".accordion-content");
+                            const otherHeader = otherItem.querySelector(".accordion-header");
+                            const otherIcon = otherItem.querySelector('[data-lucide="chevron-down"]');
+
+                            if (otherContent) otherContent.style.maxHeight = "0px";
+                            if (otherHeader) otherHeader.classList.remove("open");
+                            if (otherIcon) otherIcon.style.transform = "rotate(0deg)";
+                        }
+                    });
+
+                    // Abrir o Cerrar el actual
+                    if (isClosed) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        header.classList.add("open");
+                        if(icon) icon.style.transform = "rotate(180deg)";
+                    } else {
+                        content.style.maxHeight = "0px";
+                        header.classList.remove("open");
+                        if(icon) icon.style.transform = "rotate(0deg)";
+                    }
+                });
+            });
+        });
+    </script>
+}

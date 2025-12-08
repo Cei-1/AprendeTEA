@@ -14,6 +14,12 @@ namespace AprendeTEA_19032025.Controllers
             return int.Parse(idClaim);
         }
 
+        private int GetCurrentUserType()
+        {
+            var idType = User.FindFirstValue(ClaimTypes.Role);
+            return int.Parse(idType);
+        }
+
         [HttpGet]
         public IActionResult Index()
         {

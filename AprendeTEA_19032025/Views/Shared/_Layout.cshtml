@@ -20,25 +20,25 @@
 </head>
 
 @{
-        var isAuthenticated = User?.Identity != null && User.Identity.IsAuthenticated;
-        var esAdmin = User.IsInRole("Admin");
-        var esUsuario = User.IsInRole("Usuario");
-        string nombreUsuario = User?.Identity?.Name ?? "Usuario";
+                var isAuthenticated = User?.Identity != null && User.Identity.IsAuthenticated;
+                var esAdmin = User.IsInRole("Admin");
+                var esUsuario = User.IsInRole("Usuario");
+                string nombreUsuario = User?.Identity?.Name ?? "Usuario";
 
-           // URL al endpoint de la foto
-        string fotoPerfilUrl = Url.Action("FotoPerfil", "Perfil");
+                   // URL al endpoint de la foto
+                string fotoPerfilUrl = Url.Action("FotoPerfil", "Perfil");
 }
 @{
-                    // LOGICA PARA DETECTAR LA PÁGINA ACTIVA
-                    // Obtenemos el controlador y la acción actuales de la ruta
-                    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
-                    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+                            // LOGICA PARA DETECTAR LA PÁGINA ACTIVA
+                            // Obtenemos el controlador y la acción actuales de la ruta
+                            var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+                            var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
 
-                    // Función local para asignar la clase 'active'
-                    string IsActive(string controller, string action)
-                    {
-                                        return (currentController == controller && currentAction == action) ? "active" : "";
-                    }
+                            // Función local para asignar la clase 'active'
+                            string IsActive(string controller, string action)
+                            {
+                                                        return (currentController == controller && currentAction == action) ? "active" : "";
+                            }
 }
 
 <body class="bg-light text-dark transition-colors" data-mode="light">
@@ -57,21 +57,8 @@
         @if (isAuthenticated)
         {
             <ul class="p-0 m-0 w-100 d-flex flex-column gap-2">
-         
-              @*   <li class="profile-item">
-                    <a asp-controller="Perfil" asp-action="Index" class="profile-container text-decoration-none">
-                        <div class="icon-avatar d-flex align-items-center justify-content-center">
-                            <img src="@fotoPerfilUrl"
-                                 alt="Avatar"
-                                 class="avatar-img"
-                                 style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
-                        </div>
-                        <div class="text-user ms-2">
-                            <strong class="d-block profile-name">@nombreUsuario</strong>
-                            <small class="profile-status" style="font-size: 0.7rem;">Ver perfil</small>
-                        </div>
-                    </a>
-                </li> *@
+
+                <!-- PERFIL (Avatar) - Para todos los usuarios autenticados -->
                 <li class="list @IsActive("Perfil", "Index")" style="--clr: #88d48e">
                     <a href="@Url.Action("Index", "Perfil")" class="profile-container text-decoration-none d-flex align-items-center">
                         <div class="icon-avatar d-flex align-items-center justify-content-center">
@@ -87,48 +74,68 @@
                     </a>
                 </li>
 
+                <!-- INICIO - Para todos -->
                 <li class="list @IsActive("Home", "Index")" style="--clr: #e38888">
                     <a asp-controller="Home" asp-action="Index">
                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                         <span class="text">Inicio</span>
                     </a>
                 </li>
+
                 @if (esAdmin)
                 {
+                    <!-- ADMIN: Planes de Trabajo -->
                     <li class="list @IsActive("PlanTrabajo", "Index")" style="--clr: #ffa500">
                         <a asp-controller="PlanTrabajo" asp-action="Index">
                             <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-                            <span class="text">Actividades</span>
+                            <span class="text">Planes de Trabajo</span>
+                        </a>
+                    </li>
+
+                    <!-- ADMIN: Especialistas -->
+                    <li class="list @IsActive("Especialistas", "Index")" style="--clr: #88d48e">
+                        <a asp-controller="Especialistas" asp-action="Index">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                            <span class="text">Especialistas</span>
+                        </a>
+                    </li>
+                    <!-- 👇 NUEVO MENÚ ADMIN -->
+                    <li class="list @IsActive("AdminUsuarios", "PendientesActivar")" style="--clr: #ff9f1c">
+                        <a asp-controller="AdminUsuarios" asp-action="PendientesActivar">
+                            <span class="icon">
+                                <ion-icon name="people-circle-outline"></ion-icon>
+                            </span>
+                            <span class="text">Usuarios pendientes</span>
                         </a>
                     </li>
                 }
-                <li class="list @IsActive("Home", "MisionVision")" style="--clr: #88d48e">
-                    <a asp-controller="Perfil" asp-action="Index">
-                        <span class="icon"><ion-icon name="compass-outline"></ion-icon></span>
-                        <span class="text">Mi perfil</span>
-                    </a>
-                </li>
-                <li class="list @IsActive("Home", "MisionVision")" style="--clr: #88d48e">
-                    <a asp-controller="especialistas" asp-action="Index">
-                        <span class="icon"><ion-icon name="compass-outline"></ion-icon></span>
-                        <span class="text">Especialistas</span>
-                    </a>
-                </li>
+                else if (esUsuario)
+                {
+                    <!-- USUARIO: Mi Progreso -->
+                    <li class="list @IsActive("PlanTrabajo", "Progreso")" style="--clr: #ffa500">
+                        <a asp-controller="PlanTrabajo" asp-action="Progreso">
+                            <span class="icon"><ion-icon name="analytics-outline"></ion-icon></span>
+                            <span class="text">Mi Progreso</span>
+                        </a>
+                    </li>
 
-                <li class="list @IsActive("Home", "Valores")" style="--clr: #b2a1ff">
-                    <a asp-controller="especialistas" asp-action="catalogo">
-                        <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
-                        <span class="text">Especialistas Clientes</span>
-                    </a>
-                </li>
+                    <!-- USUARIO: Mis Calificaciones -->
+                    <li class="list @IsActive("Calificaciones", "Index")" style="--clr: #09cbb4">
+                        <a asp-controller="Calificaciones" asp-action="Index">
+                            <span class="icon"><ion-icon name="school-outline"></ion-icon></span>
+                            <span class="text">Mis Calificaciones</span>
+                        </a>
+                    </li>
+                    <!-- USUARIO: Especialistas -->
+                    <li class="list @IsActive("Especialistas", "Catalogo")" style="--clr: #88d48e">
+                        <a asp-controller="Especialistas" asp-action="Catalogo">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                            <span class="text">Especialistas</span>
+                        </a>
+                    </li>
+                }
 
-                <li class="list @IsActive("Home", "Historia")" style="--clr: #09cbb4">
-                    <a asp-controller="Home" asp-action="Historia">
-                        <span class="icon"><ion-icon name="time-outline"></ion-icon></span>
-                        <span class="text">Historia</span>
-                    </a>
-                </li>
-
+                <!-- DARK MODE TOGGLE - Para todos -->
                 <li class="list" style="--clr: #729bff" id="dark-mode-toggle">
                     <a href="#">
                         <span class="icon">
@@ -137,7 +144,8 @@
                         <span class="text">Modo Obscuro</span>
                     </a>
                 </li>
-                <!-- 🔐 CERRAR SESIÓN -->
+
+                <!-- CERRAR SESIÓN - Para todos -->
                 <li class="list" style="--clr: #ff4b5c">
                     <form asp-controller="Login" asp-action="Logout" method="post" id="logoutForm" class="w-100 m-0 p-0">
                         @Html.AntiForgeryToken()
@@ -186,7 +194,7 @@
         }
     </div>
 
-    <main class="main-content p-4 p-md-5 min-vh-100">
+    <main class="main-content p-2 p-md-4 p-lg-5 min-vh-100">
         @RenderBody()
 
         <footer class="mt-5 pt-5 border-top text-center text-muted">

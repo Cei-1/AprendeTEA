@@ -1,7 +1,7 @@
-﻿@model Unidad
+@model AprendeTEA_19032025.Models.UnidadProgreso
 
 @{
-    ViewData["Title"] = "Unidades del Plan";
+    ViewData["Title"] = "Mi Progreso en Unidades";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,9 +9,9 @@
     <div class="form-container">
 
         <div class="mb-4">
-            <a asp-action="Index" asp-controller="PlanTrabajo" class="link-back">
+            <a asp-action="Progreso" asp-controller="PlanTrabajo" class="link-back">
                 <i data-lucide="arrow-left" style="width: 20px; height: 20px;" class="me-2"></i>
-                Volver al Directorio de Planes
+                Volver al Progreso
             </a>
         </div>
 
@@ -19,28 +19,8 @@
             Plan de Trabajo #@ViewBag.IdPlanTrabajo
         </h1>
         <p class="lead text-center text-body-custom mb-4">
-            Gestión de Unidades de Aprendizaje
+            Mi Progreso en Unidades de Aprendizaje
         </p>
-
-        @if (TempData["Mensaje"] != null)
-        {
-            <div class="alert alert-primary shadow-sm border-start border-4 border-primary" role="alert">
-                <p class="m-0">@TempData["Mensaje"]</p>
-            </div>
-        }
-
-        <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
-            <form asp-action="CargarExcel" asp-controller="Unidad" method="post" enctype="multipart/form-data" class="w-100 w-sm-auto">
-                <input type="hidden" name="IdPlanTrabajo" value="@ViewBag.IdPlanTrabajo" />
-
-                <label for="excelUpload" class="btn-blue-action py-2 px-4 d-flex align-items-center justify-content-center w-100">
-                    <i data-lucide="upload" style="width: 18px; height: 18px;" class="me-2"></i>
-                    Cargar Excel
-                </label>
-                <input type="file" id="excelUpload" name="file" class="d-none" required onchange="this.form.submit();" />
-            </form>
-
-        </div>
 
         <div>
             <h2 class="h4 fw-bold text-alef-primary mb-4 d-flex align-items-center">
@@ -49,10 +29,10 @@
             </h2>
 
             <div id="modules-container" class="d-flex flex-column gap-3">
-                @if (Model.Unidades != null && Model.Unidades.Count > 0)
+                @if (Model.Unidades != null && Model.Unidades.Any())
                 {
                     int index = 1;
-                    foreach (Unidad unidad in Model.Unidades)
+                    foreach (var unidad in Model.Unidades)
                     {
                         <div class="module-card p-3 p-md-4 rounded-3 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
 
@@ -61,7 +41,11 @@
 
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                                        <p class="h5 fw-bold text-body-custom m-0">@unidad.NombreUnidad</p>
+                                        <p class="h5 fw-bold text-body-custom m-0">@unidad.Unidad</p>
+                                        @if (unidad.Completada)
+                                        {
+                                            <span class="badge bg-success" style="font-size: 0.7rem;">Completada</span>
+                                        }
                                     </div>
                                     <p class="small text-muted-custom m-0">
                                         <span class="fw-bold">Fecha de Registro:</span> @unidad.FechaRegistro?.ToString("dd/MM/yyyy")
@@ -71,7 +55,7 @@
 
                             <div class="w-100 w-md-auto d-flex">
                                 <a asp-action="DetalleUnidad" asp-controller="Unidad" 
-                                   asp-route-IdUnidad="@unidad.IdUnidad" 
+                                   asp-route-IdUnidad="@unidad.IdUnidad"
                                    asp-route-IdUsuario="@ViewBag.IdUsuario"
                                    class="btn-alef-submit py-2 px-4 d-flex align-items-center justify-content-center w-100 text-decoration-none shadow-sm"
                                    style="font-size: 0.9rem;">
@@ -86,8 +70,8 @@
                 {
                     <div class="empty-state-box">
                         <i data-lucide="inbox" style="width: 64px; height: 64px;" class="text-muted-custom opacity-50 mb-3"></i>
-                        <p class="fs-5 text-muted-custom fw-bold mb-1">No hay unidades registradas en este plan.</p>
-                        <p class="small text-muted-custom opacity-75">Carga un archivo Excel para comenzar.</p>
+                        <p class="fs-5 text-muted-custom fw-bold mb-1">No hay unidades disponibles para este plan.</p>
+                        <p class="small text-muted-custom opacity-75">Comunícate con tu administrador.</p>
                     </div>
                 }
             </div>

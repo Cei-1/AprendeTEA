@@ -1,5 +1,6 @@
 using AprendeTEA_19032025.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AprendeTEA_19032025.Controllers
 {
@@ -12,18 +13,19 @@ namespace AprendeTEA_19032025.Controllers
             _calificacionesBL = new BL.Calificaciones(context);
         }
 
-        // Dashboard view showing grades detail for a user
-        public IActionResult Index(int? IdUsuario)
+        private int GetCurrentUserId()
         {
-            // For now, use URL parameter. In production, get from session/auth
-            if (!IdUsuario.HasValue)
-            {
-                // Default to user 1 for testing, or redirect to login
-                IdUsuario = 1;
-            }
+            var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(idClaim);
+        }
+
+        // Dashboard view showing grades detail for a user
+        public IActionResult Index()
+        {
+            int IdUsuario = GetCurrentUserId();
 
             Models.CalificacionDetalle calificacionDetalle = new Models.CalificacionDetalle();
-            Models.Result result = BL.Calificaciones.GetDetalleByUsuarioId(IdUsuario.Value);
+            Models.Result result = BL.Calificaciones.GetDetalleByUsuarioId(IdUsuario);
 
             if (result.Correct)
             {

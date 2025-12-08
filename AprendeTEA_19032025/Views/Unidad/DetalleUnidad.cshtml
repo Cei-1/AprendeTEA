@@ -1,18 +1,25 @@
-﻿@model Unidad
+﻿@model AprendeTEA_19032025.Models.Unidad
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Detalle de Unidad";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int? idUsuario = ViewBag.IdUsuario as int?;
+    
+    // Detectar rol del usuario para navegación
+    var esAdmin = User.IsInRole("Admin");
+    var accionRetorno = esAdmin ? "Index" : "ProgresoUnidades";
+    var textoRetorno = esAdmin ? "Volver a las Unidades" : "Volver a Mi Progreso";
 }
 
-<div class="container my-5" style="max-width: 900px;">
-    <div class="form-container p-4 p-md-5">
+<div class="responsive-container my-4 my-md-5 px-2 px-md-3">
+    <div class="form-container">
 
         <div class="mb-4">
-            <a asp-action="Index" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
+            <a asp-action="@accionRetorno" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
                class="link-back">
                 <i data-lucide="arrow-left" style="width: 20px; height: 20px;" class="me-2"></i>
-                Volver a las Unidades
+                @textoRetorno
             </a>
         </div>
 
@@ -30,18 +37,19 @@
             <div id="step-content" class="d-flex flex-column gap-4">
 
                 <div class="welcome-section p-4 rounded-3 shadow-sm">
-                    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
-                        <div class="flex-shrink-0">
-                            <div class="welcome-badge-icon">
-                                <i data-lucide="sparkles" style="width: 40px; height: 40px;"></i>
-                            </div>
+                    <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+                        <div class="flex-shrink-0 align-self-center">
+                            <img src="~/img/latimente.png"
+                                 alt="Latimente"
+                                 style="width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));"
+                                 onerror="this.style.display='none';" />
                         </div>
                         <div class="flex-grow-1 text-center text-md-start">
-                            <h3 class="h3 fw-bold text-adaptive mb-2">
-                                ¡Bienvenido a esta Unidad!
+                            <h3 class="h3 fw-bold text-alef-primary mb-2">
+                                ¡Hola! Soy Latimente 👋
                             </h3>
                             <p class="text-body-custom fs-5 fw-light m-0">
-                                Explora el fascinante mundo de esta unidad diseñada para potenciar tus habilidades y conocimientos de manera interactiva y divertida.
+                                Estoy muy feliz de acompañarte en esta aventura de aprendizaje. Juntos exploraremos conceptos fascinantes de una manera divertida e interactiva. ¡Recuerda que cada mente es única y especial!
                             </p>
                         </div>
                     </div>
@@ -83,46 +91,79 @@
                         @if (Model.TieneSopaLetras)
                         {
                             <div class="col-md-6">
-                                <div class="activity-card p-3 rounded-3 shadow-sm border-l-blue card-bg"
-                                     data-bs-toggle="modal" data-bs-target="#modalSopa">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-box blue me-3">
-                                                <i data-lucide="grid-3x3" style="width: 24px; height: 24px;"></i>
+                                <a asp-action="SopaLetras" asp-controller="Unidad" 
+                                   asp-route-IdUnidad="@Model.IdUnidad" 
+                                   asp-route-IdUsuario="@idUsuario"
+                                   class="text-decoration-none">
+                                    <div class="activity-card p-3 rounded-3 shadow-sm border-l-blue card-bg h-100 transition-transform hover-scale">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon-box blue me-3">
+                                                    <i data-lucide="grid-3x3" style="width: 24px; height: 24px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="fw-bold text-body-custom m-0">Sopa de Letras</p>
+                                                    <p class="small text-muted-custom m-0">Encuentra las palabras</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p class="fw-bold text-body-custom m-0">Sopa de Letras</p>
-                                                <p class="small text-muted-custom m-0">Encuentra las palabras</p>
-                                            </div>
+                                            <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
                                         </div>
-                                        <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         }
 
-                        @if (Model.TieneCrucigrama)
+                        @if (Model.TieneAgrupacion)
                         {
                             <div class="col-md-6">
-                                <div class="activity-card p-3 rounded-3 shadow-sm border-l-green card-bg"
-                                     data-bs-toggle="modal" data-bs-target="#modalCrucigrama">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon-box green me-3">
-                                                <i data-lucide="puzzle" style="width: 24px; height: 24px;"></i>
+                                <a asp-action="Agrupacion" asp-controller="Unidad" 
+                                   asp-route-IdUnidad="@Model.IdUnidad" 
+                                   asp-route-IdUsuario="@idUsuario"
+                                   class="text-decoration-none">
+                                    <div class="activity-card p-3 rounded-3 shadow-sm border-l-green card-bg h-100 transition-transform hover-scale">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon-box green me-3">
+                                                    <i data-lucide="boxes" style="width: 24px; height: 24px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="fw-bold text-body-custom m-0">Agrupación</p>
+                                                    <p class="small text-muted-custom m-0">Clasifica los elementos</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p class="fw-bold text-body-custom m-0">Crucigrama</p>
-                                                <p class="small text-muted-custom m-0">Resuelve el desafío</p>
-                                            </div>
+                                            <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
                                         </div>
-                                        <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         }
 
-                        @if (!Model.TieneSopaLetras && !Model.TieneCrucigrama && !Model.TieneRelacionar && !Model.TieneAgrupacion && !Model.TieneOrdenar)
+                        @if (Model.TieneRelacionar)
+                        {
+                            <div class="col-md-6">
+                                <a asp-action="Relacionar" asp-controller="Unidad" 
+                                   asp-route-IdUnidad="@Model.IdUnidad" 
+                                   asp-route-IdUsuario="@idUsuario"
+                                   class="text-decoration-none">
+                                    <div class="activity-card p-3 rounded-3 shadow-sm border-l-violet card-bg h-100 transition-transform hover-scale">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon-box violet me-3">
+                                                    <i data-lucide="link" style="width: 24px; height: 24px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="fw-bold text-body-custom m-0">Relación de Conceptos</p>
+                                                    <p class="small text-muted-custom m-0">Une las parejas correctas</p>
+                                                </div>
+                                            </div>
+                                            <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                        @if (!Model.TieneSopaLetras && !Model.TieneRelacionar && !Model.TieneAgrupacion)
                         {
                             <div class="col-12 text-center py-4">
                                 <i data-lucide="inbox" class="text-muted-custom opacity-50 mb-2" style="width: 48px; height: 48px;"></i>
@@ -136,157 +177,18 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalSopa" tabindex="-1" aria-hidden="true" style="z-index: 1055;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content card-bg border-0 shadow-lg">
-            <div class="modal-header border-bottom border-secondary border-opacity-25">
-                <h5 class="modal-title fw-bold text-body-custom d-flex align-items-center">
-                    <i data-lucide="grid-3x3" class="text-alef-primary me-2"></i>
-                    Sopa de Letras
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        style="filter: var(--bs-btn-close-filter);"></button>
-            </div>
-
-            <div class="modal-body p-4">
-                <p class="text-center text-muted-custom mb-4">
-                    Encuentra las siguientes palabras ocultas en el tablero:
-                </p>
-                <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
-                    @foreach (var palabra in Model.PalabrasSopa.Split(','))
-                    {
-                        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
-                            @palabra.Trim().ToUpper()
-                        </span>
-                    }
-                </div>
-
-                <div id="sopaContainer" class="sopa-grid-container">
-                </div>
-            </div>
-            <div class="modal-footer border-top-0 justify-content-center pb-4">
-                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalCrucigrama" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content card-bg">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold text-body-custom">Crucigrama</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center p-5">
-                <i data-lucide="cone" class="text-warning mb-3" style="width: 48px; height: 48px;"></i>
-                <p class="text-muted-custom">Funcionalidad en construcción...</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
-
-            // Lógica para Generar la Sopa de Letras
-            const palabrasStr = "@Model.PalabrasSopa";
-
-            if(palabrasStr) {
-                const palabras = palabrasStr.split(",").map(p => p.trim().toUpperCase());
-                const gridSize = 12; // Grid de 12x12
-                let grid = [];
-
-                // 1. Inicializar Grid Vacío
-                for (let i = 0; i < gridSize; i++) {
-                    grid[i] = [];
-                    for (let j = 0; j < gridSize; j++) {
-                        grid[i][j] = "";
-                    }
-                }
-
-                // 2. Algoritmo simple de colocación (Horizontal)
-                palabras.forEach(palabra => {
-                    let placed = false;
-                    let attempts = 0;
-
-                    // Intentar 50 veces colocar la palabra aleatoriamente
-                    while (!placed && attempts < 50) {
-                        attempts++;
-                        let row = Math.floor(Math.random() * gridSize);
-                        let col = Math.floor(Math.random() * (gridSize - palabra.length)); // Solo horizontal
-
-                        // Verificar si cabe
-                        let fits = true;
-                        for (let i = 0; i < palabra.length; i++) {
-                            if (grid[row][col + i] !== "" && grid[row][col + i] !== palabra[i]) {
-                                fits = false;
-                                break;
-                            }
-                        }
-
-                        if (fits) {
-                            // Colocar palabra
-                            for (let i = 0; i < palabra.length; i++) {
-                                grid[row][col + i] = palabra[i];
-                            }
-                            placed = true;
-                        }
-                    }
-                });
-
-                // 3. Rellenar espacios vacíos
-                const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                for (let i = 0; i < gridSize; i++) {
-                    for (let j = 0; j < gridSize; j++) {
-                        if (grid[i][j] === "") {
-                            grid[i][j] = letters[Math.floor(Math.random() * letters.length)];
-                        }
-                    }
-                }
-
-                // 4. Renderizar cuando el modal se abre
-                const modalSopa = document.getElementById("modalSopa");
-                if(modalSopa){
-                    modalSopa.addEventListener("shown.bs.modal", () => {
-                        const container = document.getElementById("sopaContainer");
-                        // Evitar regenerar si ya tiene contenido
-                        if(container.innerHTML.trim() !== "") return;
-
-                        container.innerHTML = "";
-
-                        // Asegurar que el CSS grid tenga el tamaño correcto
-                        container.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-
-                        grid.forEach(row => {
-                            row.forEach(letter => {
-                                const cell = document.createElement("div");
-                                // Usamos la clase CSS limpia 'sopa-cell'
-                                cell.className = "sopa-cell";
-                                cell.textContent = letter;
-
-                                // Opcional: Lógica básica de click
-                                cell.addEventListener('click', function() {
-                                    // Toggle visual selection
-                                    if(this.style.backgroundColor === 'var(--alef-secondary)') {
-                                         this.style.backgroundColor = '';
-                                         this.style.color = '';
-                                    } else {
-                                        this.style.backgroundColor = 'var(--alef-secondary)'; // Color de selección
-                                        this.style.color = 'white';
-                                    }
-                                });
-
-                                container.appendChild(cell);
-                            });
-                        });
-                    });
-                }
-            }
         });
     </script>
+    <style>
+        .hover-scale:hover {
+            transform: translateY(-5px);
+            transition: transform 0.2s ease;
+        }
+    </style>
 }
