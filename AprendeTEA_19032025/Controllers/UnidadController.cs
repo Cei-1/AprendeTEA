@@ -1,9 +1,11 @@
 ﻿using AprendeTEA_19032025.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 
 namespace AprendeTEA_19032025.Controllers
 {
+    [Authorize]
     public class UnidadController : Controller
     {
         private readonly BL.Unidad _unidadBL;

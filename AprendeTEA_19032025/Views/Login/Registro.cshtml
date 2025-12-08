@@ -1,0 +1,406 @@
+﻿@model Registro
+
+@{
+    Layout = null; // Sin layout principal para evitar el menú lateral
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro - Neuro Pro</title>
+    <link rel="icon" type="image/jpeg" href="~/img/logo.png" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/neuropro-styles.css" asp-append-version="true" />
+
+    <style>
+        /* ========================================================= */
+        /* ESTILOS EXTRA PARA REGISTRO                               */
+        /* ========================================================= */
+
+        /* Contenedor del formulario con scroll personalizado */
+        .register-form-container {
+            max-height: 85vh; /* Altura máxima relativa a la ventana */
+            overflow-y: auto; /* Scroll vertical si es necesario */
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: var(--alef-primary) transparent;
+        }
+
+            /* Scrollbar Webkit (Chrome, Edge, Safari) */
+            .register-form-container::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .register-form-container::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .register-form-container::-webkit-scrollbar-thumb {
+                background-color: rgba(114, 155, 255, 0.5);
+                border-radius: 20px;
+            }
+
+        /* Sección de Títulos Pequeños en el Formulario */
+        .form-section-title {
+            color: var(--alef-primary);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .form-section-title {
+            color: var(--alef-secondary);
+        }
+    </style>
+</head>
+
+<body class="bg-light transition-colors min-vh-100 d-flex align-items-center justify-content-center p-2 p-md-4" id="main-body">
+
+    <a href="@Url.Action("Index", "Home")" class="text-decoration-none position-absolute top-0 start-0 m-3 m-md-4 d-flex align-items-center gap-2 link-back z-index-10">
+        <div class="p-2 rounded-circle card-bg shadow-sm d-flex align-items-center justify-content-center border border-secondary border-opacity-10">
+            <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="fw-bold d-none d-sm-inline">Volver al inicio</span>
+    </a>
+
+    <button id="dark-mode-toggle-reg" class="btn position-absolute top-0 end-0 m-3 m-md-4 p-2 rounded-circle card-bg shadow-sm border border-secondary border-opacity-10 z-index-10">
+        <ion-icon name="moon-outline" id="dark-mode-icon-reg" style="font-size: 1.5rem; vertical-align: middle;"></ion-icon>
+    </button>
+
+    <div class="card-bg rounded-5 shadow-lg overflow-hidden w-100 position-relative" style="max-width: 1200px; height: 90vh; max-height: 900px;">
+        <div class="row g-0 h-100">
+
+            <div class="col-lg-8 h-100 register-form-container">
+                <div class="p-4 p-md-5">
+
+                    <div class="mb-4 border-bottom border-secondary border-opacity-10 pb-3">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <div class="p-2 rounded-3 bg-alef-primary-subtle">
+                                <img src="~/img/logo.png" alt="Logo" style="width: 24px; height: 24px; object-fit: contain;"
+                                     onerror="this.onerror=null; this.src='https://placehold.co/40x40/729BFF/ffffff?text=NP';" />
+                            </div>
+                            <span class="fw-bold text-muted-custom small text-uppercase ls-2">Neuro Pro</span>
+                        </div>
+                        <h2 class="h2 fw-bold text-body-custom mb-1">Crea tu cuenta</h2>
+                        <p class="text-muted-custom small">Únete a nuestra comunidad de diversidad.</p>
+                    </div>
+
+                    @* Mostrar errores generales *@
+                    <div>
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <form asp-action="Registro" asp-controller="Login" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <!-- ========================================================= -->
+                        <!-- DATOS DE ACCESO (EMAIL + CONTRASEÑA)                      -->
+                        <!-- ========================================================= -->
+                        <div class="mb-4">
+                            <div class="form-section-title text-alef-teal">
+                                <i data-lucide="lock" style="width: 16px; height: 16px;"></i> Datos de acceso
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label asp-for="Usuario.Email" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <div class="position-relative">
+                                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                            <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+                                        </span>
+                                        <input asp-for="Usuario.Email" class="form-control custom-input ps-5 py-2" placeholder="tucorreo@ejemplo.com" />
+                                    </div>
+                                    <span asp-validation-for="Usuario.Email" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Password" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <div class="position-relative">
+                                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                            <i data-lucide="key" style="width: 18px; height: 18px;"></i>
+                                        </span>
+                                        <input asp-for="Password" class="form-control custom-input ps-5 py-2" />
+                                    </div>
+                                    <span asp-validation-for="Password" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="ConfirmPassword" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <div class="position-relative">
+                                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                            <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
+                                        </span>
+                                        <input asp-for="ConfirmPassword" class="form-control custom-input ps-5 py-2" />
+                                    </div>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ========================================================= -->
+                        <!-- DATOS PERSONALES                                          -->
+                        <!-- ========================================================= -->
+                        <div class="mb-5">
+                            <div class="form-section-title">
+                                <i data-lucide="user" style="width: 16px; height: 16px;"></i> Datos Personales
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label asp-for="InfoPersonal.Nombre" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <input asp-for="InfoPersonal.Nombre" class="form-control custom-input py-2" placeholder="Ej. Juan Carlos" />
+                                    <span asp-validation-for="InfoPersonal.Nombre" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="InfoPersonal.ApellidoPaterno" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <input asp-for="InfoPersonal.ApellidoPaterno" class="form-control custom-input py-2" placeholder="Ej. Pérez" />
+                                    <span asp-validation-for="InfoPersonal.ApellidoPaterno" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="InfoPersonal.ApellidoMaterno" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <input asp-for="InfoPersonal.ApellidoMaterno" class="form-control custom-input py-2" placeholder="Ej. López" />
+                                    <span asp-validation-for="InfoPersonal.ApellidoMaterno" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="InfoPersonal.FechaNacimiento" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <div class="position-relative">
+                                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                            <i data-lucide="calendar" style="width: 18px; height: 18px;"></i>
+                                        </span>
+                                        <input asp-for="InfoPersonal.FechaNacimiento" type="date" class="form-control custom-input ps-5 py-2" />
+                                    </div>
+                                    <span asp-validation-for="InfoPersonal.FechaNacimiento" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="InfoPersonal.Genero" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <div class="position-relative">
+                                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                            <i data-lucide="users" style="width: 18px; height: 18px;"></i>
+                                        </span>
+                                        <select asp-for="InfoPersonal.Genero" class="form-select custom-input ps-5 py-2 cursor-pointer">
+                                            <option value="">Selecciona una opción</option>
+                                            <option value="Femenino">Femenino</option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="No binario">No binario</option>
+                                            <option value="Prefiero no decir">Prefiero no decir</option>
+                                        </select>
+                                    </div>
+                                    <span asp-validation-for="InfoPersonal.Genero" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ========================================================= -->
+                        <!-- FOTO DE PERFIL (BASE64)                                   -->
+                        <!-- ========================================================= -->
+                        <div class="mb-4">
+                            <div class="form-section-title text-alef-teal">
+                                <i data-lucide="image" style="width: 16px; height: 16px;"></i> Foto de perfil (opcional)
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-bold text-body-custom small mb-1">Selecciona una imagen</label>
+                                    <input type="file" id="fotoFile" accept="image/*" class="form-control custom-input py-2" />
+
+                                    @* Campo oculto que se ligará al modelo con el Base64 *@
+                                    <input asp-for="InfoPersonal.FotoBase64" type="hidden" id="FotoBase64" />
+                                    <span asp-validation-for="InfoPersonal.FotoBase64" class="text-danger small"></span>
+
+                                    <div class="mt-2">
+                                        <small class="text-muted-custom">
+                                            La imagen se convertirá a Base64 y se guardará de forma segura.
+                                        </small>
+                                    </div>
+
+                                    <div class="mt-3 d-none" id="previewContainer">
+                                        <span class="small fw-bold text-muted-custom d-block mb-1">Vista previa:</span>
+                                        <img id="previewImg" src="#" alt="Vista previa" class="rounded shadow-sm" style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ========================================================= -->
+                        <!-- CONTACTO Y UBICACIÓN                                      -->
+                        <!-- ========================================================= -->
+                        <div class="mb-4">
+                            <div class="form-section-title text-alef-teal">
+                                <i data-lucide="map-pin" style="width: 16px; height: 16px;"></i> Contacto y Ubicación
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label asp-for="InfoPersonal.Telefono" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <div class="position-relative">
+                                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted-custom">
+                                            <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+                                        </span>
+                                        <input asp-for="InfoPersonal.Telefono" class="form-control custom-input ps-5 py-2" placeholder="55 1234 5678" />
+                                    </div>
+                                    <span asp-validation-for="InfoPersonal.Telefono" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="InfoPersonal.Estado" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <select asp-for="InfoPersonal.Estado" class="form-select custom-input py-2 cursor-pointer">
+                                        <option value="">Selecciona Estado</option>
+                                        <option value="Ciudad de México">Ciudad de México</option>
+                                        <option value="Estado de México">Estado de México</option>
+                                        <option value="Jalisco">Jalisco</option>
+                                        <option value="Nuevo León">Nuevo León</option>
+                                    </select>
+                                    <span asp-validation-for="InfoPersonal.Estado" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="InfoPersonal.Municipio" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <input asp-for="InfoPersonal.Municipio" class="form-control custom-input py-2" placeholder="Ej. Coyoacán" />
+                                    <span asp-validation-for="InfoPersonal.Municipio" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="InfoPersonal.Colonia" class="form-label fw-bold text-body-custom small mb-1"></label>
+                                    <input asp-for="InfoPersonal.Colonia" class="form-control custom-input py-2" placeholder="Ej. Del Carmen" />
+                                    <span asp-validation-for="InfoPersonal.Colonia" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-3">
+                            <button type="submit" class="btn-login-lg">
+                                <span>Registrarme</span>
+                                <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
+                            </button>
+
+                            <p class="mt-4 text-center text-muted-custom small">
+                                ¿Ya tienes una cuenta?
+                                <a href="@Url.Action("Index", "Login")" class="fw-bold text-alef-secondary text-decoration-underline">Inicia Sesión aquí</a>
+                            </p>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-4 d-none d-lg-flex align-items-center justify-content-center login-visual-side h-100">
+                <div class="blob-decoration blob-1"></div>
+                <div class="blob-decoration blob-2"></div>
+
+                <div class="position-relative z-2 text-center p-4">
+                    <div class="mb-5 pulse-img mx-auto" style="max-width: 250px;">
+                        <img src="~/img/latimente.png" alt="Latimente" class="img-fluid"
+                             onerror="this.onerror=null; this.src='https://placehold.co/300x300/729BFF/ffffff?text=LATIMENTE';" />
+                    </div>
+
+                    <blockquote class="h4 fw-light fst-italic text-body-custom mb-4 font-monospace">
+                        "Tu mente única enriquece nuestro mundo."
+                    </blockquote>
+
+                    <div class="d-flex align-items-center justify-content-center gap-2 opacity-75">
+                        <span class="rounded-circle bg-alef-secondary" style="width: 6px; height: 6px;"></span>
+                        <span class="small fw-bold text-alef-secondary ls-2">ÚNETE HOY</span>
+                        <span class="rounded-circle bg-alef-secondary" style="width: 6px; height: 6px;"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+    <script>
+        // Inicializar Iconos
+        if (typeof lucide !== "undefined") {
+            lucide.createIcons();
+        }
+
+        // --- DARK MODE LOGIC (Reutilizada) ---
+        const bodyElement = document.body;
+        const darkModeBtn = document.getElementById("dark-mode-toggle-reg");
+        const darkModeIcon = document.getElementById("dark-mode-icon-reg");
+
+        function enableDarkMode() {
+            bodyElement.classList.add("dark-mode");
+            bodyElement.classList.remove("bg-light");
+            bodyElement.classList.add("bg-dark-custom");
+            darkModeIcon.name = "sunny-outline";
+            localStorage.setItem("theme", "dark");
+        }
+
+        function disableDarkMode() {
+            bodyElement.classList.remove("dark-mode", "bg-dark-custom");
+            bodyElement.classList.add("bg-light");
+            darkModeIcon.name = "moon-outline";
+            localStorage.setItem("theme", "light");
+        }
+
+        if (localStorage.getItem("theme") === "dark") enableDarkMode();
+
+        darkModeBtn.addEventListener("click", () => {
+            if (bodyElement.classList.contains("dark-mode")) disableDarkMode();
+            else enableDarkMode();
+        });
+
+        // =========================================================
+        // CONVERSIÓN DE FOTO A BASE64
+        // =========================================================
+        const fotoFileInput = document.getElementById("fotoFile");
+        const fotoBase64Input = document.getElementById("FotoBase64");
+        const previewContainer = document.getElementById("previewContainer");
+        const previewImg = document.getElementById("previewImg");
+
+        if (fotoFileInput) {
+            fotoFileInput.addEventListener("change", function () {
+                const file = this.files[0];
+                if (!file) {
+                    fotoBase64Input.value = "";
+                    previewContainer.classList.add("d-none");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const dataUrl = e.target.result; // data:image/png;base64,xxxx
+                    // Opcional: guardar solo la parte Base64 sin el "data:..."
+                    const base64 = dataUrl.split(',')[1];
+
+                    fotoBase64Input.value = base64;
+
+                    // Vista previa
+                    previewImg.src = dataUrl;
+                    previewContainer.classList.remove("d-none");
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+
+
+</body>
+</html>

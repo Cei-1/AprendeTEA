@@ -1,8 +1,11 @@
 ﻿using AprendeTEA_19032025.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AprendeTEA_19032025.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class PlanTrabajoController : Controller
     {
         private readonly BL.PlanTrabajo _planTrabajoBL;
