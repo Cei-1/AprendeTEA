@@ -1096,11 +1096,13 @@ body.dark-mode .social-button {
     list-style: none;
     position: relative;
     width: 100%;
-    height: 70px; /* Un poco más alto para que quepa el nombre */
+    height: 70px;
+    /* Un poco más alto para que quepa el nombre */
     padding: 0 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    pointer-events: none; /* No clickable */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    pointer-events: none;
+    /* No clickable */
 }
 
 /* Contenedor interno */
@@ -1112,18 +1114,19 @@ body.dark-mode .social-button {
     width: 100%;
 }
 
-    /* El Avatar ocupa el lugar del ICONO */
-    .profile-container .icon-avatar {
-        position: relative;
-        display: flex; /* Centrado perfecto */
-        align-items: center;
-        justify-content: center;
-        min-width: 55px;
-        height: 55px;
-        line-height: 60px;
-        border-radius: 10px;
-        z-index: 10;
-    }
+/* El Avatar ocupa el lugar del ICONO */
+.profile-container .icon-avatar {
+    position: relative;
+    display: flex;
+    /* Centrado perfecto */
+    align-items: center;
+    justify-content: center;
+    min-width: 55px;
+    height: 55px;
+    line-height: 60px;
+    border-radius: 10px;
+    z-index: 10;
+}
 
 /* Círculo visual del avatar */
 .avatar-circle {
@@ -1162,7 +1165,7 @@ body.dark-mode .social-button {
 
 /* Ajustes Dark Mode */
 body.dark-mode .navigation ul li.profile-item {
-    border-bottom-color: rgba(255,255,255,0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 body.dark-mode .text-user strong {
@@ -1179,23 +1182,27 @@ body.dark-mode .text-user small {
 
 /* Texto del Nombre */
 .profile-name {
-    color: #1f2937; /* Gris oscuro por defecto */
+    color: #1f2937;
+    /* Gris oscuro por defecto */
     transition: color 0.3s ease;
 }
 
 /* Texto del Estado (En línea) */
 .profile-status {
-    color: #6b7280; /* Gris medio por defecto */
+    color: #6b7280;
+    /* Gris medio por defecto */
     transition: color 0.3s ease;
 }
 
 /* --- MODO OSCURO --- */
 body.dark-mode .profile-name {
-    color: #f3f4f6 !important; /* Blanco casi puro */
+    color: #f3f4f6 !important;
+    /* Blanco casi puro */
 }
 
 body.dark-mode .profile-status {
-    color: #d1d5db !important; /* Gris muy claro */
+    color: #d1d5db !important;
+    /* Gris muy claro */
 }
 
 /* Línea divisoria en modo oscuro */
@@ -1224,7 +1231,8 @@ body.dark-mode .profile-banner-bg {
 
 /* 2. Tarjeta Flotante (Contenedor Principal de Info) */
 .profile-floating-card {
-    margin-top: -80px; /* Efecto flotante sobre el banner */
+    margin-top: -80px;
+    /* Efecto flotante sobre el banner */
     margin-bottom: 2rem;
     padding: 2rem;
     border-radius: 1.5rem;
@@ -1242,7 +1250,8 @@ body.dark-mode .profile-banner-bg {
 }
 
 body.dark-mode .profile-avatar-lg {
-    border-color: #1f2937; /* Borde oscuro para fusionarse con la tarjeta */
+    border-color: #1f2937;
+    /* Borde oscuro para fusionarse con la tarjeta */
 }
 
 /* 4. Indicador de Estado (Punto verde) */
@@ -1271,18 +1280,18 @@ body.dark-mode .status-indicator-online {
     cursor: default;
 }
 
-    .badge-item:hover {
-        transform: translateY(-5px);
-        background-color: #eff6ff;
-    }
+.badge-item:hover {
+    transform: translateY(-5px);
+    background-color: #eff6ff;
+}
 
 body.dark-mode .badge-item {
     background-color: #374151;
 }
 
-    body.dark-mode .badge-item:hover {
-        background-color: #4b5563;
-    }
+body.dark-mode .badge-item:hover {
+    background-color: #4b5563;
+}
 
 /* 6. Línea de Tiempo (Timeline) */
 .timeline-list {
@@ -1335,44 +1344,50 @@ body.dark-mode .timeline-dot {
 /* ========================================================= */
 
 .table {
-    margin-bottom: 0; /* Quitar margen inferior default */
+    margin-bottom: 0;
+    /* Quitar margen inferior default */
 }
 
-    /* Encabezados de tabla */
-    .table thead th {
-        background-color: transparent;
-        border-bottom: 2px solid #e5e7eb;
-        color: #6b7280; /* Gris medio */
-        font-weight: 700;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
+/* Encabezados de tabla */
+.table thead th {
+    background-color: transparent;
+    border-bottom: 2px solid #e5e7eb;
+    color: #6b7280;
+    /* Gris medio */
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
 
-    /* Celdas del cuerpo */
-    .table tbody td {
-        vertical-align: middle;
-        border-bottom: 1px solid #f3f4f6;
-        padding: 1rem 0.5rem;
-        color: #374151; /* Gris oscuro */
-    }
+/* Celdas del cuerpo */
+.table tbody td {
+    vertical-align: middle;
+    border-bottom: 1px solid #f3f4f6;
+    padding: 1rem 0.5rem;
+    color: #374151;
+    /* Gris oscuro */
+}
 
 /* --- MODO OSCURO --- */
 body.dark-mode .table thead th {
     border-bottom-color: rgba(255, 255, 255, 0.1);
-    color: #9ca3af; /* Gris claro */
+    color: #9ca3af;
+    /* Gris claro */
 }
 
 body.dark-mode .table tbody td {
     border-bottom-color: rgba(255, 255, 255, 0.05);
-    color: #e5e7eb; /* Blanco suave */
+    color: #e5e7eb;
+    /* Blanco suave */
 }
 
 /* Hover en filas */
 .table-hover tbody tr:hover {
-    background-color: rgba(114, 155, 255, 0.05); /* Azul muy sutil */
+    background-color: rgba(114, 155, 255, 0.05);
+    /* Azul muy sutil */
 }
 
 body.dark-mode .table-hover tbody tr:hover {
@@ -1411,3 +1426,173 @@ body.dark-mode .table-hover tbody tr:hover {
     }
 }
 
+/* ========================================================= */
+/* MEJORAS RESPONSIVE PARA MÓVIL - OPTIMIZACIÓN DE ESPACIO  */
+/* ========================================================= */
+
+/* MÓVIL - Máxima optimización de espacio horizontal */
+@media (max-width: 767px) {
+
+    /* Secciones principales - reducir padding lateral */
+    section.container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Sección de valores específicamente */
+    #valores {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* Tarjetas de valores - menos padding interno */
+    .value-card {
+        padding: 1rem !important;
+    }
+
+    /* Cards principales con bordes suaves */
+    .soft-border-card {
+        padding: 1rem !important;
+    }
+
+    /* Backgrounds de cards generales */
+    .card-bg {
+        padding: 1.25rem !important;
+    }
+
+    /* Cards de quiénes somos y misión/visión */
+    #quienes-somos .card-bg,
+    #mision-vision .card-bg {
+        padding: 1.25rem !important;
+    }
+
+    /* Contenedor de historia */
+    #historia .card-bg {
+        padding: 1.5rem !important;
+    }
+
+    /* Reducir gaps entre columnas en móvil */
+    .row.g-4 {
+        gap: 1rem !important;
+    }
+
+    .row.g-5 {
+        gap: 1.5rem !important;
+    }
+
+    /* Optimizar títulos en móvil */
+    .display-6 {
+        font-size: 1.75rem !important;
+    }
+
+    .display-4-custom {
+        font-size: 2rem !important;
+    }
+
+    .h2,
+    h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .h3,
+    h3 {
+        font-size: 1.25rem !important;
+    }
+
+    /* Texto de cuerpo más legible en móvil */
+    .fs-5 {
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Reducir márgenes verticales en móvil */
+    .mb-5 {
+        margin-bottom: 2rem !important;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 2rem !important;
+    }
+
+    /* Contenedores con max-width fijo */
+    [style*="max-width: 1320px"],
+    [style*="max-width: 80rem"],
+    [style*="max-width: 900px"] {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Iconos más pequeños en móvil */
+    .icon-box {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+
+    /* Hero logo más pequeño */
+    .hero-logo {
+        width: 3rem !important;
+        height: 3rem !important;
+    }
+
+    /* Ajuste de padding para cajas de texto destacado */
+    .border-start {
+        padding-left: 0.75rem !important;
+    }
+}
+
+/* TABLET - Padding intermedio */
+@media (min-width: 768px) and (max-width: 991px) {
+    section.container-fluid {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+    .value-card {
+        padding: 1.5rem !important;
+    }
+
+    .soft-border-card {
+        padding: 1.5rem !important;
+    }
+
+    .card-bg {
+        padding: 2rem !important;
+    }
+}
+
+/* DESKTOP - Mantener diseño original */
+@media (min-width: 992px) {
+
+    /* Asegurar que el padding original se mantiene */
+    .value-card {
+        padding: 1rem;
+    }
+
+    .soft-border-card.p-4,
+    .soft-border-card.p-md-5 {
+        padding: 1.5rem !important;
+    }
+
+    .card-bg.p-4,
+    .card-bg.p-md-5 {
+        padding: 2rem !important;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    /* En pantallas grandes, usar el padding completo */
+    .soft-border-card.p-md-5 {
+        padding: 2.5rem !important;
+    }
+
+    .card-bg.p-md-5 {
+        padding: 3rem !important;
+    }
+}

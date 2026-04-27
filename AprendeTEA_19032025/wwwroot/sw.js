@@ -1,5 +1,5 @@
-// Service Worker para AprendeTEA PWA
-const CACHE_NAME = 'aprendetea-v1';
+// Service Worker para NeuroPro PWA
+const CACHE_NAME = 'neuropro-v2';
 const urlsToCache = [
     '/',
     '/Home/Index',
@@ -7,7 +7,9 @@ const urlsToCache = [
     '/css/site.css',
     '/js/site.js',
     '/img/logo.png',
-    '/img/fondo1.jpg'
+    '/img/logo-192.png',
+    '/img/logo-512.png',
+    '/manifest.json'
 ];
 
 // Instalación del Service Worker

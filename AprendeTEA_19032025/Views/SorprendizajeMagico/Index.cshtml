@@ -1,0 +1,364 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+@section Styles {
+    <style>
+        #dialog-bubble {
+            position: absolute;
+            top: 20px;
+            right: 80%;
+            background-color: white;
+            border: 4px solid #70369d;
+            color: #333;
+            border-radius: 25px 50px 25px 50px;
+            padding: 12px 18px;
+            font-size: 1.1em;
+            white-space: nowrap;
+            z-index: 30;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 8px 15px rgba(112, 54, 157, 0.4);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            animation: pulse-shadow 4s ease-in-out infinite alternate;
+        }
+
+        body[data-mode="dark"] #dialog-bubble {
+            background-color: #374151;
+            border: 4px solid #487de7;
+            color: #e5e7eb;
+            box-shadow: 0 8px 15px rgba(72, 125, 231, 0.4);
+        }
+
+        #dialog-bubble::after {
+            background-color: #70369d;
+            content: "";
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 20px;
+            height: 20px;
+            border-radius: 0 5px 0 5px;
+            z-index: 31;
+        }
+        body[data-mode="dark"] #dialog-bubble::after { background-color: #487de7; }
+
+        #dialog-bubble::before {
+            background-color: white;
+            content: "";
+            position: absolute;
+            right: -17px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 14px;
+            height: 14px;
+            border-radius: 0 3px 0 3px;
+            z-index: 32;
+        }
+        body[data-mode="dark"] #dialog-bubble::before { background-color: #374151; }
+
+        #dialog-bubble.show {
+            opacity: 1;
+            transform: scale(1);
+            animation: pop-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, pulse-shadow 4s ease-in-out infinite alternate;
+        }
+    </style>
+}
+
+<section id="que-es" class="mb-5 pt-4 pt-md-5">
+    <div class="container-fluid" style="max-width: 80rem;">
+        <div class="row align-items-center g-5">
+
+            <div class="col-md-7">
+                <h2 class="display-4 fw-bold mb-4 magical-title">
+                    SORPRENDIZAJE MÁGICO
+                </h2>
+                <h3 class="h2 fw-semibold mb-4 text-alef-secondary">
+                    Despertando el Potencial Innato a través de la Neuroeducación Consciente
+                </h3>
+                <p class="fs-5 fw-light text-body-custom mb-4">
+                    Es un programa especializado en el cuidado y la gestión emocional, así como en el entrenamiento mental y espiritual.
+                </p>
+                <pclass="fs-6 fw-light text-body-custom">
+                    A través del <strong>Método Sorprendizaje Mágico</strong>, integramos los principios de la neuroeducación con herramientas de mentoría, planificación, gestión mental e inteligencia emocional.
+                </p>
+                <a href="#mision" class="mt-4 d-inline-block btn btn-lg bg-alef-secondary text-white fw-bold shadow">
+                    Descubra Nuestra Filosofía
+                </a>
+            </div>
+
+            <div class="col-md-5 d-none d-md-block position-relative text-center">
+                <div id="magical-pet-container" class="position-relative w-100 mx-auto" style="max-width: 350px;">
+                    <div id="dialog-bubble" class="d-none position-absolute"></div>
+                    <img src="~/img/mago.png"
+                         alt="Mago de Sorprendizaje"
+                         class="img-fluid rounded-3 magical-pet"
+                         style="filter: drop-shadow(0 10px 8px rgba(0,0,0,0.2));"
+                         onerror="this.onerror=null; this.src='https://placehold.co/350x450/70369d/ffffff?text=MAGO+PNG';"
+                         onclick="castMagicSpell()" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="mision" class="mb-5 container-fluid" style="max-width: 1320px;">
+    <div class="text-center mb-5">
+        <h3 class="d-inline-block display-6 fw-bold border-bottom border-4 border-alef-secondary pb-2 magical-title">
+            Misión y Visión
+        </h3>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="p-4 p-md-5 card-bg rounded-3 shadow l-border-card l-border-red h-100">
+                <h4 class="h2 fw-bold text-alef-primary mb-3 d-flex align-items-center">
+                    <i data-lucide="scroll-text" class="me-2 text-alef-red" style="width: 32px; height: 32px;"></i> Nuestra Misión
+                </h4>
+                <p class="fs-6 text-body-custom lh-base">
+                    Brindar conocimiento, aprendizaje y consciencia como una auténtica expresión de la personalidad de cada individuo.
+                </p>
+                <p class="mt-4 small text-muted fst-italic">
+                    <em>Propósito: Fomentar una mentalidad de crecimiento que inspire vidas más plenas.</em>
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="p-4 p-md-5 card-bg rounded-3 shadow l-border-card l-border-blue h-100">
+                <h4 class="h2 fw-bold text-alef-primary mb-3 d-flex align-items-center">
+                    <i data-lucide="eye" class="me-2 text-alef-blue" style="width: 32px; height: 32px;"></i> Nuestra Visión
+                </h4>
+                <p class="fs-6 text-body-custom lh-base">
+                    Ser un referente global en el desarrollo integral del ser humano, a través de un programa innovador y efectivo.
+                </p>
+                <p class="mt-4 small text-muted fst-italic">
+                    <em>Aspiramos a inspirar a las personas mediante un método especializado.</em>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="objetivos" class="mb-5 container-fluid" style="max-width: 1320px;">
+    <div class="text-center mb-4">
+        <h3 class="d-inline-block display-6 fw-bold border-bottom border-4 border-alef-primary pb-2 magical-title">
+            Objetivos y Metas
+        </h3>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="p-4 p-md-5 card-bg rounded-3 shadow l-border-card l-border-violet h-100">
+                <h4 class="h3 fw-semibold text-alef-violet mb-4">Objetivos Filosóficos</h4>
+                <ul class="list-unstyled">
+                    <li class="d-flex align-items-start mb-3">
+                        <i data-lucide="wand-2" class="wand-icon text-alef-violet me-2" style="width: 24px; height: 24px;"></i>
+                        <p class="mb-0 text-body-custom">Forjar individuos conscientes con mentalidad de crecimiento.</p>
+                    </li>
+                    <li class="d-flex align-items-start mb-3">
+                        <i data-lucide="wand-2" class="wand-icon text-alef-violet me-2" style="width: 24px; height: 24px;"></i>
+                        <p class="mb-0 text-body-custom">Despertar el potencial innato del ser humano.</p>
+                    </li>
+                    <li class="d-flex align-items-start">
+                        <i data-lucide="wand-2" class="wand-icon text-alef-violet me-2" style="width: 24px; height: 24px;"></i>
+                        <p class="mb-0 text-body-custom">Armonizar pensamiento, emoción y acción.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 p-md-5 card-bg rounded-3 shadow l-border-card l-border-green h-100">
+                <h4 class="h3 fw-semibold text-alef-primary mb-4">Objetivos Organizacionales</h4>
+                <ul class="list-unstyled">
+                    <li class="d-flex align-items-start mb-3">
+                        <i data-lucide="wand-2" class="wand-icon text-alef-green me-2" style="width: 24px; height: 24px;"></i>
+                        <p class="mb-0 text-body-custom">Consolidar el <strong>Método Sorprendizaje Mágico</strong>.</p>
+                    </li>
+                    <li class="d-flex align-items-start mb-3">
+                        <i data-lucide="wand-2" class="wand-icon text-alef-green me-2" style="width: 24px; height: 24px;"></i>
+                        <p class="mb-0 text-body-custom">Diseñar programas personalizados de entrenamiento mental.</p>
+                    </li>
+                    <li class="d-flex align-items-start">
+                        <i data-lucide="wand-2" class="wand-icon text-alef-green me-2" style="width: 24px; height: 24px;"></i>
+                        <p class="mb-0 text-body-custom">Crear una comunidad de aprendizaje global.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="valores" class="mb-5 py-5 px-3 px-md-5 card-bg rounded-3 shadow-lg container-fluid" style="max-width: 1320px;">
+    <div class="text-center mb-5">
+        <h3 class="d-inline-block display-6 fw-bold border-bottom border-4 border-alef-secondary pb-2 magical-title">
+            Nuestros Valores Fundamentales
+        </h3>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <!-- Tarjeta 1: Sorprendizaje (Naranja) -->
+        <div class="col">
+            <div class="p-4 card-bg rounded-3 shadow-sm l-border-card l-border-orange h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <i data-lucide="sparkles" class="text-alef-orange me-2" style="width: 32px; height: 32px;"></i>
+                    <h4 class="h5 fw-bold text-alef-primary mb-0">1. Sorprendizaje</h4>
+                </div>
+                <p class="small text-body-custom lh-base mb-0">
+                    La capacidad de maravillarse por la vida y su experiencia al aprender a enfrentarse a un reto "imposible de vencer" y asumirlo con consciencia y propósito. Impulsamos el interés por descubrir, comprender y construir soluciones.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tarjeta 2: Creatividad (Amarillo) -->
+        <div class="col">
+            <div class="p-4 card-bg rounded-3 shadow-sm l-border-card l-border-yellow h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <ion-icon name="bulb-outline" class="text-alef-yellow me-2" style="font-size: 32px;"></ion-icon>
+                    <h4 class="h5 fw-bold text-alef-primary mb-0">2. Creatividad</h4>
+                </div>
+                <p class="small text-body-custom lh-base mb-0">
+                    Promovemos la originalidad y la innovación en el diseño de nuestros programas, impulsando la expresión auténtica y el potencial creativo de cada aprendiz.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tarjeta 3: Calidad (Rojo) -->
+        <div class="col">
+            <div class="p-4 card-bg rounded-3 shadow-sm l-border-card l-border-red h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <i data-lucide="medal" class="text-alef-red me-2" style="width: 32px; height: 32px;"></i>
+                    <h4 class="h5 fw-bold text-alef-primary mb-0">3. Calidad</h4>
+                </div>
+                <p class="small text-body-custom lh-base mb-0">
+                    Garantizamos la excelencia en cada detalle y en la conexión que establecemos, generando experiencias duraderas y significativas que contribuyen a la trascendencia personal.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tarjeta 4: Autenticidad (Violeta) -->
+        <div class="col">
+            <div class="p-4 card-bg rounded-3 shadow-sm l-border-card l-border-violet h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <i data-lucide="fingerprint" class="text-alef-violet me-2" style="width: 32px; height: 32px;"></i>
+                    <h4 class="h5 fw-bold text-alef-primary mb-0">4. Autenticidad</h4>
+                </div>
+                <p class="small text-body-custom lh-base mb-0">
+                    Valoramos la individualidad y el desarrollo innato de cada persona, ofreciendo experiencias de aprendizaje únicas que reflejan su personalidad, estilo y propósito.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tarjeta 5: Sostenibilidad (Verde) -->
+        <div class="col">
+            <div class="p-4 card-bg rounded-3 shadow-sm l-border-card l-border-green h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <i data-lucide="leaf" class="text-alef-green me-2" style="width: 32px; height: 32px;"></i>
+                    <h4 class="h5 fw-bold text-alef-primary mb-0">5. Sostenibilidad</h4>
+                </div>
+                <p class="small text-body-custom lh-base mb-0">
+                    Fomentamos prácticas conscientes y responsables, buscando alternativas sostenibles que promuevan una mentalidad de crecimiento en la vida cotidiana. Creemos en la efectividad antes que en la perfección.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contacto" class="mb-5 p-4 p-md-5 card-bg rounded-3 shadow-lg container-fluid" style="max-width: 900px;">
+    <div class="text-center">
+        <h3 class="display-6 fw-bold mb-4 magical-title border-bottom border-4 border-alef-primary pb-2 d-inline-block">
+            ¿Listo para Despertar tu Potencial?
+        </h3>
+        <p class="fs-5 mb-4 text-body-custom">Contáctenos para una consulta personalizada.</p>
+        <form class="text-start">
+            <div class="mb-3">
+                <input type="text" placeholder="Su Nombre" class="form-control form-control-lg" required />
+            </div>
+            <div class="mb-3">
+                <input type="email" placeholder="Correo Electrónico" class="form-control form-control-lg" required />
+            </div>
+            <div class="mb-3">
+                <textarea placeholder="Cuéntenos su objetivo" rows="3" class="form-control form-control-lg"></textarea>
+            </div>
+            <button type="submit" class="btn btn-lg w-100 bg-alef-secondary text-white fw-bold shadow">
+                Enviar Consulta
+            </button>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Magia
+        const dialogBubble = document.getElementById("dialog-bubble");
+        const magicalPetContainer = document.getElementById("magical-pet-container");
+        const magicalPet = document.querySelector(".magical-pet");
+        const magicPhrases = [
+            "¡Despierta tu potencial innato!", "La Neuroeducación es Magia.",
+            "¡Piensa diferente, crea diferente!", "Consciencia: El primer paso.",
+            "¿En qué piensas hoy?", "El aprendizaje nunca termina."
+        ];
+        let magicTimer = null;
+        let isCasting = false;
+
+        function showMagicDialog() {
+            const randomIndex = Math.floor(Math.random() * magicPhrases.length);
+            dialogBubble.textContent = magicPhrases[randomIndex];
+            dialogBubble.classList.add("show");
+            dialogBubble.classList.remove("d-none");
+            setTimeout(() => {
+                dialogBubble.classList.remove("show");
+                setTimeout(() => { dialogBubble.classList.add("d-none"); }, 300);
+            }, 4000);
+        }
+
+        function startMagicTimer() {
+            const minTime = 8000;
+            const maxTime = 15000;
+            const randomDelay = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+            clearTimeout(magicTimer);
+            magicTimer = setTimeout(() => {
+                showMagicDialog();
+                startMagicTimer();
+            }, randomDelay);
+        }
+
+        function createSparkle(x, y, color) {
+            const sparkle = document.createElement("div");
+            sparkle.classList.add("sparkle-effect");
+            sparkle.style.left = `${x}px`;
+            sparkle.style.top = `${y}px`;
+            sparkle.style.setProperty("--sparkle-color", color);
+            const dx = (Math.random() - 0.5) * 200;
+            const dy = (Math.random() - 0.5) * 200;
+            sparkle.style.setProperty("--x", `${dx}px`);
+            sparkle.style.setProperty("--y", `${dy}px`);
+            magicalPetContainer.appendChild(sparkle);
+            setTimeout(() => { sparkle.remove(); }, 1000);
+        }
+
+        window.castMagicSpell = function () {
+            if (isCasting) return;
+            isCasting = true;
+            clearTimeout(magicTimer);
+            dialogBubble.classList.add("d-none");
+            const rect = magicalPet.getBoundingClientRect();
+            const containerRect = magicalPetContainer.getBoundingClientRect();
+            const centerX = rect.left - containerRect.left + rect.width / 2;
+            const centerY = rect.top - containerRect.top + rect.height / 2;
+            const colors = ["#70369d", "#487de7", "#faeb36", "#ffffff", "#ffa500", "#70369d"];
+            for (let i = 0; i < 100; i++) {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const offsetX = (Math.random() - 0.5) * rect.width * 0.5;
+                const offsetY = (Math.random() - 0.5) * rect.height * 0.5;
+                createSparkle(centerX + offsetX, centerY + offsetY, randomColor);
+            }
+            setTimeout(() => {
+                isCasting = false;
+                startMagicTimer();
+            }, 1000);
+        };
+
+        if (magicalPetContainer) { startMagicTimer(); }
+    </script>
+}

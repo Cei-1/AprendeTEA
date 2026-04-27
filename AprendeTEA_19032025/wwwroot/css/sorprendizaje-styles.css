@@ -1,0 +1,208 @@
+/* ===============================================
+   SORPRENDIZAJE MÁGICO - CUSTOM STYLES
+   =============================================== */
+
+/* Color Palette for Sorprendizaje Mágico */
+:root {
+    --alef-primary: #70369d;
+    --alef-secondary: #487de7;
+    --alef-violet: #70369d;
+    --alef-blue: #487de7;
+    --alef-red: #e63946;
+    --alef-green: #88d48e;
+    --alef-yellow: #faeb36;
+    --alef-orange: #ffa500;
+}
+
+/* Magical Title Styling */
+.magical-title {
+    background: linear-gradient(135deg, var(--alef-primary), var(--alef-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Magical Pet Container */
+.magical-pet {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.magical-pet:hover {
+    transform: scale(1.05);
+}
+
+/* Sparkle Effect Animation */
+.sparkle-effect {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--sparkle-color, #70369d);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkle-float 1s ease-out forwards;
+    box-shadow: 0 0 10px var(--sparkle-color, #70369d);
+}
+
+@keyframes sparkle-float {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(var(--x, 0), var(--y, 0)) scale(0);
+    }
+}
+
+@keyframes pop-in {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse-shadow {
+    0% {
+        box-shadow: 0 8px 15px rgba(112, 54, 157, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 12px 25px rgba(112, 54, 157, 0.6);
+    }
+}
+
+/* Bordered Cards with Colored Borders */
+.l-border-card {
+    position: relative;
+    border-left: 4px solid;
+}
+
+.l-border-red {
+    border-left-color: var(--alef-red);
+}
+
+.l-border-blue {
+    border-left-color: var(--alef-blue);
+}
+
+.l-border-violet {
+    border-left-color: var(--alef-violet);
+}
+
+.l-border-green {
+    border-left-color: var(--alef-green);
+}
+
+.l-border-yellow {
+    border-left-color: var(--alef-yellow);
+}
+
+.l-border-orange {
+    border-left-color: var(--alef-orange);
+}
+
+/* Wand Icon Styling */
+.wand-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+/* Text Color Classes */
+.text-alef-primary {
+    color: var(--alef-primary);
+}
+
+.text-alef-secondary {
+    color: var(--alef-secondary);
+}
+
+.text-alef-violet {
+    color: var(--alef-violet);
+}
+
+.text-alef-blue {
+    color: var(--alef-blue);
+}
+
+.text-alef-red {
+    color: var(--alef-red);
+}
+
+.text-alef-green {
+    color: var(--alef-green);
+}
+
+.text-alef-yellow {
+    color: var(--alef-yellow);
+}
+
+.text-alef-orange {
+    color: var(--alef-orange);
+}
+
+/* Background Color Classes */
+.bg-alef-primary {
+    background-color: var(--alef-primary);
+}
+
+.bg-alef-secondary {
+    background-color: var(--alef-secondary);
+}
+
+/* Card Background */
+.card-bg {
+    background-color: white;
+}
+
+body[data-mode="dark"] .card-bg {
+    background-color: #1f2937;
+}
+
+/* Text Colors */
+.text-body-custom {
+    color: #374151;
+}
+
+body[data-mode="dark"] .text-body-custom {
+    color: #d1d5db;
+}
+
+/* Button Styles for Sorprendizaje */
+.btn-alef-secondary {
+    background-color: var(--alef-secondary) !important;
+}
+
+.btn-alef-secondary:hover {
+    background-color: var(--alef-primary) !important;
+}
+
+/* Dark Mode Support */
+body[data-mode="dark"] .magical-title {
+    background: linear-gradient(135deg, #9d70c9, #6ba3ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .magical-title {
+        font-size: 2rem;
+    }
+
+    #magical-pet-container {
+        display: none;
+    }
+}

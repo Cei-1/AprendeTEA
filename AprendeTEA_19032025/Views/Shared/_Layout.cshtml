@@ -1,25 +1,39 @@
-﻿@using System.Security.Claims
+@using System.Security.Claims
+
+@{
+    var activeApp = Context.Session.GetString("ActiveApp") ?? "NeuroPro";
+    var appTitle = activeApp == "SorprendizajeMagico" ? "Sorprendizaje Mágico" : "Neuro Pro";
+    var logoPath = activeApp == "SorprendizajeMagico" ? "~/img/logo_magico.png" : "~/img/logo.png";
+}
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Neuro Pro</title>
-    <link rel="icon" type="image/jpeg" href="~/img/logo.png" />
+    <title>@ViewData["Title"] - @appTitle</title>
+    <link rel="icon" type="image/png" href="@Url.Content(logoPath)" />
+    <link rel="shortcut icon" type="image/png" href="@Url.Content(logoPath)" />
     
     <!-- PWA Meta Tags -->
     <meta name="description" content="Plataforma educativa para el espectro autista - Rutas de Consciencia y Neurodiversidad" />
     <meta name="theme-color" content="#729bff" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="AprendeTEA" />
-    
+    <meta name="application-name" content="NeuroPro" />
+
+    <!-- Open Graph / Google -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="@ViewData["Title"] - @appTitle" />
+    <meta property="og:description" content="Plataforma educativa para el espectro autista - Rutas de Consciencia y Neurodiversidad" />
+    <meta property="og:image" content="https://www.neuropro.com.mx/img/logo.png" />
+    <meta property="og:url" content="https://www.neuropro.com.mx" />
+
     <!-- Apple PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="AprendeTEA" />
-    <link rel="apple-touch-icon" href="~/img/logo.png" />
-    
+    <meta name="apple-mobile-web-app-title" content="NeuroPro" />
+    <link rel="apple-touch-icon" href="@Url.Content(logoPath)" />
+
     <!-- Manifest -->
     <link rel="manifest" href="~/manifest.json" />
 
@@ -31,7 +45,13 @@
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/neuropro-styles.css" asp-append-version="true" />
+    @if (activeApp == "SorprendizajeMagico")
+    {
+        <link rel="stylesheet" href="~/css/sorprendizaje-styles.css" asp-append-version="true" />
+    }
     <link rel="stylesheet" href="~/NeuroPro.styles.css" asp-append-version="true" />
+    
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 @{
@@ -40,7 +60,11 @@
                 var esUsuario = User.IsInRole("Usuario");
                 string nombreUsuario = User?.Identity?.Name ?? "Usuario";
 
-                   // URL al endpoint de la foto
+                // Primer nombre para la navbar (viene del claim registrado al iniciar sesión)
+                string primerNombreNav = User?.FindFirst("PrimerNombre")?.Value
+                    ?? (nombreUsuario.Contains("@") ? nombreUsuario.Split('@')[0] : nombreUsuario);
+
+                // URL al endpoint de la foto
                 string fotoPerfilUrl = Url.Action("FotoPerfil", "Perfil");
 }
 @{
@@ -83,72 +107,101 @@
                                  style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
                         </div>
                         <div class="text-user ms-2">
-                            <strong class="d-block profile-name">Mi Perfil</strong>
+                            <strong class="d-block profile-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;">@primerNombreNav</strong>
                             <small class="profile-status" style="font-size: 0.7rem;">Ver perfil</small>
                         </div>
                     </a>
                 </li>
 
-                <!-- INICIO - Para todos -->
-                <li class="list @IsActive("Home", "Index")" style="--clr: #e38888">
-                    <a asp-controller="Home" asp-action="Index">
-                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                        <span class="text">Inicio</span>
+                @if (activeApp == "NeuroPro")
+                {
+                    <!-- INICIO - Para todos -->
+                    <li class="list @IsActive("Home", "Index")" style="--clr: #e38888">
+                        <a asp-controller="Home" asp-action="Index">
+                            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                            <span class="text">Inicio</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <!-- INICIO SORPRENDIZAJE MÁGICO -->
+                    <li class="list @IsActive("SorprendizajeMagico", "Index")" style="--clr: #70369d">
+                        <a asp-controller="SorprendizajeMagico" asp-action="Index">
+                            <span class="icon"><ion-icon name="sparkles-outline"></ion-icon></span>
+                            <span class="text">Inicio</span>
+                        </a>
+                    </li>
+                }
+
+                @if (activeApp == "NeuroPro")
+                {
+                    @if (esAdmin)
+                    {
+                        <!-- ADMIN: Planes de Trabajo -->
+                        <li class="list @IsActive("PlanTrabajo", "Index")" style="--clr: #ffa500">
+                            <a asp-controller="PlanTrabajo" asp-action="Index">
+                                <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+                                <span class="text">Planes de Trabajo</span>
+                            </a>
+                        </li>
+
+                        <!-- ADMIN: Especialistas -->
+                        <li class="list @IsActive("Especialistas", "Index")" style="--clr: #88d48e">
+                            <a asp-controller="Especialistas" asp-action="Index">
+                                <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                                <span class="text">Especialistas</span>
+                            </a>
+                        </li>
+                        <!-- 👇 NUEVO MENÚ ADMIN -->
+                        <li class="list @IsActive("AdminUsuarios", "PendientesActivar")" style="--clr: #ff9f1c">
+                            <a asp-controller="AdminUsuarios" asp-action="PendientesActivar">
+                                <span class="icon">
+                                    <ion-icon name="people-circle-outline"></ion-icon>
+                                </span>
+                                <span class="text">Usuarios pendientes</span>
+                            </a>
+                        </li>
+                    }
+                    else if (esUsuario)
+                    {
+                        <!-- USUARIO: Mi Progreso -->
+                        <li class="list @IsActive("PlanTrabajo", "Progreso")" style="--clr: #ffa500">
+                            <a asp-controller="PlanTrabajo" asp-action="Progreso">
+                                <span class="icon"><ion-icon name="analytics-outline"></ion-icon></span>
+                                <span class="text">Mi Progreso</span>
+                            </a>
+                        </li>
+
+                        <!-- USUARIO: Mis Calificaciones -->
+                        <li class="list @IsActive("Calificaciones", "Index")" style="--clr: #09cbb4">
+                            <a asp-controller="Calificaciones" asp-action="Index">
+                                <span class="icon"><ion-icon name="school-outline"></ion-icon></span>
+                                <span class="text">Mis Calificaciones</span>
+                            </a>
+                        </li>
+                        <!-- USUARIO: Especialistas -->
+                        <li class="list @IsActive("Especialistas", "Catalogo")" style="--clr: #88d48e">
+                            <a asp-controller="Especialistas" asp-action="Catalogo">
+                                <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                                <span class="text">Especialistas</span>
+                            </a>
+                        </li>
+                    }
+                }
+
+                @* CAMBIAR DE APLICACIÓN - Oculto temporalmente
+                @{
+                    var switchToApp = activeApp == "NeuroPro" ? "SorprendizajeMagico" : "NeuroPro";
+                    var switchToAppName = activeApp == "NeuroPro" ? "Sorprendizaje Mágico" : "NeuroPro";
+                }
+                <li class="list" style="--clr: #ff6b9d">
+                    <a asp-controller="Home" asp-action="SwitchApplication" asp-route-app="@switchToApp">
+                        <span class="icon"><ion-icon name="swap-horizontal-outline"></ion-icon></span>
+                        <span class="text">@switchToAppName</span>
                     </a>
                 </li>
-
-                @if (esAdmin)
-                {
-                    <!-- ADMIN: Planes de Trabajo -->
-                    <li class="list @IsActive("PlanTrabajo", "Index")" style="--clr: #ffa500">
-                        <a asp-controller="PlanTrabajo" asp-action="Index">
-                            <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
-                            <span class="text">Planes de Trabajo</span>
-                        </a>
-                    </li>
-
-                    <!-- ADMIN: Especialistas -->
-                    <li class="list @IsActive("Especialistas", "Index")" style="--clr: #88d48e">
-                        <a asp-controller="Especialistas" asp-action="Index">
-                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-                            <span class="text">Especialistas</span>
-                        </a>
-                    </li>
-                    <!-- 👇 NUEVO MENÚ ADMIN -->
-                    <li class="list @IsActive("AdminUsuarios", "PendientesActivar")" style="--clr: #ff9f1c">
-                        <a asp-controller="AdminUsuarios" asp-action="PendientesActivar">
-                            <span class="icon">
-                                <ion-icon name="people-circle-outline"></ion-icon>
-                            </span>
-                            <span class="text">Usuarios pendientes</span>
-                        </a>
-                    </li>
-                }
-                else if (esUsuario)
-                {
-                    <!-- USUARIO: Mi Progreso -->
-                    <li class="list @IsActive("PlanTrabajo", "Progreso")" style="--clr: #ffa500">
-                        <a asp-controller="PlanTrabajo" asp-action="Progreso">
-                            <span class="icon"><ion-icon name="analytics-outline"></ion-icon></span>
-                            <span class="text">Mi Progreso</span>
-                        </a>
-                    </li>
-
-                    <!-- USUARIO: Mis Calificaciones -->
-                    <li class="list @IsActive("Calificaciones", "Index")" style="--clr: #09cbb4">
-                        <a asp-controller="Calificaciones" asp-action="Index">
-                            <span class="icon"><ion-icon name="school-outline"></ion-icon></span>
-                            <span class="text">Mis Calificaciones</span>
-                        </a>
-                    </li>
-                    <!-- USUARIO: Especialistas -->
-                    <li class="list @IsActive("Especialistas", "Catalogo")" style="--clr: #88d48e">
-                        <a asp-controller="Especialistas" asp-action="Catalogo">
-                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
-                            <span class="text">Especialistas</span>
-                        </a>
-                    </li>
-                }
+                *@
 
                 <!-- DARK MODE TOGGLE - Para todos -->
                 <li class="list" style="--clr: #729bff" id="dark-mode-toggle">

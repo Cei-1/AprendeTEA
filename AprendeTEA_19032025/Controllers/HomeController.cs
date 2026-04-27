@@ -17,7 +17,34 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // Set default application in session if not set
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("ActiveApp")))
+        {
+            HttpContext.Session.SetString("ActiveApp", "NeuroPro");
+        }
         return View();
+    }
+
+    public IActionResult SwitchApplication(string app)
+    {
+        // Validate and set the active application
+        if (app == "NeuroPro" || app == "SorprendizajeMagico")
+        {
+            HttpContext.Session.SetString("ActiveApp", app);
+            
+            // Redirect to the appropriate index page
+            if (app == "SorprendizajeMagico")
+            {
+                return RedirectToAction("Index", "SorprendizajeMagico");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+        
+        // Default fallback
+        return RedirectToAction("Index");
     }
 
     public IActionResult Privacy()

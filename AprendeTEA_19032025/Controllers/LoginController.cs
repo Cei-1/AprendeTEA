@@ -1,4 +1,4 @@
-﻿using AprendeTEA_19032025.BL;
+using AprendeTEA_19032025.BL;
 using AprendeTEA_19032025.Helpers;
 using AprendeTEA_19032025.Models;
 using Hangfire;
@@ -58,15 +58,24 @@ namespace AprendeTEA_19032025.Controllers
                 ViewBag.Reenviar = usuario.IdUsuario; // para el botón
                 return View(model);
             }
-            // Traer info de perfil (para mostrar nombre bonito, si quieres)
+            // Traer info de perfil (para mostrar nombre bonito)
             var perfilResult = BL.Perfil.GetPerfilByIdUsuario(usuario.IdUsuario);
             string nombreMostrar = usuario.Email;
+            string primerNombre = "";
 
             if (perfilResult.Correct && perfilResult.Object is Models.Perfil p)
             {
                 if (!string.IsNullOrWhiteSpace(p.NombreCompleto))
                     nombreMostrar = p.NombreCompleto;
+
+                // Primer nombre del perfil (puede tener varios separados por espacio)
+                if (!string.IsNullOrWhiteSpace(p.Nombre))
+                    primerNombre = p.Nombre.Split(' ', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "";
             }
+
+            // Si no hay perfil, usar la parte del email antes del @
+            if (string.IsNullOrWhiteSpace(primerNombre))
+                primerNombre = usuario.Email.Split('@')[0];
 
             bool passwordOk = PasswordHelper.VerifyPassword(usuario.PasswordHash, model.Password);
 
@@ -89,10 +98,7 @@ namespace AprendeTEA_19032025.Controllers
         {
             new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
             new Claim(ClaimTypes.Name, usuario.Email),
-            //new Claim(ClaimTypes.Email, usuario.Email),
-
-            // Si quieres más info:
-            // new Claim("NombreCompleto", $"{info.Nombre} {info.ApellidoPaterno}")
+            new Claim("PrimerNombre", primerNombre), // 👈 Primer nombre para mostrar en navbar
             // 🔹 Aquí usamos el perfil como rol
             new Claim(ClaimTypes.Role, rol),
         };
