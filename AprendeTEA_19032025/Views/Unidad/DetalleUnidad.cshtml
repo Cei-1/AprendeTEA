@@ -1,194 +1,613 @@
-﻿@model AprendeTEA_19032025.Models.Unidad
+@model AprendeTEA_19032025.Models.Unidad
 @using System.Security.Claims
 
 @{
     ViewData["Title"] = "Detalle de Unidad";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int? idUsuario = ViewBag.IdUsuario as int?;
-    
-    // Detectar rol del usuario para navegación
+
     var esAdmin = User.IsInRole("Admin");
     var accionRetorno = esAdmin ? "Index" : "ProgresoUnidades";
     var textoRetorno = esAdmin ? "Volver a las Unidades" : "Volver a Mi Progreso";
 }
 
-<div class="responsive-container my-4 my-md-5 px-2 px-md-3">
-    <div class="form-container">
+@section Styles {
+<style>
+    /* ===== HERO HEADER ===== */
+    .unit-hero {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        padding: 2.5rem 2rem 2rem;
+        background: linear-gradient(135deg, #1a1f3c 0%, #0f172a 60%, #1a0f2e 100%);
+        border: 1px solid rgba(114, 155, 255, 0.2);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+        margin-bottom: 2rem;
+    }
 
-        <div class="mb-4">
-            <a asp-action="@accionRetorno" asp-controller="Unidad" asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
-               class="link-back">
-                <i data-lucide="arrow-left" style="width: 20px; height: 20px;" class="me-2"></i>
-                @textoRetorno
-            </a>
-        </div>
+    .unit-hero::before {
+        content: '';
+        position: absolute;
+        top: -80px; right: -80px;
+        width: 320px; height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(114,155,255,0.2) 0%, transparent 70%);
+        pointer-events: none;
+    }
 
-        <header class="pb-3 border-bottom border-secondary border-opacity-25 mb-5">
-            <h1 class="display-5 fw-bold neuropro-title mb-2">
-                @Model.NombreUnidad
-            </h1>
-            <p class="h5 text-adaptive-inverse fw-medium">
-                @Model.Detalle
-            </p>
-        </header>
+    .unit-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -60px; left: -60px;
+        width: 240px; height: 240px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(227,136,136,0.12) 0%, transparent 70%);
+        pointer-events: none;
+    }
 
-        <div id="course-steps-container" class="d-flex flex-column gap-5">
+    .unit-hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(114,155,255,0.15);
+        border: 1px solid rgba(114,155,255,0.3);
+        color: #a5b8ff;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 999px;
+        margin-bottom: 1rem;
+    }
 
-            <div id="step-content" class="d-flex flex-column gap-4">
+    .unit-hero h1 {
+        font-family: 'Outfit', sans-serif;
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #ffffff 0%, #a5b8ff 60%, #E38888 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.15;
+        margin-bottom: 0.75rem;
+    }
 
-                <div class="welcome-section p-4 rounded-3 shadow-sm">
-                    <div class="d-flex flex-column flex-md-row align-items-center gap-4">
-                        <div class="flex-shrink-0 align-self-center">
-                            <img src="~/img/latimente.png"
-                                 alt="Latimente"
-                                 style="width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));"
-                                 onerror="this.style.display='none';" />
-                        </div>
-                        <div class="flex-grow-1 text-center text-md-start">
-                            <h3 class="h3 fw-bold text-alef-primary mb-2">
-                                ¡Hola! Soy Latimente 👋
-                            </h3>
-                            <p class="text-body-custom fs-5 fw-light m-0">
-                                Estoy muy feliz de acompañarte en esta aventura de aprendizaje. Juntos exploraremos conceptos fascinantes de una manera divertida e interactiva. ¡Recuerda que cada mente es única y especial!
-                            </p>
-                        </div>
-                    </div>
-                </div>
+    .unit-hero .subtitle {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.95rem;
+        font-weight: 400;
+        line-height: 1.6;
+        max-width: 600px;
+    }
 
-                <div class="glass-card p-4 rounded-3">
-                    <h3 class="h5 fw-bold text-body-custom mb-3 d-flex align-items-center">
-                        <i data-lucide="info" class="text-alef-primary me-2" style="width: 24px; height: 24px;"></i>
-                        Información General
-                    </h3>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <p class="small text-muted-custom mb-1">Fecha de Registro</p>
-                            <p class="fw-bold text-body-custom m-0">@Model.FechaRegistro?.ToString("dd/MM/yyyy")</p>
-                        </div>
-                    </div>
-                </div>
+    .unit-hero .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: rgba(165, 184, 255, 0.8);
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+        transition: color 0.2s ease, gap 0.2s ease;
+    }
 
-                <div class="card-bg p-4 rounded-3 border border-alef-primary border-opacity-25 shadow-sm">
-                    <h4 class="h5 fw-bold text-alef-teal mb-3 d-flex align-items-center">
-                        <i data-lucide="lightbulb" class="me-2" style="width: 20px; height: 20px;"></i>
-                        Concepto Central
-                    </h4>
-                    <p class="text-body-custom lh-base m-0">
-                        @Model.Detalle
+    .unit-hero .back-link:hover {
+        color: #a5b8ff;
+        gap: 10px;
+    }
+
+    .unit-badge-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.5);
+        font-size: 0.78rem;
+        padding: 5px 14px;
+        border-radius: 999px;
+        margin-top: 1rem;
+    }
+
+    /* ===== MASCOT CARD ===== */
+    .mascot-card {
+        border-radius: 20px;
+        padding: 1.75rem;
+        background: linear-gradient(135deg, rgba(114,155,255,0.1) 0%, rgba(178,161,255,0.08) 100%);
+        border: 1px solid rgba(114,155,255,0.2);
+        box-shadow: 0 8px 32px rgba(114,155,255,0.1);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease both;
+    }
+
+    body:not(.dark-mode) .mascot-card {
+        background: linear-gradient(135deg, rgba(114,155,255,0.08) 0%, rgba(178,161,255,0.05) 100%);
+        border-color: rgba(114,155,255,0.2);
+    }
+
+    .mascot-card::before {
+        content: '';
+        position: absolute;
+        top: -30px; right: -30px;
+        width: 120px; height: 120px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(178,161,255,0.15) 0%, transparent 70%);
+    }
+
+    .mascot-img {
+        width: 130px;
+        height: 130px;
+        object-fit: contain;
+        filter: drop-shadow(0 8px 20px rgba(114,155,255,0.4));
+        animation: float 4s ease-in-out infinite;
+        flex-shrink: 0;
+    }
+
+    .mascot-name {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 1.25rem;
+        background: linear-gradient(135deg, #729BFF, #B2A1FF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    .mascot-text {
+        color: rgba(255,255,255,0.7);
+        font-size: 0.92rem;
+        line-height: 1.65;
+    }
+
+    body:not(.dark-mode) .mascot-text {
+        color: #374151;
+    }
+
+    /* ===== INFO CARDS ===== */
+    .info-card {
+        border-radius: 18px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.04);
+        animation: fadeInUp 0.5s ease both 0.1s;
+    }
+
+    body:not(.dark-mode) .info-card {
+        background: #ffffff;
+        border-color: rgba(114,155,255,0.12);
+        box-shadow: 0 4px 20px rgba(114,155,255,0.08);
+    }
+
+    .info-card-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.35);
+        margin-bottom: 0.3rem;
+    }
+
+    body:not(.dark-mode) .info-card-label {
+        color: #9ca3af;
+    }
+
+    .info-card-value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.9);
+    }
+
+    body:not(.dark-mode) .info-card-value {
+        color: #111827;
+    }
+
+    /* ===== CONCEPTO CENTRAL ===== */
+    .concepto-card {
+        border-radius: 20px;
+        padding: 1.75rem;
+        background: linear-gradient(135deg, rgba(9,203,180,0.1) 0%, rgba(114,155,255,0.06) 100%);
+        border: 1px solid rgba(9,203,180,0.25);
+        box-shadow: 0 4px 24px rgba(9,203,180,0.1);
+        animation: fadeInUp 0.5s ease both 0.15s;
+    }
+
+    body:not(.dark-mode) .concepto-card {
+        background: linear-gradient(135deg, rgba(9,203,180,0.06) 0%, rgba(114,155,255,0.04) 100%);
+    }
+
+    .concepto-title {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+        color: #09cbb4;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 0.75rem;
+    }
+
+    .concepto-text {
+        color: rgba(255,255,255,0.75);
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+
+    body:not(.dark-mode) .concepto-text {
+        color: #374151;
+    }
+
+    /* ===== ACTIVIDADES ===== */
+    .actividades-section {
+        border-radius: 20px;
+        padding: 1.75rem;
+        background: linear-gradient(135deg, rgba(114,155,255,0.06) 0%, rgba(227,136,136,0.04) 100%);
+        border: 1px solid rgba(114,155,255,0.12);
+        animation: fadeInUp 0.5s ease both 0.2s;
+    }
+
+    body:not(.dark-mode) .actividades-section {
+        background: linear-gradient(135deg, rgba(114,155,255,0.04) 0%, rgba(227,136,136,0.02) 100%);
+    }
+
+    .actividades-title {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 1.15rem;
+        background: linear-gradient(135deg, #729BFF, #E38888);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0.4rem;
+    }
+
+    .actividades-title span {
+        background: inherit;
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+
+    /* Activity Cards premium */
+    .act-card {
+        border-radius: 16px;
+        padding: 1.1rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease, border-color 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .act-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: inherit;
+    }
+
+    .act-card:hover {
+        transform: translateY(-5px) scale(1.01);
+    }
+
+    .act-card:hover::before {
+        opacity: 1;
+    }
+
+    /* Sopa de Letras */
+    .act-card--blue {
+        background: rgba(114,155,255,0.1);
+        border: 1px solid rgba(114,155,255,0.25);
+        box-shadow: 0 4px 16px rgba(114,155,255,0.1);
+    }
+
+    body:not(.dark-mode) .act-card--blue {
+        background: rgba(114,155,255,0.07);
+    }
+
+    .act-card--blue::before {
+        background: linear-gradient(135deg, rgba(114,155,255,0.15), rgba(178,161,255,0.1));
+    }
+
+    .act-card--blue:hover {
+        border-color: rgba(114,155,255,0.5);
+        box-shadow: 0 12px 36px rgba(114,155,255,0.25);
+    }
+
+    /* Agrupación */
+    .act-card--green {
+        background: rgba(136,212,142,0.1);
+        border: 1px solid rgba(136,212,142,0.25);
+        box-shadow: 0 4px 16px rgba(136,212,142,0.1);
+    }
+
+    body:not(.dark-mode) .act-card--green {
+        background: rgba(136,212,142,0.07);
+    }
+
+    .act-card--green::before {
+        background: linear-gradient(135deg, rgba(136,212,142,0.15), rgba(9,203,180,0.1));
+    }
+
+    .act-card--green:hover {
+        border-color: rgba(136,212,142,0.5);
+        box-shadow: 0 12px 36px rgba(136,212,142,0.25);
+    }
+
+    /* Relacionar */
+    .act-card--violet {
+        background: rgba(178,161,255,0.1);
+        border: 1px solid rgba(178,161,255,0.25);
+        box-shadow: 0 4px 16px rgba(178,161,255,0.1);
+    }
+
+    body:not(.dark-mode) .act-card--violet {
+        background: rgba(178,161,255,0.07);
+    }
+
+    .act-card--violet::before {
+        background: linear-gradient(135deg, rgba(178,161,255,0.15), rgba(114,155,255,0.1));
+    }
+
+    .act-card--violet:hover {
+        border-color: rgba(178,161,255,0.5);
+        box-shadow: 0 12px 36px rgba(178,161,255,0.25);
+    }
+
+    .act-icon {
+        width: 48px; height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 1.4rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .act-icon--blue  { background: rgba(114,155,255,0.2); color: #729BFF; }
+    .act-icon--green { background: rgba(136,212,142,0.2); color: #88D48E; }
+    .act-icon--violet{ background: rgba(178,161,255,0.2); color: #B2A1FF; }
+
+    .act-label {
+        font-weight: 700;
+        font-size: 0.95rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .act-label--blue  { color: rgba(255,255,255,0.9); }
+    .act-label--green { color: rgba(255,255,255,0.9); }
+    .act-label--violet{ color: rgba(255,255,255,0.9); }
+
+    body:not(.dark-mode) .act-label--blue,
+    body:not(.dark-mode) .act-label--green,
+    body:not(.dark-mode) .act-label--violet { color: #111827; }
+
+    .act-sublabel {
+        font-size: 0.78rem;
+        color: rgba(255,255,255,0.45);
+        position: relative;
+        z-index: 1;
+    }
+
+    body:not(.dark-mode) .act-sublabel { color: #6b7280; }
+
+    .act-arrow {
+        color: rgba(255,255,255,0.3);
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .act-card:hover .act-arrow {
+        transform: translateX(4px);
+        color: rgba(255,255,255,0.7);
+    }
+
+    body:not(.dark-mode) .act-arrow { color: #9ca3af; }
+    body:not(.dark-mode) .act-card:hover .act-arrow { color: #374151; }
+
+    /* ===== AVISO BANNER ===== */
+    .aviso-banner {
+        border-radius: 14px;
+        padding: 1rem 1.25rem;
+        background: linear-gradient(135deg, rgba(251,191,36,0.12) 0%, rgba(245,158,11,0.08) 100%);
+        border: 1px solid rgba(251,191,36,0.35);
+        color: #fbbf24;
+        font-size: 0.9rem;
+        font-weight: 600;
+        animation: fadeInUp 0.4s ease both;
+    }
+
+    body:not(.dark-mode) .aviso-banner {
+        background: linear-gradient(135deg, rgba(251,191,36,0.1) 0%, rgba(245,158,11,0.06) 100%);
+        border-color: rgba(245,158,11,0.4);
+        color: #b45309;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @@keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-8px); }
+    }
+</style>
+}
+
+<div class="responsive-container my-3 my-md-4 px-2 px-md-3">
+
+    <!-- ===== HERO HEADER ===== -->
+    <div class="unit-hero">
+        <a asp-action="@accionRetorno" asp-controller="Unidad"
+           asp-route-IdPlanTrabajo="@Model.IdPlanTrabajo"
+           class="back-link">
+            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+            @textoRetorno
+        </a>
+
+        <span class="unit-hero-tag">
+            <i data-lucide="book-open" style="width:12px;height:12px;"></i>
+            Unidad de Aprendizaje
+        </span>
+
+        <h1>@Model.NombreUnidad</h1>
+
+        <p class="subtitle">@Model.Detalle</p>
+
+        @if (Model.FechaRegistro.HasValue)
+        {
+            <div class="unit-badge-date">
+                <i data-lucide="calendar" style="width:13px;height:13px;"></i>
+                Registrada el @Model.FechaRegistro.Value.ToString("dd/MM/yyyy")
+            </div>
+        }
+    </div>
+
+    <div class="d-flex flex-column gap-3">
+
+        <!-- ===== MASCOTA ===== -->
+        <div class="mascot-card">
+            <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+                <img src="~/img/latimente.png"
+                     alt="Latimente"
+                     class="mascot-img"
+                     onerror="this.style.display='none';" />
+                <div>
+                    <div class="mascot-name">¡Hola! Soy Latimente 👋</div>
+                    <p class="mascot-text mb-0">
+                        Estoy muy feliz de acompañarte en esta aventura de aprendizaje.
+                        Juntos exploraremos conceptos fascinantes de una manera divertida e interactiva.
+                        ¡Recuerda que cada mente es única y especial!
                     </p>
-                </div>
-
-                <div class="p-4 rounded-3 border border-secondary border-opacity-10"
-                     style="background: linear-gradient(to bottom right, rgba(114, 155, 255, 0.05), rgba(227, 136, 136, 0.05));">
-
-                    <h3 class="h4 fw-bold text-adaptive mb-3 d-flex align-items-center">
-                        <i data-lucide="gamepad-2" class="me-2" style="width: 24px; height: 24px;"></i>
-                        Neuro-Actividades
-                    </h3>
-                    <p class="text-muted-custom mb-4">Practica y afianza los conceptos de esta unidad de una forma divertida.</p>
-
-                    <div class="row g-3">
-                        @if (Model.TieneSopaLetras)
-                        {
-                            <div class="col-md-6">
-                                <a asp-action="SopaLetras" asp-controller="Unidad" 
-                                   asp-route-IdUnidad="@Model.IdUnidad" 
-                                   asp-route-IdUsuario="@idUsuario"
-                                   class="text-decoration-none">
-                                    <div class="activity-card p-3 rounded-3 shadow-sm border-l-blue card-bg h-100 transition-transform hover-scale">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-box blue me-3">
-                                                    <i data-lucide="grid-3x3" style="width: 24px; height: 24px;"></i>
-                                                </div>
-                                                <div>
-                                                    <p class="fw-bold text-body-custom m-0">Sopa de Letras</p>
-                                                    <p class="small text-muted-custom m-0">Encuentra las palabras</p>
-                                                </div>
-                                            </div>
-                                            <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        }
-
-                        @if (Model.TieneAgrupacion)
-                        {
-                            <div class="col-md-6">
-                                <a asp-action="Agrupacion" asp-controller="Unidad" 
-                                   asp-route-IdUnidad="@Model.IdUnidad" 
-                                   asp-route-IdUsuario="@idUsuario"
-                                   class="text-decoration-none">
-                                    <div class="activity-card p-3 rounded-3 shadow-sm border-l-green card-bg h-100 transition-transform hover-scale">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-box green me-3">
-                                                    <i data-lucide="boxes" style="width: 24px; height: 24px;"></i>
-                                                </div>
-                                                <div>
-                                                    <p class="fw-bold text-body-custom m-0">Agrupación</p>
-                                                    <p class="small text-muted-custom m-0">Clasifica los elementos</p>
-                                                </div>
-                                            </div>
-                                            <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        }
-
-                        @if (Model.TieneRelacionar)
-                        {
-                            <div class="col-md-6">
-                                <a asp-action="Relacionar" asp-controller="Unidad" 
-                                   asp-route-IdUnidad="@Model.IdUnidad" 
-                                   asp-route-IdUsuario="@idUsuario"
-                                   class="text-decoration-none">
-                                    <div class="activity-card p-3 rounded-3 shadow-sm border-l-violet card-bg h-100 transition-transform hover-scale">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-box violet me-3">
-                                                    <i data-lucide="link" style="width: 24px; height: 24px;"></i>
-                                                </div>
-                                                <div>
-                                                    <p class="fw-bold text-body-custom m-0">Relación de Conceptos</p>
-                                                    <p class="small text-muted-custom m-0">Une las parejas correctas</p>
-                                                </div>
-                                            </div>
-                                            <i data-lucide="chevron-right" class="text-muted-custom" style="width: 20px; height: 20px;"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        }
-
-                        @if (!Model.TieneSopaLetras && !Model.TieneRelacionar && !Model.TieneAgrupacion)
-                        {
-                            <div class="col-12 text-center py-4">
-                                <i data-lucide="inbox" class="text-muted-custom opacity-50 mb-2" style="width: 48px; height: 48px;"></i>
-                                <p class="text-muted-custom fst-italic">No hay actividades configuradas para esta unidad.</p>
-                            </div>
-                        }
-                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- ===== CONCEPTO CENTRAL ===== -->
+        <div class="concepto-card">
+            <div class="concepto-title">
+                <i data-lucide="lightbulb" style="width:18px;height:18px;"></i>
+                Concepto Central
+            </div>
+            <p class="concepto-text mb-0">@Model.Detalle</p>
+        </div>
+
+        <!-- ===== AVISO ACTIVIDAD NO DISPONIBLE ===== -->
+        @if (TempData["Aviso"] != null)
+        {
+            <div class="aviso-banner" role="alert" id="avisoBanner">
+                <div class="d-flex align-items-center gap-2">
+                    <i data-lucide="alert-circle" style="width:18px;height:18px;flex-shrink:0;"></i>
+                    <span>@TempData["Aviso"]</span>
+                </div>
+            </div>
+        }
+
+        <!-- ===== NEURO-ACTIVIDADES ===== -->
+        <div class="actividades-section">
+            <div class="actividades-title">
+                <i data-lucide="gamepad-2" style="width:20px;height:20px;color:#729BFF;-webkit-text-fill-color:initial;"></i>
+                Neuro-Actividades
+            </div>
+            <p class="mb-3" style="font-size:0.85rem;color:rgba(255,255,255,0.45);">
+                Practica y afianza los conceptos de esta unidad.
+            </p>
+
+            <div class="d-flex flex-column gap-2">
+
+                @if (Model.TieneSopaLetras)
+                {
+                    <a asp-action="SopaLetras" asp-controller="Unidad"
+                       asp-route-IdUnidad="@Model.IdUnidad"
+                       asp-route-IdUsuario="@idUsuario"
+                       class="act-card act-card--blue">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="act-icon act-icon--blue">
+                                <i data-lucide="grid-3x3" style="width:22px;height:22px;"></i>
+                            </div>
+                            <div>
+                                <div class="act-label act-label--blue">Sopa de Letras</div>
+                                <div class="act-sublabel">Encuentra las palabras ocultas</div>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="act-arrow" style="width:20px;height:20px;"></i>
+                    </a>
+                }
+
+                @if (Model.TieneAgrupacion)
+                {
+                    <a asp-action="Agrupacion" asp-controller="Unidad"
+                       asp-route-IdUnidad="@Model.IdUnidad"
+                       asp-route-IdUsuario="@idUsuario"
+                       class="act-card act-card--green">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="act-icon act-icon--green">
+                                <i data-lucide="boxes" style="width:22px;height:22px;"></i>
+                            </div>
+                            <div>
+                                <div class="act-label act-label--green">Agrupación</div>
+                                <div class="act-sublabel">Clasifica los elementos correctamente</div>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="act-arrow" style="width:20px;height:20px;"></i>
+                    </a>
+                }
+
+                @if (Model.TieneRelacionar)
+                {
+                    <a asp-action="Relacionar" asp-controller="Unidad"
+                       asp-route-IdUnidad="@Model.IdUnidad"
+                       asp-route-IdUsuario="@idUsuario"
+                       class="act-card act-card--violet">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="act-icon act-icon--violet">
+                                <i data-lucide="link-2" style="width:22px;height:22px;"></i>
+                            </div>
+                            <div>
+                                <div class="act-label act-label--violet">Relación de Conceptos</div>
+                                <div class="act-sublabel">Une las parejas correctas</div>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="act-arrow" style="width:20px;height:20px;"></i>
+                    </a>
+                }
+
+                @if (!Model.TieneSopaLetras && !Model.TieneRelacionar && !Model.TieneAgrupacion)
+                {
+                    <div class="text-center py-4">
+                        <i data-lucide="inbox" style="width:40px;height:40px;color:rgba(255,255,255,0.2);"></i>
+                        <p class="mt-2 mb-0" style="color:rgba(255,255,255,0.35);font-size:0.85rem;font-style:italic;">
+                            No hay actividades configuradas aún.
+                        </p>
+                    </div>
+                }
+
+            </div>
+        </div>
+
     </div>
 </div>
 
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         });
     </script>
-    <style>
-        .hover-scale:hover {
-            transform: translateY(-5px);
-            transition: transform 0.2s ease;
-        }
-    </style>
 }

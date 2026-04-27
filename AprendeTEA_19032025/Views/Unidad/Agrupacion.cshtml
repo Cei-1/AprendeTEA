@@ -11,50 +11,36 @@
 
 <style>
     /* =========================================
-           1. ESTILOS GLOBALES Y DEL HEADER (ADAPTADOS DE SOPA)
+           1. ESTILOS GLOBALES Y DEL HEADER
            ========================================= */
 
-    /* Variables de color según el tema */
     :root {
         --bg-body: #f8fafc;
         --text-main: #1e293b;
         --text-muted: #64748b;
-        /* Colores específicos de la actividad */
         --item-bg: #ffffff;
         --item-border: #cbd5e1;
         --dropzone-bg: #e2e8f0;
         --dropzone-border: #94a3b8;
     }
 
-    [data-bs-theme="dark"] {
-        --bg-body: #0f172a;
+    /* Dark mode variables */
+    body.dark-mode {
+        --bg-body: #0d1117;
         --text-main: #f1f5f9;
         --text-muted: #94a3b8;
         --item-bg: #1e293b;
         --item-border: #475569;
-        --dropzone-bg: #1e293b;
+        --dropzone-bg: #18212f;
         --dropzone-border: #475569;
     }
 
-    /* Clases de utilidad para texto adaptativo */
-    .text-adaptive {
-        color: var(--text-main) !important;
-    }
+    .text-adaptive      { color: var(--text-main)  !important; }
+    .text-adaptive-inverse { color: var(--text-muted) !important; }
 
-    .text-adaptive-inverse {
-        color: var(--text-muted) !important;
-    }
+    .hero-logo { transition: transform 0.3s ease; }
+    .hero-logo:hover { transform: scale(1.1) rotate(5deg); }
 
-    /* Estilos del Logo del Header */
-    .hero-logo {
-        transition: transform 0.3s ease;
-    }
-
-        .hero-logo:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-    /* Contenedor Principal */
     .activity-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -65,7 +51,6 @@
            2. ESTILOS ESPECÍFICOS DE AGRUPACIÓN
            ========================================= */
 
-    /* --- CAJAS DE GRUPO (DROPZONES) --- */
     .group-dropzone {
         background-color: var(--dropzone-bg);
         border: 2px dashed var(--dropzone-border);
@@ -81,14 +66,15 @@
         height: 100%;
     }
 
-        .group-dropzone:hover, .group-dropzone.drag-over, .group-dropzone.target-active {
-            background-color: rgba(114, 155, 255, 0.15);
-            border-color: var(--alef-primary, #0d6efd);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-        }
+    .group-dropzone:hover,
+    .group-dropzone.drag-over,
+    .group-dropzone.target-active {
+        background-color: rgba(114, 155, 255, 0.15);
+        border-color: var(--alef-primary, #729BFF);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.15);
+    }
 
-    /* --- TÍTULOS DE LOS GRUPOS (CON FIX DE CORTE) --- */
     .group-title {
         font-weight: 800;
         margin-bottom: 1.2rem;
@@ -97,7 +83,6 @@
         font-size: 0.9rem;
         letter-spacing: 0.5px;
         pointer-events: none;
-        /* Fix palabras largas */
         word-break: break-word;
         overflow-wrap: break-word;
         hyphens: auto;
@@ -107,7 +92,6 @@
         padding: 0 5px;
     }
 
-    /* --- ÍTEMS (PALABRAS) --- */
     .draggable-item {
         padding: 0.6rem 1rem;
         margin: 0.25rem;
@@ -119,7 +103,7 @@
         user-select: none;
         transition: all 0.2s ease;
         color: var(--text-main);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.07);
         display: inline-block;
         font-size: 0.85rem;
         max-width: 100%;
@@ -128,75 +112,46 @@
         line-height: 1.2;
     }
 
-        /* Interacción Item */
-        .draggable-item:hover {
-            transform: translateY(-2px);
-        }
+    .draggable-item:hover { transform: translateY(-2px); }
+    .draggable-item:active { cursor: grabbing; }
 
-        .draggable-item:active {
-            cursor: grabbing;
-        }
+    .draggable-item.selected {
+        background-color: var(--alef-primary, #729BFF) !important;
+        color: white !important;
+        border-color: var(--alef-primary, #729BFF) !important;
+        transform: scale(1.05);
+        box-shadow: 0 0 0 4px rgba(114, 155, 255, 0.3);
+        z-index: 10;
+    }
 
-        /* Estado Seleccionado (Click) */
-        .draggable-item.selected {
-            background-color: var(--alef-primary, #0d6efd) !important;
-            color: white !important;
-            border-color: var(--alef-primary, #0d6efd) !important;
-            transform: scale(1.05);
-            box-shadow: 0 0 0 4px rgba(114, 155, 255, 0.3);
-            z-index: 10;
-        }
+    .draggable-item.correct {
+        background-color: #10b981 !important;
+        border-color: #10b981 !important;
+        color: white !important;
+        pointer-events: none;
+        animation: popIn 0.3s ease;
+    }
 
-        /* Estados de Respuesta */
-        .draggable-item.correct {
-            background-color: #10b981 !important;
-            border-color: #10b981 !important;
-            color: white !important;
-            pointer-events: none;
-            animation: popIn 0.3s ease;
-        }
-
-        .draggable-item.incorrect {
-            animation: shake 0.5s;
-            background-color: #ef4444 !important;
-            border-color: #ef4444 !important;
-            color: white !important;
-        }
+    .draggable-item.incorrect {
+        animation: shake 0.5s;
+        background-color: #ef4444 !important;
+        border-color: #ef4444 !important;
+        color: white !important;
+    }
 
     @@keyframes shake {
-        0%, 100%
-
-    {
-        transform: translateX(0);
+        0%, 100% { transform: translateX(0); }
+        25%       { transform: translateX(-5px); }
+        75%       { transform: translateX(5px); }
     }
 
-    25% {
-        transform: translateX(-5px);
-    }
-
-    75% {
-        transform: translateX(5px);
-    }
-
-    }
     @@keyframes popIn {
-        0%
-
-    {
-        transform: scale(0.8);
-        opacity: 0;
+        0%   { transform: scale(0.8); opacity: 0; }
+        100% { transform: scale(1);   opacity: 1; }
     }
 
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    }
-
-    /* Banco de Palabras */
     .items-bank {
-        background-color: var(--bg-body); /* Se funde con el fondo o usa card-bg */
+        background-color: var(--item-bg);
         border-radius: 1rem;
         padding: 1.5rem;
         min-height: 250px;
@@ -204,15 +159,29 @@
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    /* Timer */
     .timer-badge {
         font-variant-numeric: tabular-nums;
         font-size: 1.3rem;
         letter-spacing: 1px;
     }
 
+    /* Timer container — dark mode */
+    body.dark-mode .rounded-pill.bg-white {
+        background-color: var(--item-bg) !important;
+        border-color: var(--item-border) !important;
+    }
+
+    body.dark-mode #timer {
+        color: #a5b8ff !important;
+    }
+
+    /* Header info bar */
+    body.dark-mode .bg-opacity-10 {
+        background-color: rgba(114, 155, 255, 0.08) !important;
+    }
+
     /* =========================================
-           3. ESTILOS DEL MODAL (Dark Mode Support)
+           3. MODAL (dark mode support)
            ========================================= */
     .modal-content-custom {
         background-color: #ffffff;
@@ -220,19 +189,19 @@
         border: none;
     }
 
-    [data-bs-theme="dark"] .modal-content-custom {
+    body.dark-mode .modal-content-custom {
         background-color: #1e293b;
         color: #f1f5f9;
         border: 1px solid #334155;
     }
 
-        [data-bs-theme="dark"] .modal-content-custom h2 {
-            color: #4ade80 !important;
-        }
+    body.dark-mode .modal-content-custom h2 {
+        color: #4ade80 !important;
+    }
 
-        [data-bs-theme="dark"] .modal-content-custom .op-75 {
-            color: #cbd5e1 !important;
-        }
+    body.dark-mode .modal-content-custom .op-75 {
+        color: #cbd5e1 !important;
+    }
 
     .time-badge-modal {
         background-color: #f8fafc;
@@ -243,13 +212,14 @@
         border: 1px solid #e2e8f0;
     }
 
-    [data-bs-theme="dark"] .time-badge-modal {
+    body.dark-mode .time-badge-modal {
         background-color: #0f172a;
         color: #e2e8f0;
         border-color: #334155;
     }
-
 </style>
+
+
 
 <div class="mb-4 mb-md-5 d-flex flex-column align-items-center pt-4">
     <div class="hero-title-container mb-2 d-flex align-items-center gap-2 gap-md-3">
@@ -282,11 +252,13 @@
             <span id="timer" class="fw-bold text-primary timer-badge">00:00</span>
         </div>
     </div>
-@* 
-    <div id="mensajeSinDatos" class="alert alert-warning rounded-4 shadow-sm border-0 d-flex align-items-center gap-2" style="display:none;">
+
+    <div id="mensajeSinDatos"
+         class="alert alert-warning rounded-4 shadow-sm border-0 d-flex align-items-center gap-2"
+         style="display:none;">
         <i data-lucide="alert-triangle"></i>
         <div>No hay datos de agrupación configurados para esta unidad.</div>
-    </div> *@
+    </div>
 
     <div class="row g-4" id="gameArea">
 
@@ -383,28 +355,47 @@
 
         function parseData(raw) {
             if (!raw) return;
-            // Limpia saltos de línea y divide por punto y coma
-            raw.replace(/\r?\n/g, " ").split(";").forEach((segment, gIdx) => {
-                const parts = segment.split(":");
-                if (parts.length === 2) {
-                    const groupName = parts[0].trim();
-                    if(!groupName) return;
 
-                    const groupKey = normalizeKey(groupName);
-                    groups.push({ name: groupName, key: groupKey });
+            console.log('[Agrupación] rawAgrupacion =', raw); // Debug: ver formato exacto
 
-                    parts[1].split(",").forEach((itemTxt, iIdx) => {
-                        const txt = itemTxt.trim();
-                        if(txt) {
-                            items.push({
-                                id: `item-${gIdx}-${iIdx}`,
-                                text: txt,
-                                targetKey: groupKey
-                            });
-                        }
-                    });
-                }
+            // Limpiar saltos de línea y dividir por ";"
+            const segments = raw.replace(/\r?\n/g, " ").split(";");
+
+            segments.forEach((segment, gIdx) => {
+                const trimmed = segment.trim();
+                if (!trimmed) return;
+
+                // Usar indexOf para encontrar solo el PRIMER ":" como separador grupo:ítems
+                // Esto permite que los ítems contengan ":" en su texto sin romper el parser
+                const colonIdx = trimmed.indexOf(":");
+                if (colonIdx === -1) return; // Segmento sin ":", ignorar
+
+                const groupName = trimmed.slice(0, colonIdx).trim();
+                const itemsRaw  = trimmed.slice(colonIdx + 1).trim();
+
+                if (!groupName || !itemsRaw) return;
+
+                const groupKey = normalizeKey(groupName);
+                groups.push({ name: groupName, key: groupKey });
+
+                itemsRaw.split(",").forEach((itemTxt, iIdx) => {
+                    const txt = itemTxt.trim();
+                    if (txt) {
+                        items.push({
+                            id: `item-${gIdx}-${iIdx}`,
+                            text: txt,
+                            targetKey: groupKey
+                        });
+                    }
+                });
             });
+
+            if (groups.length === 0) {
+                console.warn('[Agrupación] No se pudo parsear ningún grupo. Verifica el formato en BD: "Grupo:ítem1,ítem2;Grupo2:ítem3"');
+            } else {
+                console.log(`[Agrupación] Parseados: ${groups.length} grupos, ${items.length} ítems`);
+            }
+
             // Revolver ítems para que no salgan en orden
             items.sort(() => Math.random() - 0.5);
         }

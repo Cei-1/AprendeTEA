@@ -5,139 +5,432 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles {
 <style>
-    /* Catalog-specific styles */
-    .specialist-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-        overflow: hidden;
-    }
+/* ===== CATÁLOGO HERO ===== */
+.catalog-hero {
+    text-align: center;
+    padding: 2.5rem 1rem 1.5rem;
+    position: relative;
+}
 
-        .specialist-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.2);
-        }
+.catalog-hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(114,155,255,0.12);
+    border: 1px solid rgba(114,155,255,0.3);
+    color: #729BFF;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+}
 
-    body.dark-mode .specialist-card {
-        background-color: #374151;
-        border: 1px solid #4b5563;
-    }
+body.dark-mode .catalog-hero-tag { color: #a5b8ff; }
 
-        body.dark-mode .specialist-card:hover {
-            border-color: var(--alef-primary);
-        }
+.catalog-hero h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #729BFF 0%, #B2A1FF 50%, #E38888 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
 
-    .profile-section {
-        border: 1px solid rgba(114, 155, 255, 0.3);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
+.catalog-hero .subtitle {
+    font-size: 0.95rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
 
-    body.dark-mode .profile-section {
-        border: 1px solid rgba(227, 136, 136, 0.3);
-        box-shadow: inset 0 1px 3px 0 rgba(255, 255, 255, 0.1);
-    }
+/* ===== SEARCH BAR ===== */
+.search-wrapper {
+    max-width: 600px;
+    margin: 1.5rem auto 2rem;
+    position: relative;
+}
 
-    .profile-section h4 {
-        color: #729bff;
-    }
+.search-bar {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 3rem;
+    border-radius: 999px;
+    border: 1.5px solid rgba(114,155,255,0.25);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    /* Light */
+    background: #ffffff;
+    color: #111827;
+    box-shadow: 0 4px 20px rgba(114,155,255,0.1);
+}
 
-    body.dark-mode .profile-section h4 {
-        color: #e38888;
-    }
+body.dark-mode .search-bar {
+    background: #18212f;
+    color: #e2e8f0;
+    border-color: rgba(114,155,255,0.2);
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: #729BFF;
+    box-shadow: 0 0 0 4px rgba(114,155,255,0.18), 0 4px 20px rgba(114,155,255,0.15);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #729BFF;
+    pointer-events: none;
+}
+
+.btn-clear {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(114,155,255,0.1);
+    border: none;
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #729BFF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-clear:hover {
+    background: rgba(114,155,255,0.2);
+}
+
+/* ===== SPECIALIST CARDS ===== */
+.spec-card {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(114,155,255,0.1);
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Light */
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+body.dark-mode .spec-card {
+    background: #18212f;
+    border-color: rgba(114,155,255,0.12);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.spec-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 48px rgba(114,155,255,0.22);
+    border-color: rgba(114,155,255,0.4);
+}
+
+body.dark-mode .spec-card:hover {
+    box-shadow: 0 20px 48px rgba(114,155,255,0.2);
+}
+
+/* Top gradient stripe */
+.spec-card-top {
+    height: 80px;
+    background: linear-gradient(135deg, #729BFF 0%, #B2A1FF 60%, #E38888 100%);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.spec-card-top::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(255,255,255,0.05));
+}
+
+body.dark-mode .spec-card-top::after {
+    background: linear-gradient(to bottom, transparent 60%, rgba(13,17,23,0.1));
+}
+
+/* Avatar */
+.spec-avatar-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: -40px;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 2;
+}
+
+.spec-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff;
+    box-shadow: 0 4px 16px rgba(114,155,255,0.3);
+}
+
+body.dark-mode .spec-avatar { border-color: #18212f; }
+
+.spec-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    background: linear-gradient(135deg, rgba(114,155,255,0.3), rgba(178,161,255,0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #729BFF;
+    box-shadow: 0 4px 16px rgba(114,155,255,0.3);
+}
+
+body.dark-mode .spec-avatar-placeholder { border-color: #18212f; }
+
+/* Card body */
+.spec-card-body {
+    padding: 0 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-align: center;
+}
+
+.spec-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    /* Light */
+    color: #111827;
+}
+
+body.dark-mode .spec-name { color: #f1f5f9; }
+
+.spec-role {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #729BFF;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.spec-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+body.dark-mode .spec-location { color: #94a3b8; }
+
+.spec-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #729BFF, #B2A1FF);
+    color: #ffffff;
+    text-decoration: none;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(114,155,255,0.35);
+    margin-top: auto;
+}
+
+.spec-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(114,155,255,0.45);
+    color: #ffffff;
+}
+
+/* ===== EMPTY / NO RESULTS ===== */
+.empty-catalog {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: #9ca3af;
+}
+
+.empty-catalog .icon-wrap {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(114,155,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    color: #729BFF;
+}
+
+/* ===== MODAL ===== */
+.modal-content {
+    border-radius: 24px !important;
+    border: none;
+    overflow: hidden;
+}
+
+body.dark-mode .modal-content {
+    background: #18212f !important;
+    border: 1px solid rgba(114,155,255,0.15) !important;
+}
+
+.modal-hero-banner {
+    height: 100px;
+    background: linear-gradient(135deg, #729BFF 0%, #B2A1FF 50%, #E38888 100%);
+}
+
+.modal-avatar-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: -50px;
+    margin-bottom: 1rem;
+}
+
+.modal-avatar {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 8px 24px rgba(114,155,255,0.3);
+}
+
+body.dark-mode .modal-avatar { border-color: #18212f; }
+
+.modal-info-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    border: 1px solid rgba(114,155,255,0.12);
+    /* Light */
+    background: #f8faff;
+}
+
+body.dark-mode .modal-info-chip {
+    background: rgba(114,155,255,0.06);
+    border-color: rgba(114,155,255,0.15);
+}
+
+.modal-info-chip .chip-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(114,155,255,0.2), rgba(178,161,255,0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #729BFF;
+    flex-shrink: 0;
+}
+
+.modal-info-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 1px;
+}
+
+.modal-info-value {
+    font-weight: 600;
+    font-size: 0.9rem;
+    /* Light */
+    color: #111827;
+}
+
+body.dark-mode .modal-info-value { color: #e2e8f0; }
+
+/* Animations */
+@@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.specialist-item { animation: fadeInUp 0.4s ease both; }
+.specialist-item:nth-child(2) { animation-delay: 0.05s; }
+.specialist-item:nth-child(3) { animation-delay: 0.1s; }
+.specialist-item:nth-child(4) { animation-delay: 0.15s; }
+.specialist-item:nth-child(5) { animation-delay: 0.2s; }
+.specialist-item:nth-child(6) { animation-delay: 0.25s; }
 </style>
+}
 
-<!-- Header con Logo -->
-<div class="mb-4 mb-md-5 d-flex flex-column align-items-center pt-4">
-    <div class="hero-title-container mb-3 d-flex align-items-center gap-2 gap-md-3">
-        <img src="~/img/logo.png"
-             alt="Logo Neuro Pro"
-             class="hero-logo"
-             style="width: 3rem; height: 3rem; object-fit: contain;"
-             onerror="this.style.display='none';" />
-
-        <h2 class="display-5 display-md-4 m-0 fw-bold text-adaptive">
-            NEURO PRO
-        </h2>
-    </div>
-    <h3 class="h5 h4-md fw-semibold text-adaptive-inverse text-center px-3" style="max-width: 600px;">
-        Rutas de Consciencia y Neurodiversidad
-    </h3>
+<!-- Hero -->
+<div class="catalog-hero">
+    <span class="catalog-hero-tag">
+        <i data-lucide="shield-check" style="width:12px;height:12px;"></i>
+        Profesionales Verificados
+    </span>
+    <h1>Catálogo de Especialistas</h1>
+    <p class="subtitle text-muted-custom">
+        Trastorno del Espectro Autista (TEA) — Encuentra el acompañamiento integral que necesitas.
+    </p>
 </div>
 
-<div class="container my-4 my-md-5">
-    <div class="text-center mb-4 mb-md-5">
-        <h2 class="h3 h2-md fw-bold neuropro-title mb-3">
-            <i data-lucide="users" class="me-2" style="width: 36px; height: 36px;"></i>
-            Catálogo de Especialistas
-        </h2>
-        <p class="h5 h6-sm text-alef-secondary mb-2">
-            Trastorno del Espectro Autista (TEA)
-        </p>
-        <p class="text-muted-custom mt-2 px-3">
-            Encuentra profesionales verificados para apoyo y acompañamiento integral.
-        </p>
-    </div>
+<!-- Search -->
+<div class="search-wrapper">
+    <i data-lucide="search" class="search-icon" style="width:18px;height:18px;"></i>
+    <input type="text" id="search-input" class="search-bar" placeholder="Buscar por nombre o especialidad..." />
+    <button id="clear-search-button" class="btn-clear">✕ Limpiar</button>
+</div>
 
-    <!-- Search Bar -->
-    <div class="row justify-content-center mb-4">
-        <div class="col-12 col-lg-8">
-            <div class="input-group shadow-sm">
-                <span class="input-group-text bg-white border-end-0">
-                    <i data-lucide="search" style="width: 20px; height: 20px;"></i>
-                </span>
-                <input type="text" 
-                       id="search-input" 
-                       class="form-control border-start-0 custom-input" 
-                       placeholder="Buscar por nombre o especialidad..." />
-                <button id="clear-search-button" class="btn btn-outline-secondary" type="button">
-                    <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-                    Limpiar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Specialists Grid -->
+<!-- Grid -->
+<div class="container pb-5">
     <div id="specialists-grid" class="row g-4">
         @if (Model.Especialistas != null && Model.Especialistas.Any())
         {
             foreach (var item in Model.Especialistas)
             {
-                var especialista = (Especialista)item;
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3 specialist-item" 
-                     data-name="@especialista.NombreCompleto.ToLower()" 
-                     data-email="@(especialista.Email?.ToLower() ?? "")">
-                    <div class="card specialist-card h-100 card-bg border-0 shadow-sm">
-                        <div class="card-body text-center p-3 p-md-4 d-flex flex-column">
-                            @if (!string.IsNullOrEmpty(especialista.FotografiaBase64))
+                var e = (Especialista)item;
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 specialist-item"
+                     data-name="@e.NombreCompleto.ToLower()"
+                     data-email="@(e.Email?.ToLower() ?? "")">
+                    <div class="spec-card">
+                        <div class="spec-card-top"></div>
+                        <div class="spec-avatar-wrap">
+                            @if (!string.IsNullOrEmpty(e.FotografiaBase64))
                             {
-                                <img src="@especialista.FotografiaBase64" 
-                                     alt="Foto de @especialista.NombreCompleto"
-                                     class="rounded-circle object-fit-cover mb-3 border border-3 border-alef-primary mx-auto"
-                                     style="width: 100px; height: 100px;" />
+                                <img src="@e.FotografiaBase64" alt="@e.NombreCompleto" class="spec-avatar" />
                             }
                             else
                             {
-                                <div class="rounded-circle bg-alef-primary-subtle d-inline-flex align-items-center justify-content-center mb-3 border border-3 border-alef-primary mx-auto"
-                                     style="width: 100px; height: 100px;">
-                                    <i data-lucide="user" class="text-alef-primary" style="width: 48px; height: 48px;"></i>
+                                <div class="spec-avatar-placeholder">
+                                    <i data-lucide="user" style="width:32px;height:32px;"></i>
                                 </div>
                             }
-                            <h5 class="fw-bold text-body-custom mb-1">@especialista.NombreCompleto</h5>
-                            <p class="text-alef-primary fw-semibold mb-2 small">Especialista en TEA</p>
-                            @if (!string.IsNullOrEmpty(especialista.Municipio))
+                        </div>
+                        <div class="spec-card-body">
+                            <div class="spec-name">@e.NombreCompleto</div>
+                            <div class="spec-role">Especialista en TEA</div>
+                            @if (!string.IsNullOrEmpty(e.Municipio))
                             {
-                                <p class="text-muted-custom small mb-3">
-                                    <i data-lucide="map-pin" style="width: 12px; height: 12px;" class="me-1"></i>
-                                    @especialista.Municipio
-                                </p>
+                                <div class="spec-location">
+                                    <i data-lucide="map-pin" style="width:12px;height:12px;"></i>
+                                    @e.Municipio
+                                </div>
                             }
-                            <a asp-action="Card" 
-                               asp-controller="Especialistas"
-                               asp-route-IdEspecialista="@especialista.IdEspecialista"
-                               class="btn btn-outline-primary btn-sm mt-auto w-100">
-                                <i data-lucide="eye" style="width: 14px; height: 14px;" class="me-1"></i>
-                                Ver Más
+                            <a asp-action="Card" asp-controller="Especialistas"
+                               asp-route-IdEspecialista="@e.IdEspecialista"
+                               class="spec-btn">
+                                <i data-lucide="eye" style="width:14px;height:14px;"></i>
+                                Ver Perfil
                             </a>
                         </div>
                     </div>
@@ -147,176 +440,139 @@
         else
         {
             <div class="col-12">
-                <div class="empty-state-box">
-                    <i data-lucide="users" style="width: 64px; height: 64px;" class="text-muted-custom mx-auto d-block mb-3"></i>
-                    <h4 class="text-muted-custom">No hay especialistas disponibles</h4>
+                <div class="empty-catalog">
+                    <div class="icon-wrap">
+                        <i data-lucide="users" style="width:36px;height:36px;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">Sin especialistas disponibles</h5>
+                    <p class="small">Pronto habrá nuevos profesionales registrados.</p>
                 </div>
             </div>
         }
     </div>
 
-    <div id="no-results" class="col-12 text-center py-5 d-none">
-        <i data-lucide="search-x" style="width: 64px; height: 64px;" class="text-muted-custom mx-auto d-block mb-3"></i>
-        <p class="text-muted-custom h5">No se encontraron especialistas que coincidan con la búsqueda.</p>
+    <div id="no-results" class="d-none text-center py-5">
+        <div class="empty-catalog">
+            <div class="icon-wrap" style="background:rgba(227,136,136,0.1);color:#E38888;">
+                <i data-lucide="search-x" style="width:36px;height:36px;"></i>
+            </div>
+            <h5 class="fw-bold mb-1">Sin coincidencias</h5>
+            <p class="small">Intenta con otro nombre o especialidad.</p>
+        </div>
     </div>
 </div>
 
-<!-- Bootstrap Modal for Specialist Details -->
-<div class="modal fade" id="specialistModal" tabindex="-1" aria-labelledby="specialistModalLabel" aria-hidden="true">
+<!-- Modal detalle -->
+<div class="modal fade" id="specialistModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-        <div class="modal-content card-bg">
-            <div class="modal-header border-0 pb-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body px-4 px-md-5 pt-0">
+        <div class="modal-content">
+            <div class="modal-hero-banner"></div>
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    data-bs-dismiss="modal" style="z-index:10;filter:invert(1);opacity:.8;"></button>
+
+            <div class="px-4 px-md-5 pb-4">
+                <div class="modal-avatar-wrap">
+                    <img id="modal-img" src="" alt="" class="modal-avatar" />
+                </div>
                 <div class="text-center mb-4">
-                    <img id="modal-img" src="" alt="" class="rounded-circle object-fit-cover mb-3 border border-4 border-alef-primary shadow" style="width: 150px; height: 150px;" />
-                    <h3 id="modal-name" class="fw-bold text-body-custom mb-1"></h3>
-                    <p id="modal-specialty" class="h5 text-alef-primary mb-2">Especialista en TEA</p>
+                    <h3 id="modal-name" class="fw-bold mb-1" style="font-family:'Outfit',sans-serif;font-size:1.4rem;"></h3>
+                    <span class="badge rounded-pill" style="background:rgba(114,155,255,0.15);color:#729BFF;font-size:.78rem;font-weight:700;">
+                        Especialista en TEA
+                    </span>
                 </div>
 
                 <div class="row g-3">
-                    <!-- Email -->
                     <div class="col-md-6">
-                        <div class="profile-section p-3 rounded">
-                            <h4 class="h6 fw-bold mb-2 text-body-custom">
-                                <i data-lucide="mail" style="width: 16px; height: 16px;" class="me-2"></i>
-                                Email
-                            </h4>
-                            <p id="modal-email" class="mb-0 text-muted-custom"></p>
+                        <div class="modal-info-chip">
+                            <div class="chip-icon"><i data-lucide="mail" style="width:16px;height:16px;"></i></div>
+                            <div>
+                                <div class="modal-info-label">Correo</div>
+                                <div class="modal-info-value" id="modal-email"></div>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Teléfono -->
                     <div class="col-md-6">
-                        <div class="profile-section p-3 rounded">
-                            <h4 class="h6 fw-bold mb-2 text-body-custom">
-                                <i data-lucide="phone" style="width: 16px; height: 16px;" class="me-2"></i>
-                                Teléfono
-                            </h4>
-                            <p id="modal-phone" class="mb-0 text-muted-custom"></p>
+                        <div class="modal-info-chip">
+                            <div class="chip-icon" style="background:linear-gradient(135deg,rgba(136,212,142,.2),rgba(9,203,180,.1));color:#88D48E;">
+                                <i data-lucide="phone" style="width:16px;height:16px;"></i>
+                            </div>
+                            <div>
+                                <div class="modal-info-label">Teléfono</div>
+                                <div class="modal-info-value" id="modal-phone"></div>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Ubicación Completa -->
                     <div class="col-12">
-                        <div class="profile-section p-3 rounded">
-                            <h4 class="h6 fw-bold mb-2 text-body-custom">
-                                <i data-lucide="map-pin" style="width: 16px; height: 16px;" class="me-2"></i>
-                                Ubicación
-                            </h4>
-                            <p id="modal-location" class="mb-0 text-muted-custom"></p>
+                        <div class="modal-info-chip">
+                            <div class="chip-icon" style="background:linear-gradient(135deg,rgba(227,136,136,.2),rgba(255,165,0,.1));color:#E38888;">
+                                <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
+                            </div>
+                            <div>
+                                <div class="modal-info-label">Ubicación</div>
+                                <div class="modal-info-value" id="modal-location"></div>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Fecha de Registro -->
                     <div class="col-12">
-                        <div class="profile-section p-3 rounded">
-                            <h4 class="h6 fw-bold mb-2 text-body-custom">
-                                <i data-lucide="calendar" style="width: 16px; height: 16px;" class="me-2"></i>
-                                Fecha de Registro
-                            </h4>
-                            <p id="modal-fecha" class="mb-0 text-muted-custom"></p>
+                        <div class="modal-info-chip">
+                            <div class="chip-icon" style="background:linear-gradient(135deg,rgba(178,161,255,.2),rgba(114,155,255,.1));color:#B2A1FF;">
+                                <i data-lucide="calendar" style="width:16px;height:16px;"></i>
+                            </div>
+                            <div>
+                                <div class="modal-info-label">Miembro desde</div>
+                                <div class="modal-info-value" id="modal-fecha"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script>
-        // Specialists data for modal
-        const specialistsData = @Html.Raw(Json.Serialize(Model.Especialistas?.Cast<Especialista>().ToList() ?? new List<Especialista>()));
+<script>
+    const specialistsData = @Html.Raw(Json.Serialize(Model.Especialistas?.Cast<Especialista>().ToList() ?? new List<Especialista>()));
 
-        // Bootstrap modal instance
-        let specialistModal;
-
-        // Search functionality
-        document.getElementById('search-input').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const items = document.querySelectorAll('.specialist-item');
-            let visibleCount = 0;
-
-            items.forEach(item => {
-                const name = item.dataset.name;
-                const email = item.dataset.email;
-                
-                if (name.includes(searchTerm) || email.includes(searchTerm)) {
-                    item.style.display = '';
-                    visibleCount++;
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-
-            const noResults = document.getElementById('no-results');
-            if (visibleCount === 0 && searchTerm !== '') {
-                noResults.classList.remove('d-none');
-            } else {
-                noResults.classList.add('d-none');
-            }
+    // Search
+    document.getElementById('search-input').addEventListener('input', function () {
+        const term = this.value.toLowerCase();
+        let visible = 0;
+        document.querySelectorAll('.specialist-item').forEach(el => {
+            const match = el.dataset.name.includes(term) || el.dataset.email.includes(term);
+            el.style.display = match ? '' : 'none';
+            if (match) visible++;
         });
+        document.getElementById('no-results').classList.toggle('d-none', visible > 0 || term === '');
+    });
 
-        document.getElementById('clear-search-button').addEventListener('click', function() {
-            document.getElementById('search-input').value = '';
-            document.querySelectorAll('.specialist-item').forEach(item => {
-                item.style.display = '';
-            });
-            document.getElementById('no-results').classList.add('d-none');
-        });
+    document.getElementById('clear-search-button').addEventListener('click', () => {
+        document.getElementById('search-input').value = '';
+        document.querySelectorAll('.specialist-item').forEach(el => el.style.display = '');
+        document.getElementById('no-results').classList.add('d-none');
+    });
 
-        // Load specialist data into modal
-        function loadSpecialistData(id) {
-            const specialist = specialistsData.find(s => s.IdEspecialista === id);
-            if (!specialist) return;
+    // Modal
+    function loadSpecialistData(id) {
+        const s = specialistsData.find(x => x.IdEspecialista === id);
+        if (!s) return;
+        const img = document.getElementById('modal-img');
+        img.src = s.FotografiaBase64?.trim() ? s.FotografiaBase64 : `https://ui-avatars.com/api/?name=${encodeURIComponent(s.NombreCompleto)}&background=729BFF&color=fff&size=200`;
+        document.getElementById('modal-name').textContent = s.NombreCompleto;
+        document.getElementById('modal-email').textContent = s.Email || 'No disponible';
+        document.getElementById('modal-phone').textContent = s.Telefono || 'No disponible';
+        const loc = [s.Colonia, s.Municipio, s.Estado].filter(Boolean).join(', ') || 'No disponible';
+        document.getElementById('modal-location').textContent = loc;
+        document.getElementById('modal-fecha').textContent = s.FechaRegistro ? new Date(s.FechaRegistro).toLocaleDateString('es-MX', { year: 'numeric', month: 'long' }) : 'No disponible';
+        setTimeout(() => { if (typeof lucide !== 'undefined') lucide.createIcons(); }, 100);
+    }
 
-            // Update modal content
-            const imgElement = document.getElementById('modal-img');
-            if (specialist.FotografiaBase64 && specialist.FotografiaBase64.trim() !== '') {
-                imgElement.src = specialist.FotografiaBase64;
-                imgElement.classList.remove('d-none');
-            } else {
-                imgElement.classList.add('d-none');
-            }
-            
-            document.getElementById('modal-name').textContent = specialist.NombreCompleto;
-            document.getElementById('modal-email').textContent = specialist.Email || 'No disponible';
-            document.getElementById('modal-phone').textContent = specialist.Telefono || 'No disponible';
-            
-            let location = [];
-            if (specialist.Colonia) location.push(specialist.Colonia);
-            if (specialist.Municipio) location.push(specialist.Municipio);
-            if (specialist.Estado) location.push(specialist.Estado);
-            document.getElementById('modal-location').textContent = location.join(', ') || 'No disponible';
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
 
-            const fecha = specialist.FechaRegistro ? new Date(specialist.FechaRegistro).toLocaleDateString('es-MX') : 'No disponible';
-            document.getElementById('modal-fecha').textContent = fecha;
-
-            // Refresh Lucide icons in modal
-            setTimeout(() => {
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            }, 100);
-        }
-
-        // Initialize icons on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        });
-
-        // Refresh icons when modal is shown
-        document.getElementById('specialistModal').addEventListener('shown.bs.modal', function () {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        });
-    </script>
+    document.getElementById('specialistModal').addEventListener('shown.bs.modal', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+</script>
 }

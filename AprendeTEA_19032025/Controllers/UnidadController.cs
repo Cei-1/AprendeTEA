@@ -1,4 +1,4 @@
-﻿using AprendeTEA_19032025.Data;
+using AprendeTEA_19032025.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
@@ -167,7 +167,23 @@ namespace AprendeTEA_19032025.Controllers
             if (result.Correct)
             {
                 var unidad = (Models.Unidad)result.Object;
+
+                // Validar que la unidad tenga Sopa de Letras habilitada
+                if (!unidad.TieneSopaLetras || string.IsNullOrWhiteSpace(unidad.PalabrasSopa))
+                {
+                    TempData["Aviso"] = "Esta unidad no tiene la actividad Sopa de Letras configurada.";
+                    return RedirectToAction("DetalleUnidad", new { IdUnidad });
+                }
+
                 unidad.PalabrasSopa = BL.Unidad.GetSopaLetras(IdUnidad);
+
+                // Doble verificación: los datos reales deben existir
+                if (string.IsNullOrWhiteSpace(unidad.PalabrasSopa))
+                {
+                    TempData["Aviso"] = "Esta unidad no tiene palabras configuradas para la Sopa de Letras.";
+                    return RedirectToAction("DetalleUnidad", new { IdUnidad });
+                }
+
                 ViewBag.IdUsuario = GetCurrentUserId();
                 return View(unidad);
             }
@@ -180,7 +196,23 @@ namespace AprendeTEA_19032025.Controllers
             if (result.Correct)
             {
                 var unidad = (Models.Unidad)result.Object;
+
+                // Validar que la unidad tenga Relacionar habilitada
+                if (!unidad.TieneRelacionar || string.IsNullOrWhiteSpace(unidad.RelacionarColumnas))
+                {
+                    TempData["Aviso"] = "Esta unidad no tiene la actividad Relacionar Conceptos configurada.";
+                    return RedirectToAction("DetalleUnidad", new { IdUnidad });
+                }
+
                 unidad.RelacionarColumnas = BL.Unidad.GetRelacionarColumnas(IdUnidad);
+
+                // Doble verificación: los datos reales deben existir
+                if (string.IsNullOrWhiteSpace(unidad.RelacionarColumnas))
+                {
+                    TempData["Aviso"] = "Esta unidad no tiene datos configurados para Relacionar Conceptos.";
+                    return RedirectToAction("DetalleUnidad", new { IdUnidad });
+                }
+
                 ViewBag.IdUsuario = GetCurrentUserId();
                 return View(unidad);
             }
@@ -193,7 +225,16 @@ namespace AprendeTEA_19032025.Controllers
             if (result.Correct)
             {
                 var unidad = (Models.Unidad)result.Object;
-                unidad.Agrupacion = BL.Unidad.GetAgrupacion(IdUnidad);
+
+                // Validar que la unidad tenga Agrupación habilitada y con datos
+                if (!unidad.TieneAgrupacion || string.IsNullOrWhiteSpace(unidad.Agrupacion))
+                {
+                    TempData["Aviso"] = "Esta unidad no tiene la actividad Agrupación configurada.";
+                    return RedirectToAction("DetalleUnidad", new { IdUnidad });
+                }
+
+                // Los datos ya vienen en unidad.Agrupacion desde GetByIdUnidad
+                // No se llama a GetAgrupacion() para no sobreescribir con datos potencialmente vacíos
                 ViewBag.IdUsuario = GetCurrentUserId();
                 return View(unidad);
             }

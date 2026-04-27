@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    ESTILOS CENTRALIZADOS - NEURO PRO
    ======================================== */
 
@@ -79,10 +79,10 @@ body.dark-mode .status-pending {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
 }
 
-/* Corrección: Se cambió .dark por body.dark-mode */
+/* CorrecciÃ³n: Se cambiÃ³ .dark por body.dark-mode */
 body.dark-mode .glass-card {
     background: rgba(31, 41, 55, 0.85);
-    /* Un poco más opaco para legibilidad */
+    /* Un poco mÃ¡s opaco para legibilidad */
     border: 1px solid rgba(114, 155, 255, 0.1);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
@@ -179,11 +179,11 @@ body.dark-mode .mobile-menu-item:hover {
 }
 
 /* ========================================
-   VARIABLES Y ESTRUCTURA BASE
+   VARIABLES Y ESTRUCTURA BASE â€” v2
    ======================================== */
 
 :root {
-    /* Paleta */
+    /* Paleta principal */
     --alef-primary: #729BFF;
     --alef-secondary: #E38888;
     --alef-green-base: #88D48E;
@@ -191,24 +191,106 @@ body.dark-mode .mobile-menu-item:hover {
     --alef-teal-base: #09cbb4;
     --alef-orange: #ffa500;
     --alef-yellow: #faeb36;
+
+    /* Paleta extendida */
+    --alef-primary-dark: #5a82e8;
+    --alef-primary-glow: rgba(114, 155, 255, 0.35);
+    --alef-secondary-glow: rgba(227, 136, 136, 0.35);
+    --alef-green-glow: rgba(136, 212, 142, 0.3);
+    --alef-teal-glow: rgba(9, 203, 180, 0.3);
+
+    /* Gradientes de marca */
+    --gradient-primary: linear-gradient(135deg, #729BFF 0%, #B2A1FF 100%);
+    --gradient-warm: linear-gradient(135deg, #E38888 0%, #ffa500 100%);
+    --gradient-cool: linear-gradient(135deg, #09cbb4 0%, #729BFF 100%);
+    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+
+    /* Sombras */
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.1);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.14);
+    --shadow-primary: 0 8px 30px var(--alef-primary-glow);
+    --shadow-secondary: 0 8px 30px var(--alef-secondary-glow);
+
+    /* Border radius */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+
     /* Dark Mode Base */
     --gray-50: #f9fafb;
-    --gray-800: #1f2937;
-    --gray-900: #111827;
+    --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-850: #18212f;
+    --gray-900: #111827;
+    --gray-950: #0d1117;
+
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
 }
 
+/* ===== KEYFRAME ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 var(--alef-primary-glow); }
+    50%       { box-shadow: 0 0 0 8px transparent; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-6px); }
+}
+
+@keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ===== BODY BASE ===== */
 body {
     transition: background-color 0.5s ease, color 0.5s ease;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Fondo light mode con textura muy sutil */
+body:not(.dark-mode) {
+    background-color: #f4f6fc;
 }
 
 body.dark-mode {
-    background-color: var(--gray-900) !important;
+    background-color: var(--gray-950) !important;
     color: var(--gray-200) !important;
+    background-image: radial-gradient(ellipse at 20% 10%, rgba(114,155,255,0.04) 0%, transparent 60%),
+                      radial-gradient(ellipse at 80% 90%, rgba(227,136,136,0.03) 0%, transparent 60%);
 }
 
-/* Header Móvil */
+/* Header MÃ³vil */
 .mobile-header {
     background-color: white;
     color: var(--gray-900);
@@ -401,7 +483,7 @@ body.dark-mode strong.text-alef-blue {
 }
 
 /* ========================================
-   COMPONENTES ESPECÍFICOS
+   COMPONENTES ESPECÃFICOS
    ======================================== */
 
 /* ACCORDION */
@@ -658,7 +740,7 @@ body.dark-mode .activity-card:hover {
     border-left: 4px solid var(--alef-violet);
 }
 
-/* Relación de Conceptos items */
+/* RelaciÃ³n de Conceptos items */
 .relacionar-item {
     transition: all 0.2s ease;
     border: 2px solid var(--border-subtle);
@@ -804,7 +886,7 @@ body.dark-mode .sopa-cell:hover {
     color: white;
 }
 
-/* Helper para índice */
+/* Helper para Ã­ndice */
 .index-number {
     color: #9ca3af;
     font-weight: 700;
@@ -827,7 +909,7 @@ body.dark-mode .empty-state-box {
 }
 
 /* ========================================================= */
-/* CORRECCIÓN COLORES NAVBAR (MODO CLARO)                    */
+/* CORRECCIÃ“N COLORES NAVBAR (MODO CLARO)                    */
 /* ========================================================= */
 
 /* 1. Estado Normal (Inactivo) - Modo Claro */
@@ -849,7 +931,7 @@ body.dark-mode .empty-state-box {
 }
 
 .navigation ul li.active a .text {
-    /* Opcional: El texto activo puede ser del color de la sección o negro */
+    /* Opcional: El texto activo puede ser del color de la secciÃ³n o negro */
     color: var(--clr) !important;
     font-weight: 700;
 }
@@ -861,7 +943,7 @@ body.dark-mode .navigation ul li a .icon {
     /* Texto e iconos claros en fondo oscuro */
 }
 
-/* En modo oscuro, el icono activo también debe ser blanco (dentro de la burbuja) */
+/* En modo oscuro, el icono activo tambiÃ©n debe ser blanco (dentro de la burbuja) */
 body.dark-mode .navigation ul li.active a .icon {
     color: #ffffff !important;
 }
@@ -1089,7 +1171,7 @@ body.dark-mode .social-button {
 }
 
 /* ========================================================= */
-/* PERFIL DE USUARIO INTEGRADO EN EL MENÚ                    */
+/* PERFIL DE USUARIO INTEGRADO EN EL MENÃš                    */
 /* ========================================================= */
 /* Elemento de lista especial para el perfil */
 .navigation ul li.profile-item {
@@ -1097,7 +1179,7 @@ body.dark-mode .social-button {
     position: relative;
     width: 100%;
     height: 70px;
-    /* Un poco más alto para que quepa el nombre */
+    /* Un poco mÃ¡s alto para que quepa el nombre */
     padding: 0 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -1128,7 +1210,7 @@ body.dark-mode .social-button {
     z-index: 10;
 }
 
-/* Círculo visual del avatar */
+/* CÃ­rculo visual del avatar */
 .avatar-circle {
     width: 45px;
     height: 45px;
@@ -1143,7 +1225,7 @@ body.dark-mode .social-button {
     box-shadow: 0 4px 6px rgba(114, 155, 255, 0.3);
 }
 
-/* El Texto del nombre ocupa el lugar del TEXTO del menú */
+/* El Texto del nombre ocupa el lugar del TEXTO del menÃº */
 .profile-container .text-user {
     position: relative;
     padding: 0 15px;
@@ -1157,7 +1239,7 @@ body.dark-mode .social-button {
     white-space: nowrap;
 }
 
-/* Mostrar texto cuando el menú se abre */
+/* Mostrar texto cuando el menÃº se abre */
 .navigation.open .profile-container .text-user {
     opacity: 1;
     visibility: visible;
@@ -1187,7 +1269,7 @@ body.dark-mode .text-user small {
     transition: color 0.3s ease;
 }
 
-/* Texto del Estado (En línea) */
+/* Texto del Estado (En lÃ­nea) */
 .profile-status {
     color: #6b7280;
     /* Gris medio por defecto */
@@ -1205,7 +1287,7 @@ body.dark-mode .profile-status {
     /* Gris muy claro */
 }
 
-/* Línea divisoria en modo oscuro */
+/* LÃ­nea divisoria en modo oscuro */
 body.dark-mode .navigation ul li.profile-item {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -1293,7 +1375,7 @@ body.dark-mode .badge-item:hover {
     background-color: #4b5563;
 }
 
-/* 6. Línea de Tiempo (Timeline) */
+/* 6. LÃ­nea de Tiempo (Timeline) */
 .timeline-list {
     position: relative;
     padding-left: 2rem;
@@ -1325,7 +1407,7 @@ body.dark-mode .timeline-dot {
     border-color: #1f2937;
 }
 
-/* Colores específicos para los puntos */
+/* Colores especÃ­ficos para los puntos */
 .dot-primary {
     background-color: var(--alef-primary);
 }
@@ -1427,10 +1509,10 @@ body.dark-mode .table-hover tbody tr:hover {
 }
 
 /* ========================================================= */
-/* MEJORAS RESPONSIVE PARA MÓVIL - OPTIMIZACIÓN DE ESPACIO  */
+/* MEJORAS RESPONSIVE PARA MÃ“VIL - OPTIMIZACIÃ“N DE ESPACIO  */
 /* ========================================================= */
 
-/* MÓVIL - Máxima optimización de espacio horizontal */
+/* MÃ“VIL - MÃ¡xima optimizaciÃ³n de espacio horizontal */
 @media (max-width: 767px) {
 
     /* Secciones principales - reducir padding lateral */
@@ -1439,7 +1521,7 @@ body.dark-mode .table-hover tbody tr:hover {
         padding-right: 1rem !important;
     }
 
-    /* Sección de valores específicamente */
+    /* SecciÃ³n de valores especÃ­ficamente */
     #valores {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
@@ -1462,7 +1544,7 @@ body.dark-mode .table-hover tbody tr:hover {
         padding: 1.25rem !important;
     }
 
-    /* Cards de quiénes somos y misión/visión */
+    /* Cards de quiÃ©nes somos y misiÃ³n/visiÃ³n */
     #quienes-somos .card-bg,
     #mision-vision .card-bg {
         padding: 1.25rem !important;
@@ -1473,7 +1555,7 @@ body.dark-mode .table-hover tbody tr:hover {
         padding: 1.5rem !important;
     }
 
-    /* Reducir gaps entre columnas en móvil */
+    /* Reducir gaps entre columnas en mÃ³vil */
     .row.g-4 {
         gap: 1rem !important;
     }
@@ -1482,7 +1564,7 @@ body.dark-mode .table-hover tbody tr:hover {
         gap: 1.5rem !important;
     }
 
-    /* Optimizar títulos en móvil */
+    /* Optimizar tÃ­tulos en mÃ³vil */
     .display-6 {
         font-size: 1.75rem !important;
     }
@@ -1501,13 +1583,13 @@ body.dark-mode .table-hover tbody tr:hover {
         font-size: 1.25rem !important;
     }
 
-    /* Texto de cuerpo más legible en móvil */
+    /* Texto de cuerpo mÃ¡s legible en mÃ³vil */
     .fs-5 {
         font-size: 1rem !important;
         line-height: 1.6 !important;
     }
 
-    /* Reducir márgenes verticales en móvil */
+    /* Reducir mÃ¡rgenes verticales en mÃ³vil */
     .mb-5 {
         margin-bottom: 2rem !important;
     }
@@ -1528,13 +1610,13 @@ body.dark-mode .table-hover tbody tr:hover {
         padding-right: 1rem !important;
     }
 
-    /* Iconos más pequeños en móvil */
+    /* Iconos mÃ¡s pequeÃ±os en mÃ³vil */
     .icon-box {
         width: 2.5rem !important;
         height: 2.5rem !important;
     }
 
-    /* Hero logo más pequeño */
+    /* Hero logo mÃ¡s pequeÃ±o */
     .hero-logo {
         width: 3rem !important;
         height: 3rem !important;
@@ -1566,7 +1648,7 @@ body.dark-mode .table-hover tbody tr:hover {
     }
 }
 
-/* DESKTOP - Mantener diseño original */
+/* DESKTOP - Mantener diseÃ±o original */
 @media (min-width: 992px) {
 
     /* Asegurar que el padding original se mantiene */
@@ -1596,3 +1678,1109 @@ body.dark-mode .table-hover tbody tr:hover {
         padding: 3rem !important;
     }
 }
+
+/* ================================================================
+   NEURO PRO — DESIGN SYSTEM v2 ENHANCEMENTS
+   ================================================================ */
+
+/* ===== TIPOGRAFÍA ===== */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Outfit', 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.display-4-custom,
+.neuropro-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+}
+
+/* ===== CARDS MEJORADAS ===== */
+.card-bg {
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid rgba(114, 155, 255, 0.12);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-bg:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(114, 155, 255, 0.18);
+}
+
+body.dark-mode .card-bg {
+    background-color: var(--gray-850) !important;
+    border-color: rgba(114, 155, 255, 0.1);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .card-bg:hover {
+    box-shadow: 0 12px 40px rgba(114, 155, 255, 0.2);
+    border-color: rgba(114, 155, 255, 0.25);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-lg) !important;
+    box-shadow: 0 8px 32px rgba(114, 155, 255, 0.12);
+}
+
+body.dark-mode .glass-card {
+    background: rgba(24, 33, 47, 0.85) !important;
+    border-color: rgba(114, 155, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Value cards mejoradas */
+.value-card {
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid rgba(114, 155, 255, 0.1);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease;
+}
+
+.value-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(114,155,255,0.05) 0%, transparent 60%);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.value-card:hover {
+    transform: translateY(-7px) scale(1.01);
+    box-shadow: 0 16px 40px rgba(114, 155, 255, 0.2);
+    border-color: rgba(114, 155, 255, 0.3);
+}
+
+body.dark-mode .value-card {
+    background-color: var(--gray-850) !important;
+    border-color: rgba(114, 155, 255, 0.12);
+}
+
+/* Module cards mejoradas */
+.module-card {
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.module-card:hover {
+    transform: translateX(8px) translateY(-2px);
+    box-shadow: -4px 8px 30px rgba(114, 155, 255, 0.2);
+}
+
+/* Activity cards mejoradas */
+.activity-card {
+    border-radius: var(--radius-md) !important;
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease !important;
+    box-shadow: var(--shadow-sm);
+}
+
+.activity-card:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 16px 32px rgba(0,0,0,0.14) !important;
+}
+
+body.dark-mode .activity-card {
+    background-color: var(--gray-850) !important;
+    border-color: rgba(255,255,255,0.06) !important;
+}
+
+/* ===== BOTONES MEJORADOS ===== */
+.btn-alef-submit {
+    background: var(--gradient-warm);
+    background-size: 200% auto;
+    border-radius: var(--radius-md) !important;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: all 0.35s ease;
+    box-shadow: 0 4px 16px var(--alef-secondary-glow);
+    border: none;
+}
+
+.btn-alef-submit:hover {
+    background-position: right center;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px var(--alef-secondary-glow);
+    color: white;
+}
+
+.btn-alef-submit:active {
+    transform: translateY(-1px);
+}
+
+.btn-blue-action {
+    background: var(--gradient-primary);
+    background-size: 200% auto;
+    border-radius: var(--radius-md) !important;
+    font-weight: 700;
+    transition: all 0.35s ease;
+    box-shadow: 0 4px 16px var(--alef-primary-glow);
+    border: none;
+}
+
+.btn-blue-action:hover {
+    background-position: right center;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px var(--alef-primary-glow);
+    color: white;
+}
+
+/* Botón primario de Bootstrap también mejorado */
+.btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    font-weight: 600;
+    border-radius: var(--radius-md) !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px var(--alef-primary-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--alef-primary-glow);
+}
+
+.btn-danger {
+    border-radius: var(--radius-md) !important;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(220,53,69,0.35);
+}
+
+/* Estilos de sidebar y mobile-header consolidados arriba */
+
+/* ===== INPUTS MEJORADOS ===== */
+.custom-input,
+.form-control {
+    border-radius: var(--radius-sm) !important;
+    border: 1.5px solid #e0e5f0;
+    transition: all 0.3s ease;
+}
+
+.custom-input:focus,
+.form-control:focus {
+    border-color: var(--alef-primary) !important;
+    box-shadow: 0 0 0 4px rgba(114, 155, 255, 0.18) !important;
+}
+
+body.dark-mode .form-control {
+    background-color: var(--gray-850) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    color: var(--gray-200) !important;
+}
+
+body.dark-mode .form-control:focus {
+    border-color: var(--alef-primary) !important;
+    background-color: var(--gray-800) !important;
+}
+
+/* ===== FORM CONTAINER MEJORADO ===== */
+.form-container {
+    border-radius: var(--radius-xl) !important;
+    border: 1px solid rgba(114, 155, 255, 0.12) !important;
+    box-shadow: 0 16px 60px rgba(114, 155, 255, 0.12) !important;
+}
+
+body.dark-mode .form-container {
+    background: var(--gray-850) !important;
+    border-color: rgba(114, 155, 255, 0.15) !important;
+    box-shadow: 0 16px 60px rgba(0,0,0,0.5) !important;
+}
+
+/* ===== BADGES Y ESTADOS MEJORADOS ===== */
+.status-badge {
+    border-radius: 999px !important;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+}
+
+.status-completed {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.2);
+}
+
+.status-pending {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+    box-shadow: 0 2px 8px rgba(251,191,36,0.2);
+}
+
+body.dark-mode .status-completed {
+    background: linear-gradient(135deg, rgba(6,78,59,0.8), rgba(6,95,70,0.6));
+    color: #6ee7b7;
+}
+
+body.dark-mode .status-pending {
+    background: linear-gradient(135deg, rgba(120,53,15,0.8), rgba(146,64,14,0.6));
+    color: #fcd34d;
+}
+
+/* ===== WELCOME SECTION MEJORADA ===== */
+.welcome-section {
+    border-radius: var(--radius-lg) !important;
+    border-left: 4px solid var(--alef-primary) !important;
+    background: linear-gradient(135deg, rgba(114,155,255,0.08) 0%, rgba(178,161,255,0.05) 100%) !important;
+    box-shadow: var(--shadow-sm);
+}
+
+body.dark-mode .welcome-section {
+    background: linear-gradient(135deg, rgba(114,155,255,0.12) 0%, rgba(178,161,255,0.08) 100%) !important;
+    border-left-color: var(--alef-primary) !important;
+}
+
+/* ===== TABLAS MEJORADAS ===== */
+body.dark-mode .table thead th {
+    border-bottom-color: rgba(114, 155, 255, 0.15);
+}
+
+body.dark-mode .table tbody td {
+    border-bottom-color: rgba(255,255,255,0.04);
+    color: #d1d5db;
+}
+
+.table-hover tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+/* ===== ACCORDION MEJORADO ===== */
+.accordion-item {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid rgba(114, 155, 255, 0.1);
+}
+
+body.dark-mode .accordion-item {
+    background-color: var(--gray-850) !important;
+    border-color: rgba(114, 155, 255, 0.12) !important;
+}
+
+/* ===== STAT CARDS MEJORADAS ===== */
+.stat-card-blue {
+    background: linear-gradient(135deg, rgba(114,155,255,0.15) 0%, rgba(114,155,255,0.05) 100%) !important;
+    border: 1px solid rgba(114,155,255,0.25) !important;
+    border-radius: var(--radius-md) !important;
+}
+
+.stat-card-green {
+    background: linear-gradient(135deg, rgba(136,212,142,0.15) 0%, rgba(136,212,142,0.05) 100%) !important;
+    border: 1px solid rgba(136,212,142,0.25) !important;
+    border-radius: var(--radius-md) !important;
+}
+
+.stat-card-red {
+    background: linear-gradient(135deg, rgba(227,136,136,0.15) 0%, rgba(227,136,136,0.05) 100%) !important;
+    border: 1px solid rgba(227,136,136,0.25) !important;
+    border-radius: var(--radius-md) !important;
+}
+
+body.dark-mode .stat-card-blue,
+body.dark-mode .stat-card-green,
+body.dark-mode .stat-card-red {
+    background-color: var(--gray-850) !important;
+}
+
+/* ===== ANIMACIONES DE ENTRADA ===== */
+.card-bg,
+.value-card,
+.module-card,
+.activity-card,
+.glass-card,
+.form-container {
+    animation: fadeInUp 0.5s ease both;
+}
+
+/* Delay escalonado para listas de cards */
+.row > *:nth-child(1) .card-bg,
+.row > *:nth-child(1) .value-card { animation-delay: 0.05s; }
+.row > *:nth-child(2) .card-bg,
+.row > *:nth-child(2) .value-card { animation-delay: 0.1s; }
+.row > *:nth-child(3) .card-bg,
+.row > *:nth-child(3) .value-card { animation-delay: 0.15s; }
+.row > *:nth-child(4) .card-bg,
+.row > *:nth-child(4) .value-card { animation-delay: 0.2s; }
+
+/* ===== SCROLLBAR CUSTOM ===== */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(114, 155, 255, 0.35);
+    border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(114, 155, 255, 0.6);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: rgba(114, 155, 255, 0.25);
+}
+
+/* ===== FOOTER MEJORADO ===== */
+footer {
+    border-top: 1px solid rgba(114, 155, 255, 0.15) !important;
+}
+
+body.dark-mode footer {
+    border-top-color: rgba(114, 155, 255, 0.12) !important;
+    background: transparent;
+}
+
+/* ===== MAIN CONTENT ===== */
+body.dark-mode .main-content {
+    background: transparent;
+}
+
+/* ===== PROFILE BANNER MEJORADO ===== */
+.profile-banner-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #E38888 100%) !important;
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+}
+
+body.dark-mode .profile-banner-bg {
+    background: linear-gradient(135deg, #1a1f3a 0%, #2d1b69 50%, #3d1a1a 100%) !important;
+    border-bottom: 2px solid var(--alef-primary);
+    animation: none;
+}
+
+/* ===== ICON BOX MEJORADO ===== */
+.icon-box {
+    border-radius: var(--radius-sm) !important;
+    transition: transform 0.3s ease;
+}
+
+.icon-box.blue {
+    background: linear-gradient(135deg, rgba(114,155,255,0.15), rgba(114,155,255,0.05));
+}
+
+.icon-box.green {
+    background: linear-gradient(135deg, rgba(136,212,142,0.15), rgba(136,212,142,0.05));
+}
+
+/* ===== UTILITY CLASSES NUEVAS ===== */
+.gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.glow-primary {
+    box-shadow: var(--shadow-primary);
+}
+
+.glow-secondary {
+    box-shadow: var(--shadow-secondary);
+}
+
+.card-hover-lift {
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease;
+}
+
+.card-hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+
+/* ===== TIKTOK DARK MODE FIX ===== */
+body.dark-mode .social-button--tiktok {
+    color: #ffffff;
+    background: #1f2937;
+}
+
+body.dark-mode .social-button--tiktok::after {
+    background: #69C9D0; /* Color teal de la marca TikTok */
+}
+
+body.dark-mode .social-button--tiktok:hover {
+    color: #ffffff;
+}
+
+/* También mejoramos el fondo base del botón en dark para todos */
+body.dark-mode .social-button {
+    background: #1f2937;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+
+
+/* ============================================================
+   MOBILE NAVBAR PREMIUM — Agregado al final para override limpio
+   ============================================================ */
+
+/* ---- MOBILE HEADER BAR ---- */
+.mobile-header {
+    padding: 0.55rem 1rem !important;
+    background: rgba(255,255,255,0.94) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-bottom: 1px solid rgba(114,155,255,0.14) !important;
+    box-shadow: 0 2px 16px rgba(114,155,255,0.1) !important;
+    z-index: 1040 !important;
+}
+
+body.dark-mode .mobile-header {
+    background: rgba(10,16,30,0.94) !important;
+    border-bottom-color: rgba(114,155,255,0.18) !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.4) !important;
+}
+
+.mobile-header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.mobile-header-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    border-radius: 8px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 5px rgba(114,155,255,0.35));
+}
+
+.mobile-header-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.dark-mode .mobile-header-title { color: #f1f5f9; }
+
+/* ---- HAMBURGER BUTTON ---- */
+.mobile-menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: rgba(114,155,255,0.1);
+    border: 1.5px solid rgba(114,155,255,0.22);
+    border-radius: 10px;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+}
+
+.mobile-menu-btn:hover,
+.mobile-menu-btn:focus {
+    background: rgba(114,155,255,0.2);
+    border-color: rgba(114,155,255,0.4);
+    outline: none;
+}
+
+body.dark-mode .mobile-menu-btn {
+    background: rgba(114,155,255,0.12);
+    border-color: rgba(114,155,255,0.28);
+}
+
+.hamburger-line {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: #729BFF;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.25s ease;
+    transform-origin: center;
+}
+
+/* Hamburger → X */
+.mobile-menu-btn.is-open .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.mobile-menu-btn.is-open .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mobile-menu-btn.is-open .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---- OVERLAY ---- */
+.nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.52);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 1039;
+}
+.nav-overlay.active { display: block; }
+
+/* ---- SIDEBAR PANEL HEADER ---- */
+.nav-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    min-height: 60px;
+    border-bottom: 1px solid rgba(114,155,255,0.12);
+    overflow: hidden;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 2;
+    background: inherit;
+}
+
+body.dark-mode .nav-panel-header {
+    border-bottom-color: rgba(114,155,255,0.18);
+}
+
+.nav-panel-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.navigation.open .nav-panel-brand {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nav-panel-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    border-radius: 8px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 6px rgba(114,155,255,0.3));
+}
+
+.nav-panel-appname {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    background: linear-gradient(135deg, #729BFF, #E38888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+}
+
+/* Botón X cerrar */
+.nav-close-btn {
+    background: rgba(114,155,255,0.1);
+    border: 1.5px solid rgba(114,155,255,0.2);
+    border-radius: 8px;
+    color: #729BFF;
+    font-size: 1.25rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease, background 0.2s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.navigation.open .nav-close-btn {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nav-close-btn:hover {
+    background: rgba(114,155,255,0.22);
+}
+
+/* Ajustar ul para que empiece DESPUÉS del header del panel */
+.navigation ul {
+    padding-top: 72px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding-bottom: 16px !important;
+    gap: 3px !important;
+}
+
+/* ---- ITEMS PREMIUM ---- */
+.navigation ul li {
+    height: auto !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+}
+
+.navigation ul li a {
+    padding: 0.65rem 0.75rem !important;
+    border-radius: 12px !important;
+}
+
+/* Hover pill */
+.navigation ul li a:hover:not(.profile-container) {
+    background: rgba(114,155,255,0.09) !important;
+}
+body.dark-mode .navigation ul li a:hover:not(.profile-container) {
+    background: rgba(114,155,255,0.14) !important;
+}
+
+/* Active pill */
+.navigation.open ul li.active {
+    transform: none !important;
+}
+.navigation ul li.active a:not(.profile-container) {
+    background: rgba(114,155,255,0.12) !important;
+}
+body.dark-mode .navigation ul li.active a:not(.profile-container) {
+    background: rgba(114,155,255,0.18) !important;
+}
+
+/* Iconos con fondo */
+.navigation ul li a .icon {
+    min-width: 42px !important;
+    height: 42px !important;
+    line-height: 42px !important;
+    border-radius: 11px !important;
+    font-size: 1.4em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(114,155,255,0.07);
+    transition: background 0.2s ease, transform 0.2s ease !important;
+}
+
+.navigation ul li.active a .icon {
+    background: var(--clr) !important;
+    color: #fff !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+
+/* Texto */
+.navigation ul li a .text {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em !important;
+}
+
+/* ---- PROFILE CARD en menú ---- */
+.profile-container {
+    background: linear-gradient(135deg, rgba(114,155,255,0.08), rgba(227,136,136,0.06)) !important;
+    border: 1px solid rgba(114,155,255,0.18) !important;
+    border-radius: 14px !important;
+    padding: 0.6rem 0.75rem !important;
+    margin-bottom: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+body.dark-mode .profile-container {
+    background: linear-gradient(135deg, rgba(114,155,255,0.11), rgba(227,136,136,0.08)) !important;
+    border-color: rgba(114,155,255,0.22) !important;
+}
+
+.icon-avatar {
+    min-width: 42px !important;
+    height: 42px !important;
+    flex-shrink: 0;
+}
+
+.avatar-img {
+    border: 2px solid #729BFF !important;
+    box-shadow: 0 0 0 2px rgba(114,155,255,0.22) !important;
+}
+
+.profile-name {
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    color: #1e293b !important;
+}
+
+body.dark-mode .profile-name { color: #f1f5f9 !important; }
+
+.profile-status {
+    color: #729BFF !important;
+    font-size: 0.7rem !important;
+    font-weight: 500 !important;
+}
+
+/* ---- SIDEBAR background (light & dark) ---- */
+.navigation {
+    background: #ffffff !important;
+}
+body.dark-mode .navigation {
+    background: #0c1320 !important;
+    box-shadow: 4px 0 30px rgba(0,0,0,0.55) !important;
+}
+
+
+/* nav-panel-header: en mobile es relative (no absolute) porque el menuToggle esta oculto */
+@media (max-width: 767px) {
+    .nav-panel-header {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+    }
+
+    /* En mobile el ul NO necesita padding-top extra porque el header ya ocupa espacio relativo */
+    .navigation ul {
+        padding-top: 8px !important;
+    }
+}
+
+/* En desktop el nav-panel-header esta oculto (d-md-none),
+   el ul necesita el padding original de site.css para el menuToggle */
+@media (min-width: 768px) {
+    .navigation ul {
+        padding-top: 60px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .navigation ul li {
+        border-radius: 0 !important;
+        height: 60px !important;
+        padding: 0 10px !important;
+    }
+    .navigation ul li a {
+        padding: 0 !important;
+        border-radius: 0 !important;
+    }
+}
+
+/* FIX CRÍTICO: en mobile los items deben empujar hacia abajo del header del panel */
+@media (max-width: 767px) {
+    .navigation {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 0 !important;
+        justify-content: flex-start !important;
+        /* Cubrir toda la altura y aparecer ENCIMA del mobile-header (z-index: 1040) */
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        z-index: 1050 !important;
+    }
+
+    /* Ocultar el botón hamburguesa de escritorio en mobile */
+    .navigation .menuToggle {
+        display: none !important;
+    }
+
+    .nav-panel-header {
+        position: relative !important;
+        top: auto !important;
+        display: flex !important;
+        min-height: 62px !important;
+        flex-shrink: 0;
+    }
+
+    /* Padding-top al ul para que el perfil quede debajo del mobile-header */
+    .navigation ul {
+        flex: 1;
+        padding-top: 64px !important;
+        overflow-y: auto;
+    }
+
+    /* Texto de ítems siempre visible en mobile */
+    .navigation ul li a .text {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Texto del perfil (text-user) visible en mobile */
+    .navigation.open .profile-container .text-user,
+    .navigation .profile-container .text-user {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+/* Hacer nav-panel-brand siempre visible en mobile (no depende de .open) */
+@media (max-width: 767px) {
+    .nav-panel-brand {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    .nav-close-btn {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+/* ============================================================
+   FIX: Revertir estilos de items al desktop original
+   y quitar el blur del overlay
+   ============================================================ */
+
+/* QUITAR blur del overlay — solo oscurecer, no desenfocar */
+.nav-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* DESKTOP: restaurar COMPLETAMENTE los estilos originales de site.css */
+@media (min-width: 768px) {
+    /* Ocultar elementos exclusivos de mobile */
+    .mobile-header,
+    .nav-overlay,
+    .nav-panel-header {
+        display: none !important;
+    }
+
+    /* Restaurar navigation original */
+    .navigation {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        top: 20px !important;
+        bottom: 20px !important;
+        left: 20px !important;
+        width: 75px !important;
+        border-radius: 15px !important;
+    }
+
+    .navigation.open {
+        width: 250px !important;
+        left: 20px !important;
+    }
+
+    /* Restaurar ul original */
+    .navigation ul {
+        padding: 60px 0 10px !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    /* Restaurar li original */
+    .navigation ul li {
+        height: 60px !important;
+        padding: 0 10px !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+    }
+
+    /* Restaurar a original */
+    .navigation ul li a {
+        padding: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        justify-content: flex-start !important;
+    }
+
+    .navigation ul li a:hover {
+        background: transparent !important;
+    }
+
+    /* Restaurar icon original */
+    .navigation ul li a .icon {
+        min-width: 55px !important;
+        height: 55px !important;
+        line-height: 60px !important;
+        border-radius: 10px !important;
+        font-size: 1.75em !important;
+        background: transparent !important;
+        display: block !important;
+    }
+
+    .navigation ul li.active a .icon {
+        background: var(--clr) !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Restaurar text original */
+    .navigation ul li a .text {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        letter-spacing: inherit !important;
+    }
+
+    .navigation.open ul li a .text {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Active: sin translateY para evitar el efecto "remarcado" */
+    .navigation ul li.active {
+        transform: none !important;
+    }
+
+    .navigation.open ul li.active {
+        transform: translateX(10px) !important;
+    }
+
+    /* El ítem de perfil NUNCA debe moverse ni tener fondo extra cuando es activo */
+    .navigation ul li.active:has(.profile-container) {
+        transform: none !important;
+        background: transparent !important;
+    }
+    .navigation ul li.active a.profile-container,
+    .navigation ul li.active a.profile-container:hover {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Restaurar profile-container en desktop */
+    .profile-container {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin-bottom: 0 !important;
+        display: flex !important;
+    }
+
+    /* Restaurar main-content desktop */
+    .main-content {
+        margin-left: 120px !important;
+    }
+}
+
+/* ============================================================
+   FIX: Avatar y perfil en sidebar — sin contorno, mismo tamaño
+   ============================================================ */
+
+/* Quitar borde/anillo del avatar */
+.avatar-img {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Igualar tamaño del icon-avatar al resto de iconos del menú (55px) */
+.icon-avatar {
+    min-width: 55px !important;
+    height: 55px !important;
+}
+
+.icon-avatar img.avatar-img {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+/* Quitar el estilo de tarjeta de la fila de perfil */
+.profile-container {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* ============================================================
+   FIX FINAL: Eliminar TODOS los fondos rectangulares del nav
+   — ni en perfil, ni en item activo, ni en hover
+   ============================================================ */
+
+/* Sin fondo en ningún item */
+.navigation ul li,
+.navigation ul li a,
+.navigation ul li a:hover,
+.navigation ul li.active,
+.navigation ul li.active a,
+.navigation ul li.active a:not(.profile-container),
+.navigation ul li a:hover:not(.profile-container) {
+    background: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Sin fondo en el perfil */
+.profile-container,
+.profile-container:hover,
+a.profile-container,
+a.profile-container:hover {
+    background: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Solo el ÍCONO del item activo conserva su color de fondo */
+.navigation ul li.active a .icon {
+    background: var(--clr) !important;
+    color: #fff !important;
+}
+
+/* El texto activo conserva su color */
+.navigation ul li.active a .text {
+    color: var(--clr) !important;
+}
+
+/* ============================================================
+   FIX ESPECIFICIDAD: body.dark-mode tiene mayor especificidad
+   que el bloque FIX FINAL → necesitamos igualarla aquí
+   ============================================================ */
+
+/* Eliminar fondo activo en dark-mode (overrides la regla rgba(114,155,255,0.18)) */
+body.dark-mode .navigation ul li.active a,
+body.dark-mode .navigation ul li.active a:not(.profile-container),
+body.dark-mode .navigation ul li a:hover:not(.profile-container) {
+    background: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Eliminar fondo del perfil en dark-mode (overrides el gradient) */
+body.dark-mode .profile-container,
+body.dark-mode a.profile-container,
+body.dark-mode .profile-container:hover,
+body.dark-mode a.profile-container:hover,
+body.dark-mode .navigation ul li a.profile-container {
+    background: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* El ÍCONO del item activo conserva su color (dark-mode) */
+body.dark-mode .navigation ul li.active a .icon {
+    background: var(--clr) !important;
+    color: #fff !important;
+}
+
+/* El TEXTO activo conserva su color (dark-mode) */
+body.dark-mode .navigation ul li.active a .text {
+    color: var(--clr) !important;
+}
+

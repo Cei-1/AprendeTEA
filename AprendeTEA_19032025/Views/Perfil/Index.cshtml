@@ -1,138 +1,549 @@
-﻿@model AprendeTEA_19032025.Models.Perfil
+@model AprendeTEA_19032025.Models.Perfil
 
 @{
     ViewData["Title"] = "Mi Perfil";
 
     string nombreCompleto = string.IsNullOrWhiteSpace(Model?.NombreCompleto)
-        ? Model?.Email
-        : Model.NombreCompleto;
+        ? Model?.Email : Model.NombreCompleto;
 
     string ubicacion = (!string.IsNullOrWhiteSpace(Model?.Estado) || !string.IsNullOrWhiteSpace(Model?.Municipio))
         ? $"{Model?.Estado}, {Model?.Municipio}".Trim().Trim(',', ' ')
         : "Sin ubicación registrada";
 
-    string telefono = string.IsNullOrWhiteSpace(Model?.Telefono)
-        ? "Sin teléfono"
-        : Model.Telefono;
+    string telefono = string.IsNullOrWhiteSpace(Model?.Telefono) ? "Sin teléfono" : Model.Telefono;
 
     string cumple = Model?.FechaNacimiento.HasValue == true
         ? Model.FechaNacimiento.Value.ToString("dd 'de' MMMM")
         : "Sin registro";
 
-    // Foto: si hay Base64 la usamos; si no, ui-avatars
     string fotoPerfil = string.IsNullOrEmpty(Model?.FotoBase64)
         ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(nombreCompleto ?? "Usuario")}&background=729BFF&color=fff&size=256"
         : $"data:image/png;base64,{Model.FotoBase64}";
+
+    string iniciales = string.IsNullOrWhiteSpace(nombreCompleto) ? "?" :
+        string.Join("", nombreCompleto.Split(' ').Take(2).Select(p => p[0].ToString().ToUpper()));
 }
 
-<div class="d-flex justify-content-between align-items-center mb-5 card-bg p-4 rounded-4 shadow-sm">
+@section Styles {
+<style>
+/* ===== GREETING BANNER ===== */
+.greeting-banner {
+    border-radius: 20px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(114,155,255,0.12);
+    /* Light */
+    background: linear-gradient(135deg, rgba(114,155,255,0.08) 0%, rgba(178,161,255,0.05) 100%);
+    box-shadow: 0 4px 20px rgba(114,155,255,0.08);
+}
+
+body.dark-mode .greeting-banner {
+    background: linear-gradient(135deg, rgba(114,155,255,0.1) 0%, rgba(178,161,255,0.06) 100%);
+    border-color: rgba(114,155,255,0.15);
+}
+
+.greeting-logo {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #729BFF, #B2A1FF);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+.greeting-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    /* Light */
+    color: #111827;
+}
+body.dark-mode .greeting-name { color: #f1f5f9; }
+
+.greeting-sub {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    margin: 0;
+}
+
+.btn-logout {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    border: 1px solid rgba(114,155,255,0.2);
+    background: transparent;
+    color: #9ca3af;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    background: rgba(227,136,136,0.1);
+    color: #E38888;
+    border-color: rgba(227,136,136,0.3);
+}
+
+/* ===== PROFILE HERO ===== */
+.profile-hero {
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(114,155,255,0.12);
+    /* Light */
+    background: #ffffff;
+    box-shadow: 0 8px 32px rgba(114,155,255,0.1);
+}
+
+body.dark-mode .profile-hero {
+    background: #18212f;
+    border-color: rgba(114,155,255,0.12);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.profile-banner {
+    height: 140px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 40%, #E38888 80%, #ffa500 100%);
+    background-size: 300% 300%;
+    animation: gradientShift 8s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-banner::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+}
+
+.profile-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: 60px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+}
+
+@@keyframes gradientShift {
+    0%,100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+}
+
+.profile-info-area {
+    padding: 0 1.75rem 1.75rem;
+}
+
+.profile-avatar-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: -50px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.profile-avatar {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ffffff;
+    box-shadow: 0 8px 24px rgba(114,155,255,0.3);
+    position: relative;
+    z-index: 2;
+}
+
+body.dark-mode .profile-avatar { border-color: #18212f; }
+
+.online-dot {
+    position: absolute;
+    bottom: 4px; right: 4px;
+    width: 16px; height: 16px;
+    background: #10b981;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    z-index: 3;
+}
+
+body.dark-mode .online-dot { border-color: #18212f; }
+
+.profile-display-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #111827;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+}
+
+body.dark-mode .profile-display-name { color: #f1f5f9; }
+
+.profile-role-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(135deg, rgba(114,155,255,0.15), rgba(178,161,255,0.1));
+    border: 1px solid rgba(114,155,255,0.25);
+    color: #729BFF;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 999px;
+    margin-bottom: 0.5rem;
+}
+
+.profile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+.btn-edit-profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.6rem 1.25rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #E38888, #ffa500);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(227,136,136,0.35);
+    align-self: flex-start;
+    margin-top: 0.5rem;
+}
+
+.btn-edit-profile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(227,136,136,0.45);
+    color: #fff;
+}
+
+/* ===== CARDS LATERALES ===== */
+.profile-card {
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid rgba(114,155,255,0.1);
+    margin-bottom: 1.25rem;
+    /* Light */
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(114,155,255,0.07);
+}
+
+body.dark-mode .profile-card {
+    background: #18212f;
+    border-color: rgba(114,155,255,0.12);
+}
+
+.profile-card-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+    color: #111827;
+}
+
+body.dark-mode .profile-card-title { color: #f1f5f9; }
+
+/* ===== ESTADO EMOCIONAL ===== */
+.mood-card {
+    border-radius: 20px;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(178,161,255,0.2);
+    margin-bottom: 1.25rem;
+    background: linear-gradient(135deg, rgba(178,161,255,0.08) 0%, rgba(114,155,255,0.05) 100%);
+    /* Light */
+    box-shadow: 0 4px 16px rgba(178,161,255,0.1);
+}
+
+body.dark-mode .mood-card {
+    background: rgba(178,161,255,0.07);
+    border-color: rgba(178,161,255,0.15);
+}
+
+.mood-select {
+    border-radius: 12px;
+    border: 1.5px solid rgba(114,155,255,0.2);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    /* Light */
+    background: #fff;
+    color: #111827;
+}
+
+body.dark-mode .mood-select {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-color: rgba(114,155,255,0.25);
+}
+
+.mood-select:focus {
+    outline: none;
+    border-color: #B2A1FF;
+    box-shadow: 0 0 0 3px rgba(178,161,255,0.2);
+}
+
+/* ===== INFO PERSONAL ITEMS ===== */
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(114,155,255,0.06);
+}
+
+.info-item:last-child { border-bottom: none; }
+
+.info-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(114,155,255,0.15), rgba(178,161,255,0.08));
+    color: #729BFF;
+}
+
+.info-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 1px;
+}
+
+.info-value {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #111827;
+}
+
+body.dark-mode .info-value { color: #e2e8f0; }
+
+/* ===== STATS BAR ===== */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.stat-pill {
+    border-radius: 18px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+    border: 1px solid rgba(114,155,255,0.1);
+    background: #ffffff;
+    box-shadow: 0 2px 12px rgba(114,155,255,0.07);
+    transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
+}
+.stat-pill:hover { transform: translateY(-4px); }
+body.dark-mode .stat-pill {
+    background: #18212f;
+    border-color: rgba(114,155,255,0.14);
+}
+.stat-pill-value {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+}
+.stat-pill-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+@@media(max-width:768px){ .stats-bar{ grid-template-columns: repeat(2,1fr); } }
+
+/* ===== INSIGNIAS ===== */
+.badge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 1rem;
+}
+.badge-chip {
+    border-radius: 18px;
+    padding: 1.2rem 0.75rem;
+}
+
+.badge-chip {
+    border-radius: 16px;
+    padding: 1rem 0.75rem;
+    text-align: center;
+    border: 1px solid rgba(114,155,255,0.1);
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease;
+    cursor: default;
+    /* Light */
+    background: #f8faff;
+}
+
+body.dark-mode .badge-chip {
+    background: rgba(114,155,255,0.06);
+    border-color: rgba(114,155,255,0.12);
+}
+
+.badge-chip:not(.badge-locked):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(114,155,255,0.2);
+}
+
+.badge-chip.badge-locked {
+    opacity: 0.4;
+    filter: grayscale(1);
+}
+
+.badge-emoji { font-size: 2rem; margin-bottom: 0.35rem; }
+
+.badge-chip-name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #374151;
+}
+
+body.dark-mode .badge-chip-name { color: #cbd5e1; }
+
+.badge-chip-level {
+    font-size: 0.65rem;
+    color: #9ca3af;
+}
+
+/* ===== MODAL EDITAR ===== */
+.modal-content {
+    border-radius: 24px !important;
+    border: none !important;
+    overflow: hidden;
+}
+
+body.dark-mode .modal-content {
+    background: #18212f !important;
+    border: 1px solid rgba(114,155,255,0.15) !important;
+}
+
+body.dark-mode .modal-header,
+body.dark-mode .modal-footer {
+    border-color: rgba(114,155,255,0.1) !important;
+}
+</style>
+}
+
+<!-- Greeting -->
+<div class="greeting-banner">
     <div class="d-flex align-items-center gap-3">
-        <div class="p-2 rounded-3 bg-alef-primary-subtle">
-            <img src="~/img/logo.png" alt="Logo" style="width: 32px; height: 32px; object-fit: contain;"
-                 onerror="this.onerror=null; this.src='https://placehold.co/40x40/729BFF/ffffff?text=NP';" />
+        <div class="greeting-logo">
+            <img src="~/img/logo.png" alt="Logo" style="width:24px;height:24px;object-fit:contain;"
+                 onerror="this.style.display='none';" />
         </div>
         <div>
-            <h1 class="h4 fw-bold text-body-custom m-0">Hola, @nombreCompleto</h1>
-            <p class="small text-muted-custom m-0">¡Listo para seguir aprendiendo!</p>
+            <div class="greeting-name">Hola, @nombreCompleto 👋</div>
+            <p class="greeting-sub">¡Listo para seguir aprendiendo!</p>
         </div>
     </div>
-
     <form asp-controller="Login" asp-action="Logout" method="post" class="d-inline">
         @Html.AntiForgeryToken()
-        <button type="submit" class="btn btn-link text-muted-custom p-2" title="Cerrar Sesión">
-            <i data-lucide="log-out" style="width: 24px; height: 24px;"></i>
+        <button type="submit" class="btn-logout" title="Cerrar Sesión">
+            <i data-lucide="log-out" style="width:18px;height:18px;"></i>
         </button>
     </form>
 </div>
 
 @if (TempData["PerfilMensaje"] != null)
 {
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show rounded-3 mb-3" role="alert">
         @TempData["PerfilMensaje"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
 
 @if (ViewBag.Error != null)
 {
-    <div class="alert alert-danger" role="alert">
-        @ViewBag.Error
-    </div>
+    <div class="alert alert-danger rounded-3 mb-3" role="alert">@ViewBag.Error</div>
 }
 
-<div class="container-fluid px-0">
-    <div class="profile-banner-bg shadow-sm">
-        <div class="position-absolute top-0 end-0 bg-white opacity-10 rounded-circle"
-             style="width: 200px; height: 200px; transform: translate(50px, -50px); filter: blur(40px);"></div>
-        <div class="position-absolute bottom-0 start-0 bg-danger opacity-10 rounded-circle"
-             style="width: 200px; height: 200px; filter: blur(40px);"></div>
-    </div>
-
-    <div class="card-bg profile-floating-card shadow-lg mx-3 mx-md-5 position-relative">
-        <div class="row align-items-end">
-            <!-- Avatar con foto real o avatar automático -->
-            <div class="col-md-auto text-center text-md-start position-relative">
-                <div class="d-inline-block position-relative" style="margin-top: -5rem;">
-                    <img src="@fotoPerfil"
-                         alt="Avatar" class="profile-avatar-lg" style="object-fit: cover;" />
-                    <div class="status-indicator-online" title="En línea"></div>
-                </div>
+<!-- Profile Hero -->
+<div class="profile-hero">
+    <div class="profile-banner"></div>
+    <div class="profile-info-area">
+        <div class="profile-avatar-container">
+            <div class="position-relative d-inline-block">
+                <img src="@fotoPerfil" alt="Avatar" class="profile-avatar" />
+                <div class="online-dot" title="En línea"></div>
             </div>
+            <button type="button" class="btn-edit-profile"
+                    data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <i data-lucide="edit-3" style="width:15px;height:15px;"></i>
+                Editar Perfil
+            </button>
+        </div>
 
-            <!-- Info cabecera -->
-            <div class="col-md text-center text-md-start mt-3 mt-md-0">
-                <h2 class="fw-bold text-body-custom mb-1">@nombreCompleto</h2>
-
-                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 text-alef-primary fw-bold mb-2">
-                    <i data-lucide="award" style="width: 18px; height: 18px;"></i>
-                    <span>Explorador Neuro Pro</span>
-                </div>
-
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-4 text-muted-custom small">
-                    <span id="display-address-header">
-                        <i data-lucide="map-pin" style="width: 14px; height: 14px; margin-right: 4px;"></i>
-                        @ubicacion
-                    </span>
-                    <span>
-                        <i data-lucide="calendar" style="width: 14px; height: 14px; margin-right: 4px;"></i>
-                        Unido en @Model.FechaRegistro.Year
-                    </span> @* 🔹 año real de registro *@
-                </div>
-            </div>
-
-            <!-- Botón editar perfil -->
-            <div class="col-md-auto mt-4 mt-md-0 text-center">
-                <button type="button"
-                        class="btn btn-alef-submit px-4 py-2 d-inline-flex align-items-center gap-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editProfileModal">
-                    <i data-lucide="edit-3" style="width: 16px; height: 16px;"></i>
-                    Editar Perfil
-                </button>
-            </div>
+        <div class="profile-display-name">@nombreCompleto</div>
+        <div class="profile-role-pill">
+            <i data-lucide="award" style="width:12px;height:12px;"></i>
+            Explorador Neuro Pro
+        </div>
+        <div class="profile-meta">
+            @if (ubicacion != "Sin ubicación registrada")
+            {
+                <span><i data-lucide="map-pin" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;"></i>@ubicacion</span>
+            }
+            <span><i data-lucide="calendar" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;"></i>Unido en @Model.FechaRegistro.Year</span>
         </div>
     </div>
 </div>
 
-<div class="row g-4 mt-4">
-    <!-- Columna izquierda -->
-    <div class="col-lg-4">
-        <!-- Estado actual -->
-        <div class="card-bg p-4 rounded-4 shadow-sm mb-4 border border-2 border-transparent position-relative overflow-hidden"
-             style="border-color: rgba(178, 161, 255, 0.2) !important;">
-            <div class="d-flex justify-content-between align-items-center mb-3 position-relative z-index-10">
-                <h5 class="fw-bold text-body-custom m-0">Mi Estado Actual</h5>
-                <i data-lucide="heart-pulse" class="text-alef-secondary"></i>
-            </div>
+<!-- Stats bar -->
+<div class="stats-bar">
+    <div class="stat-pill">
+        <div class="stat-pill-value" style="background:linear-gradient(135deg,#729BFF,#B2A1FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">4</div>
+        <div class="stat-pill-label">Insignias</div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-pill-value" style="background:linear-gradient(135deg,#88D48E,#09CBB4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">3</div>
+        <div class="stat-pill-label">Nivel actual</div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-pill-value" style="background:linear-gradient(135deg,#E38888,#ffa500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">12</div>
+        <div class="stat-pill-label">Días activo</div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-pill-value" style="background:linear-gradient(135deg,#B2A1FF,#729BFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">85%</div>
+        <div class="stat-pill-label">Progreso</div>
+    </div>
+</div>
 
-            <div class="d-flex align-items-center gap-3 position-relative z-index-10">
-                <div style="width: 60px; height: 60px;">
-                    <img src="~/img/latimente.png" alt="Latimente" class="img-fluid"
-                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/729BFF/ffffff?text=LM';" />
-                </div>
+<!-- Content grid -->
+<div class="row g-4">
+
+    <!-- Columna izquierda -->
+    <div class="col-lg-5">
+
+        <!-- Estado emocional -->
+        <div class="mood-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="profile-card-title mb-0">Mi Estado Actual</span>
+                <i data-lucide="heart-pulse" style="width:18px;height:18px;color:#E38888;"></i>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <img src="~/img/latimente.png" alt="Latimente"
+                     style="width:52px;height:52px;object-fit:contain;flex-shrink:0;"
+                     onerror="this.style.display='none';" />
                 <div class="w-100">
-                    <label class="small text-muted-custom mb-1">Hoy me siento:</label>
-                    <select class="form-select custom-input form-select-sm">
+                    <label class="info-label mb-1">Hoy me siento:</label>
+                    <select class="mood-select w-100">
                         <option>😊 Motivado</option>
                         <option>🤔 Curioso</option>
                         <option>😌 Tranquilo</option>
@@ -143,198 +554,187 @@
         </div>
 
         <!-- Info personal -->
-        <div class="card-bg p-4 rounded-4 shadow-sm">
-            <h5 class="fw-bold text-body-custom mb-4 pb-2 border-bottom border-secondary border-opacity-10">
-                Información Personal
-            </h5>
+        <div class="profile-card">
+            <div class="profile-card-title">Información Personal</div>
+            <div class="d-flex flex-column">
 
-            <div class="d-flex flex-column gap-4">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="p-2 rounded bg-alef-primary-subtle text-alef-primary">
-                        <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+                <div class="info-item">
+                    <div class="info-icon"><i data-lucide="mail" style="width:16px;height:16px;"></i></div>
+                    <div>
+                        <div class="info-label">Correo</div>
+                        <div class="info-value text-break">@Model.Email</div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon" style="background:linear-gradient(135deg,rgba(136,212,142,.2),rgba(9,203,180,.08));color:#88D48E;">
+                        <i data-lucide="phone" style="width:16px;height:16px;"></i>
                     </div>
                     <div>
-                        <div class="small text-muted-custom">Correo Electrónico</div>
-                        <div class="fw-bold text-body-custom text-break">@Model.Email</div>
+                        <div class="info-label">Teléfono</div>
+                        <div class="info-value">@telefono</div>
                     </div>
                 </div>
 
-                <div class="d-flex align-items-center gap-3">
-                    <div class="p-2 rounded bg-alef-primary-subtle text-alef-primary">
-                        <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+                <div class="info-item">
+                    <div class="info-icon" style="background:linear-gradient(135deg,rgba(227,136,136,.2),rgba(255,165,0,.08));color:#E38888;">
+                        <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
                     </div>
                     <div>
-                        <div class="small text-muted-custom">Teléfono</div>
-                        <div class="fw-bold text-body-custom" id="display-phone">@telefono</div>
+                        <div class="info-label">Ubicación</div>
+                        <div class="info-value">@ubicacion</div>
                     </div>
                 </div>
 
-                <div class="d-flex align-items-center gap-3">
-                    <div class="p-2 rounded bg-alef-primary-subtle text-alef-primary">
-                        <i data-lucide="map" style="width: 18px; height: 18px;"></i>
+                <div class="info-item">
+                    <div class="info-icon" style="background:linear-gradient(135deg,rgba(178,161,255,.2),rgba(114,155,255,.08));color:#B2A1FF;">
+                        <i data-lucide="cake" style="width:16px;height:16px;"></i>
                     </div>
                     <div>
-                        <div class="small text-muted-custom">Ubicación</div>
-                        <div class="fw-bold text-body-custom" id="display-address">@ubicacion</div>
+                        <div class="info-label">Cumpleaños</div>
+                        <div class="info-value">@cumple</div>
                     </div>
                 </div>
 
-                <div class="d-flex align-items-center gap-3">
-                    <div class="p-2 rounded bg-alef-primary-subtle text-alef-primary">
-                        <i data-lucide="cake" style="width: 18px; height: 18px;"></i>
-                    </div>
-                    <div>
-                        <div class="small text-muted-custom">Cumpleaños</div>
-                        <div class="fw-bold text-body-custom">@cumple</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Columna derecha (badges + timeline dummy) -->
-    <div class="col-lg-8">
-        <div class="card-bg p-4 rounded-4 shadow-sm mb-4">
-            <h5 class="fw-bold text-body-custom mb-4">Mis Insignias</h5>
-
-            <div class="row row-cols-2 row-cols-sm-4 g-3">
-                <div class="col">
-                    <div class="badge-item opacity-50">
-                        <div class="fs-1 mb-2">🧠</div>
-                        <div class="fw-bold text-body-custom small">Mente Curiosa</div>
-                        <div class="text-muted-custom x-small">Nivel 1</div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="badge-item opacity-50">
-                        <div class="fs-1 mb-2">🤝</div>
-                        <div class="fw-bold text-body-custom small">Empático</div>
-                        <div class="text-muted-custom x-small">Nivel 2</div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="badge-item opacity-50">
-                        <div class="fs-1 mb-2">📚</div>
-                        <div class="fw-bold text-body-custom small">Lector Voraz</div>
-                        <div class="text-muted-custom x-small">Nivel 1</div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="badge-item opacity-50">
-                        <div class="fs-1 mb-2 grayscale">🚀</div>
-                        <div class="fw-bold text-muted-custom small">Futuro Líder</div>
-                        <div class="text-muted-custom x-small">Bloqueado</div>
-                    </div>
-                </div>
             </div>
         </div>
 
-       @*  <div class="card-bg p-4 rounded-4 shadow-sm">
-            <h5 class="fw-bold text-body-custom mb-4">Mi Viaje Reciente</h5>
+    </div>
 
-            <div class="timeline-list">
-                <div class="timeline-item">
-                    <div class="timeline-dot dot-primary"></div>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="fw-bold text-body-custom mb-1">Completaste "Entendiendo el TDAH"</h6>
-                            <p class="small text-muted-custom mb-0">Módulo 1: Introducción a la neurodivergencia</p>
-                        </div>
-                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill">Completado</span>
-                    </div>
-                    <small class="text-muted-custom d-block mt-1">Hace 2 horas</small>
+    <!-- Columna derecha -->
+    <div class="col-lg-7">
+
+        <!-- Insignias -->
+        <div class="profile-card">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="profile-card-title mb-0">Mis Insignias</div>
+                <span class="badge rounded-pill" style="background:rgba(114,155,255,0.12);color:#729BFF;font-size:.7rem;">4 total</span>
+            </div>
+            <div class="badge-grid">
+                <div class="badge-chip">
+                    <div class="badge-emoji">🧠</div>
+                    <div class="badge-chip-name">Mente Curiosa</div>
+                    <div class="badge-chip-level">Nivel 1</div>
                 </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot dot-secondary"></div>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="fw-bold text-body-custom mb-1">Actualizaste tu perfil</h6>
-                            <p class="small text-muted-custom mb-0">Agregaste nueva información de contacto</p>
-                        </div>
-                    </div>
-                    <small class="text-muted-custom d-block mt-1">Ayer</small>
+                <div class="badge-chip">
+                    <div class="badge-emoji">🤝</div>
+                    <div class="badge-chip-name">Empático</div>
+                    <div class="badge-chip-level">Nivel 2</div>
                 </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot dot-violet"></div>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="fw-bold text-body-custom mb-1">Te uniste a Neuro Pro</h6>
-                            <p class="small text-muted-custom mb-0">¡Bienvenido a la comunidad!</p>
-                        </div>
-                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">Inicio</span>
-                    </div>
-                    <small class="text-muted-custom d-block mt-1">
-                        @Model.FechaRegistro.ToString("dd MMMM, yyyy")
-                    </small>
+                <div class="badge-chip">
+                    <div class="badge-emoji">📚</div>
+                    <div class="badge-chip-name">Lector Voraz</div>
+                    <div class="badge-chip-level">Nivel 1</div>
+                </div>
+                <div class="badge-chip badge-locked">
+                    <div class="badge-emoji">🚀</div>
+                    <div class="badge-chip-name">Futuro Líder</div>
+                    <div class="badge-chip-level">Bloqueado</div>
+                </div>
+                <div class="badge-chip badge-locked">
+                    <div class="badge-emoji">⭐</div>
+                    <div class="badge-chip-name">Estrella</div>
+                    <div class="badge-chip-level">Bloqueado</div>
+                </div>
+                <div class="badge-chip badge-locked">
+                    <div class="badge-emoji">🏆</div>
+                    <div class="badge-chip-name">Campeón</div>
+                    <div class="badge-chip-level">Bloqueado</div>
                 </div>
             </div>
-        </div> *@
+        </div>
+
+        <!-- Actividad reciente -->
+        <div class="profile-card">
+            <div class="profile-card-title">Actividad Reciente</div>
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="info-icon" style="background:linear-gradient(135deg,rgba(114,155,255,.18),rgba(178,161,255,.1));color:#729BFF;flex-shrink:0;">
+                        <i data-lucide="book-open" style="width:16px;height:16px;"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="info-value" style="font-size:.85rem;">Completaste una actividad de comunicación</div>
+                        <div class="info-label" style="margin-bottom:0;">Hace 2 días</div>
+                    </div>
+                    <span style="font-size:1.2rem;">✅</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="info-icon" style="background:linear-gradient(135deg,rgba(136,212,142,.18),rgba(9,203,180,.1));color:#88D48E;flex-shrink:0;">
+                        <i data-lucide="award" style="width:16px;height:16px;"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="info-value" style="font-size:.85rem;">Desbloqueaste la insignia Empático</div>
+                        <div class="info-label" style="margin-bottom:0;">Hace 5 días</div>
+                    </div>
+                    <span style="font-size:1.2rem;">🤝</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="info-icon" style="background:linear-gradient(135deg,rgba(227,136,136,.18),rgba(255,165,0,.1));color:#E38888;flex-shrink:0;">
+                        <i data-lucide="trending-up" style="width:16px;height:16px;"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="info-value" style="font-size:.85rem;">Subiste al Nivel 3</div>
+                        <div class="info-label" style="margin-bottom:0;">Hace 1 semana</div>
+                    </div>
+                    <span style="font-size:1.2rem;">🎉</span>
+                </div>
+            </div>
+        </div>
+
     </div>
+
 </div>
 
-<!-- MODAL: Editar Perfil (Incluye foto) -->
+<!-- MODAL: Editar Perfil -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content card-bg">
+        <div class="modal-content">
             <div class="modal-header border-bottom border-secondary border-opacity-10">
-                <h5 class="modal-title fw-bold text-alef-primary">Editar Información</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title fw-bold" style="color:#729BFF;">Editar Perfil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-
-            <form asp-action="Actualizar" asp-controller="Perfil" method="post" id="editForm" enctype="multipart/form-data">
+            <form asp-action="Actualizar" asp-controller="Perfil" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
                 <div class="modal-body">
                     <input type="hidden" asp-for="IdUsuario" />
 
                     <div class="mb-3">
                         <label asp-for="Telefono" class="form-label small fw-bold text-muted-custom"></label>
-                        <input asp-for="Telefono" class="form-control custom-input" id="editPhone" />
+                        <input asp-for="Telefono" class="form-control custom-input" />
                         <span asp-validation-for="Telefono" class="text-danger small"></span>
                     </div>
 
-                    <h6 class="fw-bold text-body-custom mt-4 mb-3">Dirección</h6>
+                    <h6 class="fw-bold mt-4 mb-3" style="color:#729BFF;">Dirección</h6>
 
                     <div class="mb-3">
                         <label asp-for="Estado" class="form-label small fw-bold text-muted-custom"></label>
-                        <input asp-for="Estado" class="form-control custom-input" id="editState" />
-                        <span asp-validation-for="Estado" class="text-danger small"></span>
+                        <input asp-for="Estado" class="form-control custom-input" />
                     </div>
-
                     <div class="mb-3">
                         <label asp-for="Municipio" class="form-label small fw-bold text-muted-custom"></label>
-                        <input asp-for="Municipio" class="form-control custom-input" id="editMunicipio" />
-                        <span asp-validation-for="Municipio" class="text-danger small"></span>
+                        <input asp-for="Municipio" class="form-control custom-input" />
                     </div>
-
                     <div class="mb-3">
                         <label asp-for="Colonia" class="form-label small fw-bold text-muted-custom"></label>
-                        <input asp-for="Colonia" class="form-control custom-input" id="editColonia" />
-                        <span asp-validation-for="Colonia" class="text-danger small"></span>
+                        <input asp-for="Colonia" class="form-control custom-input" />
                     </div>
 
                     <hr class="my-3" />
 
-                    <!-- Foto -->
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-muted-custom">Foto de Perfil</label>
                         <input type="file" accept="image/*" class="form-control custom-input" id="fotoFile" />
-
                         <input type="hidden" asp-for="FotoBase64" id="FotoBase64" />
-
                         <div class="mt-3 text-center">
                             <img id="previewImg" src="@fotoPerfil"
-                                 class="rounded shadow-sm"
-                                 style="max-width: 140px; max-height: 140px; object-fit: cover;" />
+                                 class="rounded-circle shadow-sm"
+                                 style="width:90px;height:90px;object-fit:cover;border:3px solid rgba(114,155,255,0.3);" />
                         </div>
-
-                        <small class="text-muted-custom d-block mt-1">
-                            Si no seleccionas una imagen nueva, se mantendrá la actual.
+                        <small class="text-muted-custom d-block mt-2 text-center">
+                            Si no seleccionas una nueva foto, se mantendrá la actual.
                         </small>
                     </div>
                 </div>
-
                 <div class="modal-footer border-top border-secondary border-opacity-10">
                     <button type="button" class="btn btn-cancel-custom" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-alef-submit">Guardar Cambios</button>
@@ -345,36 +745,29 @@
 </div>
 
 @section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    const fotoFile  = document.getElementById("fotoFile");
+    const fotoBase  = document.getElementById("FotoBase64");
+    const previewImg = document.getElementById("previewImg");
 
-    <script>
-        // Conversión de foto a Base64
-        const fotoFile = document.getElementById("fotoFile");
-        const fotoBase = document.getElementById("FotoBase64");
-        const previewImg = document.getElementById("previewImg");
-
-        if (fotoFile) {
-            fotoFile.addEventListener("change", function () {
-                const file = this.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const dataUrl = e.target.result;
-                    const base64 = dataUrl.split(',')[1];
-
-                    fotoBase.value = base64;
-                    previewImg.src = dataUrl;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            if (typeof lucide !== "undefined") {
-                lucide.createIcons();
-            }
+    if (fotoFile) {
+        fotoFile.addEventListener("change", function () {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const dataUrl = e.target.result;
+                fotoBase.value = dataUrl.split(',')[1];
+                previewImg.src = dataUrl;
+            };
+            reader.readAsDataURL(file);
         });
-    </script>
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof lucide !== "undefined") lucide.createIcons();
+    });
+</script>
 }
